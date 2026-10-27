@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **The interface in Italiano** (Settings → Interface → Language). Like Português and Español, only Mundi's own
+  screens are translated: the story's language is up to your preset, and the worlds keep their own names.
+
 ## 0.2.0 · 2026-10-25
 
 Everything since 0.1.0 (the last version on GitHub, commit `33837e1`).

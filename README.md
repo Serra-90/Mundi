@@ -19,7 +19,7 @@ It is a SillyTavern **extension** (no server plugin). Everything is built on wha
 - **Phones.** Upright and sideways layouts, with their own scale for the HUD.
 - **A tour.** Stella shows you around in a practice world. No AI needed.
 - **Home mode.** A more role-play focused way to play: one house, the characters you choose, no work or bills. Pick the rooms, draw a floor plan, go out and come back.
-- **In your language.** The interface is in English, Português (Brasil) and Español (Settings → Interface → Language).
+- **In your language.** The interface is in English, Português (Brasil), Español and Italiano (Settings → Interface → Language).
 
 It comes with **Porto Alto**, a modern coastal state with five cities (Midtown, Palm Coast, Maple Heights, Pinecrest and Green Valley), and **The Shared House** for Home mode. The medieval style (Valdoria) and the RPG mode are coming in a later update.
 
