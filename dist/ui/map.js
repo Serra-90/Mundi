@@ -39,6 +39,7 @@ import { icon } from './icons.js';
 import { leaveBlock } from '../sim/leave.js';
 import { tr } from '../core/tr.js';
 const fmt = (t, ...a) => tr(t).replace(/\{(\d)\}/g, (_, n) => a[Number(n)] ?? '');
+const roomLabel = (mine, name) => mine ? tr('Your room') : /'s home$/.test(name) ? fmt("{0}'s room", name.replace(/'s home$/, '')) : name;
 const KMAX = 5;
 const ctxW = () => { const g = game(); return { g, w: getWorld(g.world) }; };
 // The map on screen: the one you are on, unless you opened another (a link pin, or "up" to the bigger map).
@@ -227,7 +228,7 @@ function planHtml(g, w) {
             return '';
         const pic = p.home ? kindPic(t.loc) : pictureAt(w, g.minutes, p.bg, p.bgs);
         const you = t.loc === g.player.loc;
-        const name = t.loc === playerHomeId ? 'Your room' : String(p.name).replace(/'s home$/, "'s room");
+        const name = roomLabel(p.id === playerHomeId || t.loc === playerHomeId, String(p.name));
         return `<button class="mu-plan-room ${you ? 'is-you' : ''}" style="${box}" data-act="go" data-loc="${esc(t.loc)}" title="${you ? 'You are here' : `Go to ${esc(name)}`}">
             <i style="${pic ? `background-image:url('${esc(worldFile(w, pic))}')` : ''}"></i><b data-notr>${esc(name)}</b>${faces(t.loc)}${you ? `<em>${icon('pin')} You</em>` : ''}</button>`;
     }).join('');
@@ -235,7 +236,7 @@ function planHtml(g, w) {
     const ratio = floor.ratio ?? 1.6;
     return `<div class="mu-map is-plan"><div class="mu-plan-stage"><div class="mu-plan ${floor.image ? 'has-pic' : ''} ${plan.labels === false ? 'no-labels' : ''}" style="--r:${ratio};${plan.glow ? `--glow:${esc(plan.glow)};` : ''}${floor.image ? `background-image:url('${esc(worldFile(w, pictureAt(w, g.minutes, floor.image, floor.images) ?? floor.image))}')` : ''}">${rooms}</div></div>
         <div class="mu-plan-bar">${lost.length ? `<div class="mu-plan-lost"><small>Not on the plan</small>${lost.map(p => {
-        const name = p.id === playerHomeId ? 'Your room' : String(p.name).replace(/'s home$/, "'s room");
+        const name = roomLabel(p.id === playerHomeId, String(p.name));
         return `<button data-act="go" data-loc="${esc(p.id)}" class="${p.id === g.player.loc ? 'is-you' : ''}" title="${esc(name)}: where this room is on the floor plan is not set yet (World creator › Maps › Floor plan). Click to go there."><b class="mu-plan-bang">!</b><span data-notr>${esc(name)}</span></button>`;
     }).join('')}</div>` : ''}
             ${plan.floors.length > 1 ? `<nav class="mu-plan-floors" aria-label="Floors">${plan.floors.map(f => {

@@ -1518,6 +1518,20 @@ body.mundi-open #toast-container { display: none !important; }
 #mundi-root .mu-glassdlg .mu-bgsrc button.is-on { background: linear-gradient(160deg, rgba(255, 255, 255, .3), rgba(255, 255, 255, .06) 55%), color-mix(in srgb, var(--accent) 52%, transparent) !important; }
 #mundi-root .mu-pa footer { gap: 8px; flex-wrap: wrap; }
 #mundi-root .mu-pa .mu-pa-me { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+/* the plan fits in the free space between the HUD (top) and the floors (bottom): nothing covers a room */
+#mundi-root:not([data-mobile]) .mu-map.is-plan .mu-plan-stage { inset: 172px 24px 92px; display: grid; place-items: center; overflow: visible; container-type: size; }
+#mundi-root:not([data-mobile]) .mu-map.is-plan .mu-plan { position: relative; left: auto; top: auto; translate: none; width: min(100cqw, calc(100cqh * var(--r, 1.6))); max-height: 100%; }
+/* the floors: one compact row under the plan */
+#mundi-root .mu-plan-bar { max-width: calc(100% - 200px); }
+#mundi-root .mu-plan-floors { flex-wrap: nowrap; gap: 8px; padding-top: 0; }
+#mundi-root .mu-plan-floors button { min-width: 0; white-space: nowrap; padding: 9px 16px !important; font-size: 13px; letter-spacing: .06em; border-radius: 10px !important; }
+#mundi-root .mu-floor-faces { bottom: auto; top: 50%; left: auto; right: 6px; translate: 0 -50%; }
+#mundi-root .mu-floor-faces img { width: 22px; height: 22px; margin-left: -6px; }
+#mundi-root .mu-plan-floors button:has(.mu-floor-faces) { padding-right: 70px !important; }
+/* room names stay inside their room (two lines at most) */
+#mundi-root .mu-plan .mu-plan-room > b { max-width: 100%; white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+#mundi-root .mu-plan.has-pic .mu-plan-room > b { font-size: clamp(10px, .85vw, 14px); padding: 2px 6px; line-height: 1.15; }
+#mundi-root .mu-plan.has-pic .mu-plan-room.is-off > b { opacity: .8; font-weight: 500; }
 /* What's new (after an update) and the "a newer Mundi is out" note on the main menu */
 #mundi-root .mu-wn { width: min(600px, 100%); }
 #mundi-root .mu-wn header small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
