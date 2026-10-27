@@ -12,6 +12,8 @@ import { note } from '../sim/facts.js';
 import { syncScene } from '../sim/game.js';
 import { icon } from './icons.js';
 import { ACT } from './reg.js';
+import { stayRule, talkingWith, takingLeave, beginGoodbye } from '../sim/leave.js';
+import { tr } from '../core/tr.js';
 
 export interface GameEvent { id: string; avatar: string; kind: string; ending?: boolean; from?: number; title?: string; moodAt?: number }
 export interface Stay { avatar: string; where: string; day: number }
@@ -60,7 +62,28 @@ export function eventPanelHtml(g: Save, w: WorldDef): string {
             ${stayButton(e.avatar)}</div>`}</aside>`;
 }
 
+// "Stay until goodbye": who you are talking with, and the button to take your leave.
+export function talkPanelHtml(g: Save, w: WorldDef): string {
+    if (!stayRule(g) || state.view !== 'scene') return '';
+    const e = eventOf(g); if (e && isWith(g, e.avatar)) return '';   // an event has its own panel and its own goodbye
+    const who = talkingWith(g, w).map(a => g.cast[a]?.name).filter(Boolean) as string[];
+    if (!who.length) return '';
+    return `<aside class="mh-event mh-glass"><b>${icon('chat')} In conversation with <span data-notr>${esc(who.join(', '))}</span></b>
+        ${takingLeave(g) ? '<small class="mu-muted">Saying goodbye…</small>' : `<div class="mh-event-btns"><button data-act="talk-bye">${icon('back')}<span>Take your leave</span></button></div>`}</aside>`;
+}
+
 Object.assign(ACT, {
+    // you take your leave; they say goodbye back (their reply), and then you are free to go
+    'talk-bye': () => {
+        const g = game(); const w = g && getWorld(g.world);
+        if (!g || !w || state.generating) return;
+        const who = talkingWith(g, w).map(a => g.cast[a]?.name).filter(Boolean) as string[];
+        if (!who.length) { notify(); return; }
+        beginGoodbye(g); saveGame();
+        setAsk(`[{{user}} takes their leave. ${who.join(' and ')} ${who.length > 1 ? 'say' : 'says'} goodbye to {{user}} in their own way and ${who.length > 1 ? 'let' : 'lets'} {{user}} go.]`);
+        if (!sendCanned(tr('*takes their leave*'))) { (social(g) as any).talk = null; saveGame(); }
+        notify();
+    },
     // they say goodbye in the scene (what they thought of it), then leave
     'ev-end': () => {
         const g = game(); const e = g && eventOf(g); const r = g && e && g.cast[e.avatar];

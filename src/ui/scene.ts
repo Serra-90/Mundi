@@ -154,6 +154,7 @@ function background(g: Save, w: WorldDef) {
 }
 
 import { fullPicOf as fullPic } from './chatlook.js';
+import { startTalk } from '../sim/leave.js';
 // SillyTavern's own formatting (Markdown, code blocks, regex scripts of your presets), with Mundi's as a fallback.
 const lineText = (m: any, i: number) => stFormat(cleanText(shownText(m)), m, i, (t) => `<p>${formatText(t)}</p>`);
 function lineHtml(m: any, i: number, last: boolean, lastChar: number) {
@@ -432,7 +433,7 @@ Object.assign(ACT, {
             const hurt = judgeLine(g, w, raw, hearers);
             hurt.forEach(m => toast(m, 'warn'));
             if (!hurt.length) for (const r of hearers) if (r.met) addBond(g, r.avatar, 3);
-            lockScene(g, w); saveGame();
+            lockScene(g, w); startTalk(g, w); saveGame();
         }
         state.composer = '';
         notify();

@@ -16,6 +16,7 @@ import { refreshPrompt } from '../sim/prompt.js';
 import { showTransition } from './lifeui.js';
 import { icon } from './icons.js';
 import { ACT, INPUT } from './reg.js';
+import { leaveBlock } from '../sim/leave.js';
 export const OD = { open: false, bgOnly: false, place: '', with: [], bg: '', q: '', back: false, miss: false };
 export const bgStyle = (file) => (file ? `background-image:url('${bgHref(file)}');background-size:cover;background-position:center` : '');
 // Who can come: the people you know who are in the house now.
@@ -51,7 +52,10 @@ export function outingHtml() {
 // Opens the dialog; `place` fills in where (a plan made somewhere out).
 export function openGoOut(place = '') { Object.assign(OD, { open: true, bgOnly: false, place, with: [], q: '', back: false, miss: false }); OD.bg = ''; notify(); setTimeout(() => document.querySelector('[data-input="out-place"]')?.focus(), 40); }
 Object.assign(ACT, {
-    'out-open': () => openGoOut(),
+    'out-open': () => { const g = game(); const w = g && getWorld(g.world); const why = g && w ? leaveBlock(g, w) : ''; if (why) {
+        toast(why, 'info');
+        return;
+    } openGoOut(); },
     'out-close': () => { OD.open = false; notify(); },
     'out-with': (el) => { const a = el.dataset.who; OD.with = OD.with.includes(a) ? OD.with.filter(x => x !== a) : [...OD.with, a]; notify(); },
     'out-bg': (el) => { OD.bg = el.dataset.file ?? ''; notify(); },

@@ -3813,6 +3813,14 @@ const DICT = {
     "Unlock the medieval style": "Sblocca lo stile medievale",
     "Valdoria and The Old Manor, as they are now: still being finished (most places have no picture yet). Only in this browser. The page reloads.": "Valdoria e The Old Manor, così come sono ora: ancora in lavorazione (la maggior parte dei luoghi non ha ancora un'immagine). Solo in questo browser. La pagina si ricarica.",
     "They cannot leave the place where they are.": "Non può lasciare il posto in cui si trova.",
-    "{0} never leaves this place.": "{0} non lascia mai questo posto."
+    "{0} never leaves this place.": "{0} non lascia mai questo posto.",
+    "Stay until goodbye": "Resta finché non vi salutate",
+    "While you are talking with someone or an event is going on, you cannot leave the room, go out, go to a plan, sleep or let time pass. Take your leave first (they say goodbye back), or end the event.": "Mentre stai parlando con qualcuno o è in corso un evento non puoi lasciare la stanza, uscire, andare a un appuntamento, dormire o far passare il tempo. Prima congedati (e aspetta che ricambino il saluto), oppure concludi l'evento.",
+    "End the event with {0} first.": "Prima concludi l'evento con {0}.",
+    "Say goodbye to {0} first.": "Prima congedati da {0}.",
+    "Wait for them to say goodbye.": "Aspetta che ricambino il saluto.",
+    "In conversation with": "In conversazione con",
+    "Take your leave": "Congedati",
+    "*takes their leave*": "*si congeda*"
 };
 export default DICT;

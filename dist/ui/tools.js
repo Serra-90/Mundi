@@ -9,6 +9,7 @@ import { syncScene } from '../sim/game.js';
 import { toast, saveGame, notify } from '../core/store.js';
 import { ACT } from './reg.js';
 import { playerHomeId } from '../sim/places.js';
+import { leaveBlock } from '../sim/leave.js';
 const SPEEDS = [0, 30, 60, 120];
 // The old top bar is gone: its parts live in the HUD now (hud.ts). Kept so screens can still call it.
 export function toolsHtml() { return ''; }
@@ -20,6 +21,13 @@ Object.assign(ACT, {
         const w = g && getWorld(g.world);
         if (!g || !w)
             return;
+        {
+            const why = leaveBlock(g, w);
+            if (why) {
+                toast(why, 'info');
+                return;
+            }
+        }
         advance(g, w, toNextPeriod(w, g.minutes)).forEach(m => toast(m, 'warn'));
         showTransition(period(w, g.minutes).name, `Day ${g.day}`, 'time');
         runPlans();

@@ -36,6 +36,7 @@ import { toolsHtml } from './tools.js';
 import { ACT } from './reg.js';
 import { featureOn } from '../sim/creator.js';
 import { icon } from './icons.js';
+import { leaveBlock } from '../sim/leave.js';
 const KMAX = 5;
 const ctxW = () => { const g = game(); return { g, w: getWorld(g.world) }; };
 // The map on screen: the one you are on, unless you opened another (a link pin, or "up" to the bigger map).
@@ -419,6 +420,13 @@ export async function travelTo(loc, road) {
         toast('Wait until they finish speaking.', 'info');
         return;
     } // nobody walks out mid-sentence
+    {
+        const why = leaveBlock(g, w);
+        if (why) {
+            toast(why, 'info');
+            return;
+        }
+    } // "stay until goodbye"
     const mins = travelMinutes(g, w, g.player.loc, loc);
     const trip = journeyOf(g, w, g.player.loc, loc, mins);
     if (trip && trip.camps > 0 && !road) {
@@ -618,6 +626,13 @@ Object.assign(ACT, {
     travel: (el) => goTo(el.dataset.loc),
     sleep: () => {
         const { g, w } = ctxW();
+        {
+            const why = leaveBlock(g, w);
+            if (why) {
+                toast(why, 'info');
+                return;
+            }
+        }
         const until = w.sleep.until;
         const mins = g.minutes < until ? until - g.minutes : 1440 - g.minutes + until;
         if (askAboutPlans(g, mins, 'sleep'))

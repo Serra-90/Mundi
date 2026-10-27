@@ -149,6 +149,7 @@ function background(g, w) {
     return `background-image:url('${worldFile(w, pictureAt(w, g.minutes, map.image, map.images))}');background-size:420% auto;background-position:${p.x}% ${p.y}%`;
 }
 import { fullPicOf as fullPic } from './chatlook.js';
+import { startTalk } from '../sim/leave.js';
 // SillyTavern's own formatting (Markdown, code blocks, regex scripts of your presets), with Mundi's as a fallback.
 const lineText = (m, i) => stFormat(cleanText(shownText(m)), m, i, (t) => `<p>${formatText(t)}</p>`);
 function lineHtml(m, i, last, lastChar) {
@@ -499,6 +500,7 @@ Object.assign(ACT, {
                     if (r.met)
                         addBond(g, r.avatar, 3);
             lockScene(g, w);
+            startTalk(g, w);
             saveGame();
         }
         state.composer = '';

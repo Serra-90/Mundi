@@ -166,6 +166,7 @@ function tabRules(g, w) {
     const slider = (label, key, v, min, max, step, unit) => `<label class="mu-field slider"><span>${label} · ${v}${unit}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${v}" data-input="wc-cfg" data-k="${key}"></label>`;
     const live = (c.clock ?? 'action') === 'live';
     return `<section class="mu-wc-sec"><h4>${esc(w.name)}</h4><p>${esc(w.description)}</p><p class="mu-muted">Game mode: <b>${GAME_MODES.find(m => m.id === gameMode(w)).name}</b> (change it in the world creator).</p></section>
+        <section class="mu-wc-sec"><h4>Scene</h4><label class="mu-check"><input type="checkbox" data-input="wc-stay" ${c.stayInScene ? 'checked' : ''}><span>Stay until goodbye<small>While you are talking with someone or an event is going on, you cannot leave the room, go out, go to a plan, sleep or let time pass. Take your leave first (they say goodbye back), or end the event.</small></span></label></section>
         ${isScenario(w) ? `${dressHtml(g, w)}${systemOn(w, 'romance') ? `<section class="mu-wc-sec"><h4>Love</h4><label class="mu-check"><input type="checkbox" data-input="wc-poly" ${c.poly ? 'checked' : ''}><span>Open relationships</span></label></section>` : ''}<section class="mu-wc-sec"><h4>Rooms</h4>${list(w.places.map(p => p.name))}</section>` : `
         <section class="mu-wc-sec"><h4>Time</h4>
             <div class="mu-heropick is-start">
@@ -409,6 +410,9 @@ Object.assign(INPUT, {
         await applyGameLore();
         notify();
     },
+    'wc-stay': (el) => { const g = game(); if (!g)
+        return; cfg(g).stayInScene = el.checked || undefined; if (!cfg(g).stayInScene)
+        social(g).talk = null; saveGame(); notify(); },
     'wc-poly': (el) => { const g = game(); if (!g)
         return; cfg(g).poly = el.checked || undefined; saveGame(); notify(); },
     'wc-cfg': (el) => { const g = game(); if (!g)

@@ -32,7 +32,7 @@ import { icon } from './icons.js';
 import { featureOn } from '../sim/creator.js';
 import { ACT } from './reg.js';
 import { houseBar } from './house.js';
-import { eventPanelHtml, stayOf } from './events.js';
+import { eventPanelHtml, talkPanelHtml, stayOf } from './events.js';
 const stayHere = (g: Save) => { const s = stayOf(g); return !!s && s.where === g.player.loc && s.where !== 'home:player'; };
 import { customActionRow, customModalHtml } from './custom.js';
 import { doingHtml } from './doing.js';
@@ -52,6 +52,7 @@ import { factionActs } from './factionsui.js';
 import { holdingsActs } from './holdingsui.js';
 import { adventureActs } from './adventureui.js';
 import { rpgOf } from '../core/rpgdef.js';
+import { leaveBlock } from '../sim/leave.js';
 
 /* ---------- you ---------- */
 
@@ -225,7 +226,7 @@ export function hudHtml() {
     const g = game(); const w = g && getWorld(g.world);
     if (!g || !w) return '';
     // Home: no card of your own (no money, no needs); your persona is in the menu, as in a chat
-    return `${isScenario(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
+    return `${isScenario(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
 }
 
 Object.assign(ACT, {
@@ -241,7 +242,7 @@ Object.assign(ACT, {
     'dock-toggle': () => { if (onPhone()) { actsPhone = !actsPhone; notify(); return; } (UI() as any).actsOpen = (UI() as any).actsOpen === false; saveSettings(); notify(); },
     'hud-menu': () => { menuOpen = !menuOpen; lookOpen = false; notify(); },   // the menu replaces Chat look
     'hud-look': () => { lookOpen = !lookOpen; notify(); },
-    'skip-ask': () => { if (state.generating) { toast('Wait until they finish speaking.', 'info'); return; } SKIP.ask = true; notify(); },
+    'skip-ask': () => { if (state.generating) { toast('Wait until they finish speaking.', 'info'); return; } { const g = game(); const w = g && getWorld(g.world); const why = g && w ? leaveBlock(g, w) : ''; if (why) { toast(why, 'info'); return; } } SKIP.ask = true; notify(); },
     'skip-no': () => { SKIP.ask = false; notify(); },
     'skip-yes': async () => { SKIP.ask = false; notify(); await ACT.skip?.(document.body, undefined as any); },
 });

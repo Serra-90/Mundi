@@ -31,7 +31,7 @@ import { icon } from './icons.js';
 import { featureOn } from '../sim/creator.js';
 import { ACT } from './reg.js';
 import { houseBar } from './house.js';
-import { eventPanelHtml, stayOf } from './events.js';
+import { eventPanelHtml, talkPanelHtml, stayOf } from './events.js';
 const stayHere = (g) => { const s = stayOf(g); return !!s && s.where === g.player.loc && s.where !== 'home:player'; };
 import { customActionRow, customModalHtml } from './custom.js';
 import { doingHtml } from './doing.js';
@@ -51,6 +51,7 @@ import { factionActs } from './factionsui.js';
 import { holdingsActs } from './holdingsui.js';
 import { adventureActs } from './adventureui.js';
 import { rpgOf } from '../core/rpgdef.js';
+import { leaveBlock } from '../sim/leave.js';
 /* ---------- you ---------- */
 // Health and energy are bars; the other needs are round badges. A world can choose with `hudKind`.
 const isBar = (s) => (s.hudKind ? s.hudKind === 'bar' : ['life', 'health', 'energy'].includes(s.id));
@@ -223,7 +224,7 @@ export function hudHtml() {
     if (!g || !w)
         return '';
     // Home: no card of your own (no money, no needs); your persona is in the menu, as in a chat
-    return `${isScenario(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
+    return `${isScenario(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
 }
 Object.assign(ACT, {
     'quest-step': (el) => {
@@ -253,6 +254,14 @@ Object.assign(ACT, {
     'skip-ask': () => { if (state.generating) {
         toast('Wait until they finish speaking.', 'info');
         return;
+    } {
+        const g = game();
+        const w = g && getWorld(g.world);
+        const why = g && w ? leaveBlock(g, w) : '';
+        if (why) {
+            toast(why, 'info');
+            return;
+        }
     } SKIP.ask = true; notify(); },
     'skip-no': () => { SKIP.ask = false; notify(); },
     'skip-yes': async () => { SKIP.ask = false; notify(); await ACT.skip?.(document.body, undefined); },
