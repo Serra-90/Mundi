@@ -90,8 +90,8 @@
 #mundi-root .mu-pin, #mundi-root .mu-pin * { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 #mundi-root .mu-mapimg { user-select: none; -webkit-user-select: none; }
 /* a scenario's map: the rooms as pictures */
-#mundi-root .mu-map.is-rooms { overflow: auto; background: var(--bg); }
-#mundi-root .mu-rooms { max-width: 1240px; margin: 0 auto; padding: 150px 18px 120px; display: grid; gap: 12px; }
+#mundi-root .mu-map.is-rooms { overflow: auto; background: var(--bg); top: 104px; }   /* below the HUD: the rooms scroll under nothing */
+#mundi-root .mu-rooms { max-width: 1240px; margin: 0 auto; padding: 46px 18px 120px; display: grid; gap: 12px; }
 #mundi-root .mu-rooms h3, #mundi-root .mu-rooms h4 { margin: 0; }
 #mundi-root .mu-rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
 #mundi-root .mu-room { position: relative; display: grid; gap: 6px; padding: 8px; text-align: left; border-radius: 14px; }

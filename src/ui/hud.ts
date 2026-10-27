@@ -61,6 +61,8 @@ const isBar = (s: StatusDef) => ((s as any).hudKind ? (s as any).hudKind === 'ba
 const NEED_ICON: Record<string, string> = { life: 'pulse', health: 'pulse', energy: 'bolt', hunger: 'utensils', thirst: 'drop', mood: 'happy', hygiene: 'sparkles' };
 const needIcon = (s: StatusDef) => (NEED_ICON[s.id] ? icon(NEED_ICON[s.id]) : `<i>${esc(s.icon)}</i>`);
 
+// A Home has no card of yours (no money, no needs)… unless its needs are on: then the card shows them.
+const noCard = (w: WorldDef) => isScenario(w) && !activeStatuses(w).some(s => s.hud);
 function personaCard(g: Save, w: WorldDef) {
     const img = personaThumb();
     const shown = activeStatuses(w).filter(s => s.hud);
@@ -105,12 +107,12 @@ function clockCard(g: Save, w: WorldDef) {
         <div class="mh-time"><b data-clock>${clock12(g.minutes)}</b><small data-ampm>${ampm(g.minutes)}</small></div>
         <span class="mh-bar-day"><b data-weekday>${esc(weekday(g.day))}</b><small><span data-period>${esc(period(w, g.minutes).name)}</span> · Day ${g.day}</small></span>
         <span class="mh-bar-place">${icon('pin')}<span class="mh-bar-where"><b>${where}</b>${crowd}${festivalChip(g, w)}</span></span>
-        <span class="mh-bar-sky"><span class="mh-weather" title="${esc(wx.name)}">${wx.icon}</span><small class="mh-season" title="Season">${se.name} ${se.icon}</small></span>
+        <span class="mh-bar-sky"><span class="mh-weather" title="${esc(wx.name)}">${wx.icon}</span><small class="mh-season" title="Season"><span>${se.name}</span> ${se.icon}</small></span>
     </div>`;
-    const home = isScenario(w) ? 'is-home' : '';   // Home: the clock sits at the top left (no card of yours there)
+    const home = noCard(w) ? 'is-home' : '';   // Home: the clock sits at the top left (no card of yours there)
     return `<div class="mh-clock mh-glass ${home}" data-act="skip-ask" title="Let time pass" role="button">
         <div class="mh-clock-top"><div class="mh-time"><b data-clock>${clock12(g.minutes)}</b><small data-ampm>${ampm(g.minutes)}</small></div><span class="mh-sky"><span class="mh-weather" title="${esc(wx.name)}">${wx.icon}</span></span></div>
-        <div class="mh-clock-row"><span class="mh-weekday" data-weekday>${esc(weekday(g.day))}</span><small class="mh-season" title="Season">${se.name} ${se.icon}</small></div>
+        <div class="mh-clock-row"><span class="mh-weekday" data-weekday>${esc(weekday(g.day))}</span><small class="mh-season" title="Season"><span>${se.name}</span> ${se.icon}</small></div>
         <div class="mh-clock-strip"><span data-period>${esc(period(w, g.minutes).name)}</span><span>Day ${g.day}</span></div>
     </div>
     <div class="mh-where ${home}">${icon('pin')}<span>${where}</span>${crowd}${festivalChip(g, w)}</div>`;
@@ -226,7 +228,7 @@ export function hudHtml() {
     const g = game(); const w = g && getWorld(g.world);
     if (!g || !w) return '';
     // Home: no card of your own (no money, no needs); your persona is in the menu, as in a chat
-    return `${isScenario(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
+    return `${noCard(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
 }
 
 Object.assign(ACT, {

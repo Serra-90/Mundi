@@ -39,6 +39,8 @@ import { ACT } from './reg.js';
 import { featureOn } from '../sim/creator.js';
 import { icon } from './icons.js';
 import { leaveBlock } from '../sim/leave.js';
+import { tr } from '../core/tr.js';
+const fmt = (t: string, ...a: string[]) => tr(t).replace(/\{(\d)\}/g, (_, n) => a[Number(n)] ?? '');
 
 const KMAX = 5;
 const ctxW = () => { const g = game()!; return { g, w: getWorld(g.world)! }; };
@@ -171,7 +173,7 @@ function roomsHtml(g: Save, w: WorldDef) {
     const yours = list.filter(p => p.id === playerHomeId), rooms = list.filter(p => !p.home), beds = list.filter(p => p.home && p.id !== playerHomeId);
     const card = (p: any) => { const pic = p.home ? kindPic(p) : pictureAt(w, g.minutes, p.bg, p.bgs); const here = presentAt(g, w, p.id); const you = p.id === g.player.loc;
         return `<button class="mu-room ${you ? 'is-you' : ''}" data-act="go" data-loc="${esc(p.id)}" title="${you ? 'Back to this room' : 'Go here'}"><i style="${pic ? `background-image:url('${esc(worldFile(w, pic))}')` : ''}">${you ? `<em>${icon('pin')} You</em>` : ''}</i>
-            <b data-notr>${esc(p.id === playerHomeId ? 'Your room' : String(p.name).replace(/'s home$/, "'s room"))}</b>${here.length ? `<span class="faces">${here.slice(0, 5).map(r => `<img src="${esc(thumb(r.avatar))}" alt="" title="${esc(r.met ? r.name : 'Someone')}">`).join('')}${here.length > 5 ? `<i>+${here.length - 5}</i>` : ''}</span>` : ''}</button>`; };
+            <b data-notr>${esc(p.id === playerHomeId ? tr('Your room') : /'s home$/.test(String(p.name)) ? fmt("{0}'s room", String(p.name).replace(/'s home$/, '')) : String(p.name))}</b>${here.length ? `<span class="faces">${here.slice(0, 5).map(r => `<img src="${esc(thumb(r.avatar))}" alt="" title="${esc(r.met ? r.name : 'Someone')}">`).join('')}${here.length > 5 ? `<i>+${here.length - 5}</i>` : ''}</span>` : ''}</button>`; };
     const head = `<div class="mu-rooms-head"><h3 data-notr>${esc(w.name)}</h3></div>`;
     // floors set in the creator (no picture of the plan): the rooms floor by floor, one block above the other
     if (floorsOn(w)) {
