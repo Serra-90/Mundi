@@ -1,10 +1,11 @@
 // Home: going out. The house is the stage, but you can step out: you say where (in your words), who comes with you,
 // and pick a background; the scene is then a free one, like a chat. "Back home" brings you back where you were.
 import { nowAbs, type Save } from '../core/store.js';
-import type { WorldDef } from '../core/world.js';
+import { fixedAt, type WorldDef } from '../core/world.js';
 import { social } from './social.js';
 import { note as remember } from './facts.js';
 import { isOuting, outingId, outingName, playerHomeId } from './places.js';
+
 
 export interface Outing { place: string; bg?: string; from: string; with: string[]; at: number }
 export const outingOf = (g: Save | null | undefined): Outing | null => ((g as any)?.outing ?? null) as Outing | null;
@@ -12,7 +13,7 @@ export const isOut = (g: Save) => isOuting(g.player.loc);
 const LONG = 24 * 60;   // the people with you stay with you until you come back
 
 export function startOuting(g: Save, w: WorldDef, place: string, people: string[], bg = ''): string {
-    void w;
+    people = people.filter(a => !fixedAt(w, g.cast[a]));   // someone kept in one place stays behind
     const id = outingId(place); if (!place.trim()) return '';
     const now = nowAbs(g); const s = social(g);
     const prev = outingOf(g);

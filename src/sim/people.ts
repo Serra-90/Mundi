@@ -5,7 +5,7 @@ import { festivalSpot } from './festivals.js';
 import { eventSpot } from './cityevents.js';
 import { lockedHere } from './life.js';
 import { nowAbs, type Save, type Resident } from '../core/store.js';
-import { systemOn, isScenario, type WorldDef } from '../core/world.js';
+import { systemOn, isScenario, fixedAt, type WorldDef } from '../core/world.js';
 import { isWeekend } from './time.js';
 import { appointmentNow, isWith } from './social.js';
 import { weatherOn } from './weather.js';
@@ -94,6 +94,8 @@ export function routineAt(g: Save, w: WorldDef, r: Resident, at: number): string
 }
 
 export function whereNow(g: Save, w: WorldDef, r: Resident): string {
+    const fixed = fixedAt(w, r);                       // kept in one place for good: nothing moves them
+    if (fixed) return fixed;
     if (isWith(g, r.avatar)) return g.player.loc;      // she came along with you
     const locked = lockedHere(g, r.avatar);            // in the middle of a conversation with you
     if (locked) return locked;

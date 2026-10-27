@@ -43,6 +43,15 @@ export function career(o, path = []) {
     }
     return { ranks, promote, likes: likesOf, open: null, options: [] };
 }
+// Someone the world keeps in one place for good (an example character with `fixed`): that place, or ''.
+// (Saves made before the field existed find it on the world's example of the same name.)
+export function fixedAt(w, r) {
+    if (!r)
+        return '';
+    const at = r.fixed ?? w.cast.examples.find(e => e.fixed && e.name === r.name)?.fixed ?? '';
+    return at && w.places.some(p => p.id === at) ? at : '';
+}
+export const FIXED_WHY = 'They cannot leave the place where they are.';
 export const exampleTag = (w, ex) => `${ex.from ?? w.id}:${ex.name}`;
 // The phone's apps, as the Modern style has them (a world can rename them, change icons or turn them off).
 export const DEFAULT_APPS = [

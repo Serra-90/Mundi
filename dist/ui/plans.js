@@ -8,7 +8,7 @@ import { friendTier, romanceTier } from '../sim/romance.js';
 // Calendar app on the phone, and the toasts the clock produces (reminders, arrivals, missed plans).
 import { housePartyHtml, partyForm } from './lifeui.js';
 import { notify, esc, game, toast, saveGame, nowAbs, state } from '../core/store.js';
-import { getWorld, isScenario, styleOf } from '../core/world.js';
+import { getWorld, fixedAt, isScenario, styleOf } from '../core/world.js';
 import { outingId } from '../sim/places.js';
 import { tr } from '../core/tr.js';
 import { thumb, sendCanned, addUserLine, replyAs, personaName, setAsk } from '../st/bridge.js';
@@ -59,7 +59,7 @@ export function sceneCard(g, w) {
         <header><img src="${esc(thumb(r.avatar))}" alt=""><span><b data-notr>${esc(r.met ? r.name : 'Someone')}</b><small>${friendTier(b).name}${romanceTier(g, r.avatar).id !== 'none' ? ` · <span class="mu-love-tag">${romanceTier(g, r.avatar).name}</span>` : ''}</small>${relBar(r.avatar)}</span>
             <button class="mu-ibtn mu-ghost" data-act="pc-close" aria-label="Close">${icon('x')}</button></header>
         ${r.met ? '' : `<p class="mu-muted">You don't know them yet. Talk to them, or:</p><button class="mu-primary" data-act="pc-intro" data-who="${esc(r.avatar)}">${icon('chat')}<span>Introduce yourself</span></button>`}
-        ${along ? `<p class="mu-muted">${esc(fmt('{0} is with you.', r.name))}</p>
+        ${fixedAt(w, r) ? `<p class="mu-muted">${esc(fmt('{0} never leaves this place.', r.name))}</p>` : along ? `<p class="mu-muted">${esc(fmt('{0} is with you.', r.name))}</p>
             <button data-act="pc-bye" data-who="${esc(r.avatar)}">${icon('back')}<span>Say goodbye</span></button>`
         : `<button class="mu-primary" data-act="pc-along" data-who="${esc(r.avatar)}" ${b >= ALONG_BOND || isPartner(g, r.avatar) ? '' : 'aria-disabled="true"'}>${icon('users')}<span>Come with me</span></button>
             <small class="mu-muted">${b >= ALONG_BOND || isPartner(g, r.avatar) ? (working ? 'They are working now.' : 'They go with you from place to place for a few hours.') : esc(fmt('Get closer first ({0}/{1}).', String(b), String(ALONG_BOND)))}</small>`}

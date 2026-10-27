@@ -1,6 +1,7 @@
 // Events (a date, a meet-up, a party): when it starts, the people join you; a panel on the HUD shows it, with a
 // way to end it (they say goodbye and tell you what they thought) and, at a home, to spend the night together.
 import { esc, game, notify, saveGame, toast, nowAbs, state } from '../core/store.js';
+import { getWorld, fixedAt, FIXED_WHY } from '../core/world.js';
 import { setPrompt, sendCanned, chat, setAsk } from '../st/bridge.js';
 import { social, bondOf, isPartner, isWith } from '../sim/social.js';
 import { letGo } from '../sim/plans.js';
@@ -20,6 +21,9 @@ const homeOf = (g, avatar) => { const r = g.cast[avatar]; const w = r?.homeWith;
 export function stayAnswer(g, avatar) {
     if (isMinor(g, avatar))
         return { ok: false, why: '' };
+    const w = getWorld(g.world);
+    if (w && fixedAt(w, g.cast[avatar]))
+        return { ok: false, why: FIXED_WHY };
     if (isPartner(g, avatar) || romOf(g, avatar).status !== 'none')
         return { ok: true, why: '' };
     if (!romanceBlocked(g, avatar) && romOf(g, avatar).value >= 40)

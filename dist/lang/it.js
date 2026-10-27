@@ -3811,6 +3811,8 @@ const DICT = {
     "Villa": "Villa",
     "Experimental": "Sperimentale",
     "Unlock the medieval style": "Sblocca lo stile medievale",
-    "Valdoria and The Old Manor, as they are now: still being finished (most places have no picture yet). Only in this browser. The page reloads.": "Valdoria e The Old Manor, così come sono ora: ancora in lavorazione (la maggior parte dei luoghi non ha ancora un'immagine). Solo in questo browser. La pagina si ricarica."
+    "Valdoria and The Old Manor, as they are now: still being finished (most places have no picture yet). Only in this browser. The page reloads.": "Valdoria e The Old Manor, così come sono ora: ancora in lavorazione (la maggior parte dei luoghi non ha ancora un'immagine). Solo in questo browser. La pagina si ricarica.",
+    "They cannot leave the place where they are.": "Non può lasciare il posto in cui si trova.",
+    "{0} never leaves this place.": "{0} non lascia mai questo posto."
 };
 export default DICT;

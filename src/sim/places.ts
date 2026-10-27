@@ -1,7 +1,7 @@
 // Places: the world's public places plus homes (the player's and each resident's). Distances and travel time.
 import { travelFactor } from './life.js';
 import { cfg, type Save } from '../core/store.js';
-import { isScenario, type WorldDef, type Place } from '../core/world.js';
+import { isScenario, fixedAt, type WorldDef, type Place } from '../core/world.js';
 
 export const playerHomeId = 'home:player';
 export const isHome = (id: string) => id.startsWith('home:');
@@ -58,7 +58,7 @@ export function pins(g: Save, w: WorldDef) {
     const out: (Place & { home?: boolean; owner?: string })[] = [...w.places.filter(p => placeOn(g, w, p.id)), ...(isScenario(w) ? extraRooms(g) : [])];
     const mine = placeOf(g, w, playerHomeId);
     if (mine) out.push(mine);
-    for (const r of Object.values(g.cast)) if (r.met) { const p = placeOf(g, w, `home:${r.avatar}`); if (p && !out.some(x => x.id === p.id)) out.push(p); }
+    for (const r of Object.values(g.cast)) if (r.met && !fixedAt(w, r)) { const p = placeOf(g, w, `home:${r.avatar}`); if (p && !out.some(x => x.id === p.id)) out.push(p); }
     return out;
 }
 

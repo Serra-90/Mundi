@@ -4,7 +4,7 @@ import { state, notify, esc, game, saveGame, toast, nowAbs } from '../core/store
 import { advance, hm } from '../sim/time.js';
 import { runPlans } from './plans.js';
 const OUTING_MIN = 240;   // the shortest time out, in game minutes
-import { getWorld, isScenario, styleOf } from '../core/world.js';
+import { getWorld, isScenario, styleOf, fixedAt } from '../core/world.js';
 import { thumb } from '../st/bridge.js';
 import { bgHead, bgGrid, bgHref } from './bgpick.js';
 import { whereNow } from '../sim/people.js';
@@ -23,7 +23,7 @@ export const bgStyle = (file: string) => (file ? `background-image:url('${bgHref
 // Who can come: the people you know who are in the house now.
 function canCome(): { avatar: string; name: string }[] {
     const g = game(); const w = g && getWorld(g.world); if (!g || !w) return [];
-    return Object.values(g.cast).filter(r => r.met).filter(r => { const at = whereNow(g, w, r); return at !== OUT && !isOuting(at); }).map(r => ({ avatar: r.avatar, name: r.name }));
+    return Object.values(g.cast).filter(r => r.met && !fixedAt(w, r)).filter(r => { const at = whereNow(g, w, r); return at !== OUT && !isOuting(at); }).map(r => ({ avatar: r.avatar, name: r.name }));
 }
 
 export function outingHtml(): string {

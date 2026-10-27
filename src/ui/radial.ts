@@ -2,7 +2,7 @@
 // card in "Here", except "Play as them"); on the left, the outfits they have (subfolders of their Expressions folder),
 // shown only when they have any.
 import { esc, game, notify, state, toast, type Save, type Resident } from '../core/store.js';
-import { getWorld, type WorldDef } from '../core/world.js';
+import { getWorld, fixedAt, type WorldDef } from '../core/world.js';
 import { ACT } from './reg.js';
 import { icon } from './icons.js';
 import { isWith, bondOf, isPartner, social } from '../sim/social.js';
@@ -24,7 +24,7 @@ function actions(g: Save, w: WorldDef, r: Resident): string[] {
     const b = bondOf(g, r.avatar), along = isWith(g, r.avatar), solo = String((social(g) as any).solo ?? '') === r.avatar;
     const out: string[] = [];
     if (!r.met) out.push(btn('pc-intro', r.avatar, 'chat', 'Introduce yourself'));
-    out.push(along ? btn('pc-bye', r.avatar, 'back', 'Say goodbye')
+    if (!fixedAt(w, r)) out.push(along ? btn('pc-bye', r.avatar, 'back', 'Say goodbye')
         : btn('pc-along', r.avatar, 'users', 'Come with me', b >= ALONG_BOND || isPartner(g, r.avatar) ? '' : `aria-disabled="true" title="Get closer first (${b}/${ALONG_BOND})"`));
     out.push(btn('pc-plan', r.avatar, 'pin', 'Make plans'));
     out.push(solo ? `<button data-act="solo-off">${icon('users')}<span>Talk with everyone</span></button>` : btn('solo-on', r.avatar, 'chat', 'Talk only with them'));

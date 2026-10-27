@@ -10,7 +10,7 @@ import { placeOf as placeOf2 } from './places.js';
 import { TUT, settings as settings2 } from '../core/store.js';
 import { note, placeName } from './facts.js';
 import { settings, saveSettings, state, game, setGame, saveGame, notify, toast, } from '../core/store.js';
-import { loadWorld, getWorld, exampleTag } from '../core/world.js';
+import { loadWorld, getWorld, exampleTag, fixedAt } from '../core/world.js';
 import { setWorldDicts } from '../core/tr.js';
 import { lang } from '../core/i18n.js';
 import { characters, charOf, createCharacter, createPersona, usePersona, createGroup, openGame, groupOf, clearGreetings, writeLorebook, bindChatLore, setPresent, saveMeta, chat, currentChatId, selectedGroup, pastChats, deleteChat, deleteGroup, setPersonaSheet, personaSheet, personaName, recentChats, ctx, deleteScenarioChat, saveName, copyGroupChat, groupChatId, readChatMeta, } from '../st/bridge.js';
@@ -125,6 +125,9 @@ export function moveToRoom(g, avatar, h) {
     const r = g.cast[avatar];
     if (!r)
         return;
+    const w = getWorld(g.world);
+    if (w && fixedAt(w, r))
+        return; // kept in one place: they do not move
     r.home = { zone: h.zone, x: h.x, y: h.y };
     delete r.homeWith;
     normalizeHomes(g);
@@ -139,7 +142,10 @@ export function resident(w, avatar, taken, avoid) {
     const templateId = meta.world === w.id && meta.routine ? meta.routine : (occupation ? pick(['office', 'early']) : pick(Object.keys(w.cast.routineTemplates)));
     const routine = structuredClone(w.cast.routineTemplates[templateId] ?? Object.values(w.cast.routineTemplates)[0]);
     const zone = meta.world === w.id && meta.home ? meta.home : pick(w.homes.zones).id;
-    return { avatar, name: ch?.name ?? avatar, occupation, home: homeSpot(w, zone, taken, avoid), routine, leisure: meta.world === w.id ? meta.leisure ?? [] : [], met: false };
+    const r = { avatar, name: ch?.name ?? avatar, occupation, home: homeSpot(w, zone, taken, avoid), routine, leisure: meta.world === w.id ? meta.leisure ?? [] : [], met: false };
+    if (ex?.fixed)
+        r.fixed = ex.fixed;
+    return r;
 }
 export async function startNewGame(o) {
     const w = o.world;

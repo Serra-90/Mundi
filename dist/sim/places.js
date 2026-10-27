@@ -1,7 +1,7 @@
 // Places: the world's public places plus homes (the player's and each resident's). Distances and travel time.
 import { travelFactor } from './life.js';
 import { cfg } from '../core/store.js';
-import { isScenario } from '../core/world.js';
+import { isScenario, fixedAt } from '../core/world.js';
 export const playerHomeId = 'home:player';
 export const isHome = (id) => id.startsWith('home:');
 // "North Suburbs, House 4": every home spot of the map has a fixed number.
@@ -62,7 +62,7 @@ export function pins(g, w) {
     if (mine)
         out.push(mine);
     for (const r of Object.values(g.cast))
-        if (r.met) {
+        if (r.met && !fixedAt(w, r)) {
             const p = placeOf(g, w, `home:${r.avatar}`);
             if (p && !out.some(x => x.id === p.id))
                 out.push(p);

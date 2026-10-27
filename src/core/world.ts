@@ -148,7 +148,19 @@ export interface ExampleCharacter {
     from?: string;
     /** How they relate to the world's other people (`to`: the other person's name), from the start of every game. */
     ties?: { to: string; type: string; tone: string }[];
+    /** Always in this place (a place id): they never leave it, cannot come along, be called over, invited out or moved
+     *  to another bedroom (someone kept in one room, a statue, a guard at a post). */
+    fixed?: string;
 }
+// Someone the world keeps in one place for good (an example character with `fixed`): that place, or ''.
+// (Saves made before the field existed find it on the world's example of the same name.)
+export function fixedAt(w: WorldDef, r: { name: string; fixed?: string } | undefined | null): string {
+    if (!r) return '';
+    const at = r.fixed ?? w.cast.examples.find(e => e.fixed && e.name === r.name)?.fixed ?? '';
+    return at && w.places.some(p => p.id === at) ? at : '';
+}
+export const FIXED_WHY = 'They cannot leave the place where they are.';
+
 export const exampleTag = (w: WorldDef, ex: ExampleCharacter) => `${ex.from ?? w.id}:${ex.name}`;
 /** A phone app: which one (`id`), and how it is called and looks in this world. */
 export interface AppDef { id: string; name: string; icon: string; color: string; on: boolean; rpg?: boolean }

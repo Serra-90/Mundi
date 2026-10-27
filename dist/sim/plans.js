@@ -11,6 +11,7 @@ import { nowAbs } from '../core/store.js';
 import { hm, weekday } from './time.js';
 import { placeOf, playerHomeId, travelMinutes } from './places.js';
 import { routineStep, routineAt, whereNow } from './people.js';
+import { fixedAt, FIXED_WHY } from '../core/world.js';
 import { social, bondOf, isPartner, bump, livePlan, textFrom } from './social.js';
 import { dating } from './feed.js';
 import { personaName } from '../st/bridge.js';
@@ -40,6 +41,9 @@ export function check(g, w, avatar, place, from, to, kind, need) {
     const r = g.cast[avatar];
     if (!r)
         return { ok: false, why: 'They are not in this world.' };
+    const fixed = fixedAt(w, r);
+    if (fixed && place !== fixed)
+        return { ok: false, why: FIXED_WHY };
     if (kind === 'date' && !(close(g, avatar, DATE_BOND) || (matched(g, avatar) && bondOf(g, avatar) >= 10)))
         return { ok: false, why: 'They are not ready for a date with you yet.' };
     if (!close(g, avatar, need) && !matched(g, avatar))
@@ -131,6 +135,8 @@ export function askAlong(g, w, avatar) {
     const now = nowAbs(g);
     if (!r)
         return { ok: false, why: '' };
+    if (fixedAt(w, r))
+        return { ok: false, why: FIXED_WHY };
     if (!close(g, avatar, ALONG_BOND) && !matched(g, avatar) && !housemate(g, avatar))
         return { ok: false, why: 'They do not know you well enough yet.' };
     if (isWorking(w, r, now) && routineAt(g, w, r, now) === g.player.loc)
