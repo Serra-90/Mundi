@@ -305,7 +305,10 @@ export type GameMode = 'lifesim' | 'rpg' | 'custom';
 export const RPG_LOCKED: boolean = !(globalThis as any).__MUNDI_RPG;   // the tests turn it on (tests/env.mjs)
 export const RPG_NOTE = 'The RPG mode comes in a later update.';
 // The medieval style is locked for this release too: its worlds show "Soon" and it cannot be picked in the creator.
-export const MEDIEVAL_LOCKED: boolean = !(globalThis as any).__MUNDI_MEDIEVAL;   // the tests turn it on (tests/env.mjs)
+// Settings › Game › Experimental can unlock it in this browser to try it as it is (read once, when Mundi loads).
+export const MEDIEVAL_UNLOCK_KEY = 'mundi-unlock-medieval';
+const medievalUnlocked = (): boolean => { try { return globalThis.localStorage?.getItem(MEDIEVAL_UNLOCK_KEY) === '1'; } catch { return false; } };
+export const MEDIEVAL_LOCKED: boolean = !((globalThis as any).__MUNDI_MEDIEVAL || medievalUnlocked());   // the tests turn it on (tests/env.mjs)
 export const GAME_MODES: { id: GameMode; name: string; desc: string; soon?: boolean }[] = [
     { id: 'lifesim', name: 'Life-Sim', desc: 'Daily life: work, home and bills, friends and love. Needs: energy, hunger, thirst, mood and hygiene.' },
     { id: 'rpg', soon: RPG_LOCKED, name: 'RPG', desc: 'Life-Sim plus a character sheet: level, hit points, focus, attributes, a class and subclass, d20 checks, quests, titles, magic and long journeys. Needs the world\'s RPG (RPG tab).' },

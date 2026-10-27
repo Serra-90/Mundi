@@ -2,7 +2,7 @@
 import { UI_LANGS } from '../core/i18n.js';
 import { setLang } from '../core/tr.js';
 import { homeSettingsHtml } from './homeui.js';
-import { getWorld, isScenario } from '../core/world.js';
+import { getWorld, isScenario, MEDIEVAL_LOCKED, MEDIEVAL_UNLOCK_KEY } from '../core/world.js';
 import { state, notify, settings, saveSettings, UI, esc, game, saveGame, clockMode, deviceMode, SAVE, toast } from '../core/store.js';
 import { backups, restoreBackup } from '../core/saves.js';
 import { tutorialSettingsHtml } from './tutorial.js';
@@ -67,6 +67,8 @@ function tabGame() {
     const g = game();
     return `<section><h3>General</h3>
             <label class="mu-check"><input type="checkbox" data-input="set-openstart" ${settings().openOnStart ? 'checked' : ''}><span>Open Mundi when SillyTavern starts</span></label></section>
+        <section><h3>Experimental</h3>
+            <label class="mu-check"><input type="checkbox" data-input="set-medieval" ${MEDIEVAL_LOCKED ? '' : 'checked'}><span>Unlock the medieval style<small>Valdoria and The Old Manor, as they are now: still being finished (most places have no picture yet). Only in this browser. The page reloads.</small></span></label></section>
         <section><h3>Diary</h3>
             <label class="mu-check"><input type="checkbox" data-input="set-diary" ${(settings() as any).diaryOnSleep !== false ? 'checked' : ''}><span>Write the day in the diary when you sleep<small>One AI call per night: the day's facts and conversations become a short first-person entry in the Journal, and the story remembers the past days through it.</small></span></label></section>
         <section><h3>Background</h3>
@@ -140,6 +142,7 @@ Object.assign(INPUT, {
     'ui-str': (el) => { (UI() as any)[el.dataset.key!] = el.value; saveSettings(); notify(); },
     'ui-font': (el) => { UI().font = el.value; saveSettings(); applyLook(); },
     'ui-bool': (el) => { (UI() as any)[el.dataset.key!] = el.checked; saveSettings(); applyLook(); },
+    'set-medieval': (el) => { try { if (el.checked) localStorage.setItem(MEDIEVAL_UNLOCK_KEY, '1'); else localStorage.removeItem(MEDIEVAL_UNLOCK_KEY); } catch { /* storage blocked */ } location.reload(); },
     'set-bgfollow': (el) => { (settings() as any).bgFollow = el.value; saveSettings(); },
     'set-feed': (el) => { feedPrefs().mode = el.value as any; saveSettings(); },
     'set-feedimg': (el) => { feedPrefs().images = el.checked; saveSettings(); },

@@ -3808,6 +3808,9 @@ const DICT: Record<string, string> = {
  "Character Management": "Gestione personaggi",
  "Western": "Western",
  "Freelance": "Freelance",
- "Villa": "Villa"
+ "Villa": "Villa",
+ "Experimental": "Sperimentale",
+ "Unlock the medieval style": "Sblocca lo stile medievale",
+ "Valdoria and The Old Manor, as they are now: still being finished (most places have no picture yet). Only in this browser. The page reloads.": "Valdoria e The Old Manor, così come sono ora: ancora in lavorazione (la maggior parte dei luoghi non ha ancora un'immagine). Solo in questo browser. La pagina si ricarica."
 };
 export default DICT;
