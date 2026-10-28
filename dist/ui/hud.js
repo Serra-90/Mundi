@@ -1,3 +1,4 @@
+import { actDlgHtml } from './map.js';
 import { lookPanelHtml } from './chatlook.js';
 import { lex, appRef } from '../core/lexicon.js';
 import { fmtClock, is12h } from '../core/fmt.js';
@@ -226,7 +227,7 @@ export function hudHtml() {
     if (!g || !w)
         return '';
     // Home: no card of your own (no money, no needs); your persona is in the menu, as in a chat
-    return `${noCard(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
+    return `${noCard(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${actDlgHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${isScenario(w) ? `${outingHtml()}${residentsHtml()}` : ''}${doingHtml()}${lifeOverlays()}`;
 }
 Object.assign(ACT, {
     'quest-step': (el) => {

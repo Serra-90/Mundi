@@ -3821,6 +3821,12 @@ const DICT = {
     "Wait for them to say goodbye.": "Aspetta che ricambino il saluto.",
     "In conversation with": "In conversazione con",
     "Take your leave": "Congedati",
-    "*takes their leave*": "*si congeda*"
+    "*takes their leave*": "*si congeda*",
+    "*{0} goes from {1} to {2}.*": "*{0} si sposta da {1} a {2}.*",
+    "with {0}": "con {0}",
+    "With whom? (optional)": "Con chi? (facoltativo)",
+    "How? (optional)": "Come? (facoltativo)",
+    "Slowly, in silence, singing…": "Con calma, in silenzio, cantando…",
+    "The narrator tells it in the chat.": "Il narratore lo racconterà in chat."
 };
 export default DICT;

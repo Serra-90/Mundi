@@ -13,12 +13,12 @@ import { maybeBump } from './bump.js';
 import { rollAction, gradeName } from '../sim/dice.js';
 import { setPrompt } from '../st/bridge.js';
 import { beforeTravel, beforeSleep } from '../sim/plans.js';
-import { getWorld, worldFile, systemOn, type WorldDef, isScenario } from '../core/world.js';
+import { getWorld, worldFile, systemOn, type WorldDef, type ActionDef, isScenario } from '../core/world.js';
 import { openNow, pictureAt } from '../sim/daynight.js';
 import { isRpg, longRest } from '../sim/rpg.js';
 import { journeyOf, travelRoad } from '../sim/journey.js';
 import type { Save } from '../core/store.js';
-import { thumb } from '../st/bridge.js';
+import { thumb, personaName } from '../st/bridge.js';
 import { pins, placeOf, travelMinutes, playerHomeId, isOuting, outingName } from '../sim/places.js';
 import { planOn, floorsOn, planTarget, unplaced, floorOf } from '../sim/plan.js';
 import { presentAt, whereNow } from '../sim/people.js';
@@ -35,7 +35,7 @@ import { advance, weekday } from '../sim/time.js';
 import { syncScene } from '../sim/game.js';
 import { endVisit } from '../sim/visits.js';
 import { toolsHtml } from './tools.js';
-import { ACT } from './reg.js';
+import { ACT, INPUT } from './reg.js';
 import { featureOn } from '../sim/creator.js';
 import { icon } from './icons.js';
 import { leaveBlock } from '../sim/leave.js';
@@ -366,7 +366,7 @@ export const mapInput = {
 // Moves the player: time passes, the scene follows (who is there now), and the screen goes to the scene.
 // A long journey (RPG, between regions): first, how you go (making camp, or pushing on).
 export const JOURNEY = { to: '', minutes: 0, camps: 0 };
-export async function travelTo(loc: string, road?: 'camp' | 'push') {
+export async function travelTo(loc: string, road?: 'camp' | 'push', narrate = true) {
     const { g, w } = ctxW();
     if (loc === g.player.loc) return;
     if (state.generating) { toast('Wait until they finish speaking.', 'info'); return; }   // nobody walks out mid-sentence
@@ -393,6 +393,76 @@ export async function travelTo(loc: string, road?: 'camp' | 'push') {
     state.view = 'scene';   // arriving somewhere opens its scene (with its things to do), even when nobody is there
     // (the elevator ride on arriving at an apartment is gone: it only got in the way)
     notify();
+    // the move goes into the chat as your action, and the AI narrates it (the people there notice you)
+    if (narrate && g.player.loc !== from) await narrateMove(g, w, from, g.player.loc);
+}
+
+// The name of a place in a line of the story (a bedroom is "X's room").
+const storyName = (g: Save, w: WorldDef, loc: string) => {
+    if (loc === playerHomeId) return fmt("{0}'s room", personaName());
+    const n = String(placeOf(g, w, loc)?.name ?? loc);
+    return /'s home$/.test(n) ? fmt("{0}'s room", n.replace(/'s home$/, '')) : n;
+};
+const durText = (m: number) => m < 60 ? `${m} min` : `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60} min` : ''}`;
+async function narrateMove(g: Save, w: WorldDef, from: string, to: string) {
+    const here = presentAt(g, w, to);
+    const names = here.map(r => r.met ? r.name : 'someone the user has not met yet').join(', ');
+    const a = storyName(g, w, from), b = storyName(g, w, to);
+    const hint = `[{{user}} has just moved from ${a} to ${b}. Narrate the short way there and the arrival, describing ${b} as it is now${here.length ? `. The people here (${names}) notice {{user}} coming in and react in character: they greet, look up, speak to {{user}} or carry on with what they were doing` : ''}. Do not write {{user}}'s words or decisions.]`;
+    const { autoLine } = await import('./scene.js');
+    await autoLine(fmt('*{0} goes from {1} to {2}.*', personaName(), a, b), hint);
+}
+
+/* ---------- doing something: with whom, how, for how long ---------- */
+const AD = { id: '', who: [] as string[], how: '', mins: 0 };
+export function actDlgHtml(): string {
+    const g = game(); const w = g && getWorld(g.world);
+    if (!g || !w || !AD.id) return '';
+    const a = actionsHere(g, w).find(x => x.id === AD.id);
+    if (!a) { AD.id = ''; return ''; }
+    const here = presentAt(g, w, g.player.loc).filter(r => r.met);
+    const presets = [...new Set([a.minutes, 15, 30, 60, 120].filter(m => m > 0))].sort((x, y) => x - y);
+    return `<div class="mu-recap-veil" data-act="ad-bg"><section class="mu-recap mh-glass mu-ca-modal mu-ad-modal" role="dialog" aria-label="${esc(a.name)}">
+        <header><small>${esc(a.icon ?? '')} <span data-notr>${esc(a.name)}</span></small><h3 data-notr>${esc(a.label)}</h3></header>
+        <div class="mu-ca-body">
+            ${here.length ? `<small class="mu-muted">With whom? (optional)</small>
+            <div class="mu-ad-who">${here.map(r => `<button class="mu-chip ${AD.who.includes(r.avatar) ? 'is-on' : ''}" data-act="ad-who" data-who="${esc(r.avatar)}"><img src="${esc(thumb(r.avatar))}" alt=""><span data-notr>${esc(r.name)}</span></button>`).join('')}</div>` : ''}
+            <small class="mu-muted">How? (optional)</small>
+            <input type="text" placeholder="${esc(tr('Slowly, in silence, singing…'))}" maxlength="160" value="${esc(AD.how)}" data-input="ad-how" data-focus="ad-how">
+            <small class="mu-muted">For how long?</small>
+            <div class="mh-ca-lens">${presets.map(m => `<button class="${AD.mins === m ? 'is-on' : ''}" data-act="ad-mins" data-v="${m}"><b>${durText(m)}</b></button>`).join('')}
+                <label class="mu-ad-mins"><input type="number" min="1" max="720" step="5" value="${AD.mins}" data-input="ad-mins"> <span>min</span></label></div>
+            <small class="mu-muted">The narrator tells it in the chat.</small>
+        </div>
+        <footer class="mh-ca-row"><button class="mu-ghost" data-act="ad-close">Cancel</button><button class="mu-primary" data-act="ad-go">${icon('check')}<span>Do it</span></button></footer>
+    </section></div>`;
+}
+async function runAction(g: Save, w: WorldDef, a: ActionDef, mins: number, who: string[], how: string) {
+    actionSound(a.effects, a.id);
+    await doing(a.label, a.icon ?? '⏳', mins);   // a moment on screen while the time passes
+    applyAction(g, w, a);
+    advance(g, w, mins).forEach(m => toast(m, 'warn'));
+    const roll = rollAction(g, w, a);
+    afterAction(g, w, a, roll ? roll.grade.includes('success') : null).forEach(m => toast(m, 'success'));
+    afterEvent(g, w, a);
+    practice(g, w, a, roll ? roll.grade.includes('success') : null, roll?.grade === 'critical-success').forEach(m => toast(m, 'success'));
+    runPlans();
+    saveGame();
+    await syncScene();
+    if (roll) {
+        toast(`${gradeName(roll.grade)} — ${roll.text}`, roll.grade.includes('success') ? 'success' : 'warn');
+        // the AI only tells the story of the result the engine decided
+        setPrompt('mundi_roll', `[Just now {{user}} tried to ${a.label.toLowerCase()}: ${gradeName(roll.grade).toLowerCase()}. ${roll.text} Narrate it in that light.]`);
+    } else toast(`${a.name}: done.`, 'success');
+    maybeBump(g, w);
+    if (isScenario(w)) state.view = 'scene';
+    notify();
+    // the action goes into the chat as yours, and the narrator tells it (with the people taking part)
+    const names = who.map(x => g.cast[x]?.name).filter(Boolean) as string[];
+    const line = `*${personaName()} — ${a.name}${names.length ? ` ${fmt('with {0}', names.join(', '))}` : ''}${how ? `: ${how}` : ''} (${durText(mins)})*`;
+    const hint = `[{{user}} is doing this now: ${a.name} (${a.label})${names.length ? `, together with ${names.join(', ')}` : ''}${how ? `, like this: ${how}` : ''}. It takes about ${durText(mins)}. Narrate the action as it happens in the scene${names.length ? `, with ${names.join(', ')} taking part in character` : ''}${roll ? `; it went this way: ${gradeName(roll.grade).toLowerCase()}, ${roll.text}` : ''}. Do not write {{user}}'s words or decisions beyond what is stated.]`;
+    const { autoLine } = await import('./scene.js');
+    await autoLine(line, hint);
 }
 
 // The journey dialog: the road takes hours; make camp at night, or push on without rest.
@@ -523,28 +593,29 @@ Object.assign(ACT, {
         if (!canAfford(g, a)) { toast('Not enough money.', 'info'); return; }
         const tired = tooTired(g, w, Object.fromEntries(Object.entries(a.effects ?? {}).map(([k, v]) => [k, -v])), a.label.toLowerCase()); if (tired) { toast(tired, 'warn'); return; }
         if (isDoing()) return;
-        actionSound(a.effects, a.id);
-        await doing(a.label, a.icon ?? '⏳', a.minutes);   // a moment on screen while the time passes
-        applyAction(g, w, a);
-        advance(g, w, a.minutes).forEach(m => toast(m, 'warn'));
-        const roll = rollAction(g, w, a);
-        afterAction(g, w, a, roll ? roll.grade.includes('success') : null).forEach(m => toast(m, 'success'));
-        afterEvent(g, w, a);
-        practice(g, w, a, roll ? roll.grade.includes('success') : null, roll?.grade === 'critical-success').forEach(m => toast(m, 'success'));
-        runPlans();
-        saveGame();
-        await syncScene();
-        if (roll) {
-            toast(`${gradeName(roll.grade)} — ${roll.text}`, roll.grade.includes('success') ? 'success' : 'warn');
-            // the AI only tells the story of the result the engine decided
-            if (state.view === 'scene') setPrompt('mundi_roll', `[Just now {{user}} tried to ${a.label.toLowerCase()}: ${gradeName(roll.grade).toLowerCase()}. ${roll.text} Narrate it in that light if it comes up.]`);
-        } else {
-            toast(`${a.name}: done.`, 'success');
-            if (isScenario(w) && state.view === 'scene') setPrompt('mundi_roll', `[Just now {{user}} chose to ${a.label.toLowerCase()}. Narrate how it goes, in the scene.]`);
-        }
-        maybeBump(g, w);
+        if (state.generating) { toast('Wait until they finish speaking.', 'info'); return; }
+        Object.assign(AD, { id: a.id, who: [], how: '', mins: a.minutes });
         notify();
+        setTimeout(() => document.querySelector<HTMLInputElement>('#mundi-root [data-focus="ad-how"]')?.focus(), 30);
+    },
+    'ad-who': (el) => { const v = el.dataset.who!; AD.who = AD.who.includes(v) ? AD.who.filter(x => x !== v) : [...AD.who, v]; notify(); },
+    'ad-mins': (el) => { AD.mins = Number(el.dataset.v) || AD.mins; notify(); },
+    'ad-close': () => { AD.id = ''; notify(); },
+    'ad-bg': (el, e) => { if (e.target === el) { AD.id = ''; notify(); } },
+    'ad-go': async () => {
+        const { g, w } = ctxW();
+        const a = actionsHere(g, w).find(x => x.id === AD.id);
+        const mins = Math.max(1, Math.min(720, Math.round(AD.mins || a?.minutes || 1)));
+        const who = AD.who.slice(); const how = AD.how.trim().replace(/[.]+$/, '');
+        AD.id = ''; notify();
+        if (!a || isDoing()) return;
+        await runAction(g, w, a, mins, who, how);
     },
     zoom: (el) => zoomBy(el.dataset.d === 'in' ? 1.3 : 1 / 1.3),
     'zoom-fit': () => applyMapView(true),
+});
+
+Object.assign(INPUT, {
+    'ad-how': (el) => { AD.how = el.value; },
+    'ad-mins': (el) => { AD.mins = Number(el.value) || 0; },
 });

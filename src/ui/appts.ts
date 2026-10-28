@@ -105,7 +105,7 @@ Object.assign(ACT, {
         if (!g || !w || !a) return;
         remindAll(g, a);
         const { travelTo } = await import('./map.js');
-        await travelTo(a.place);
+        await travelTo(a.place, undefined, false);
         if (a.state === 'set' && g.player.loc === a.place) await waitFor(g, w, a);
     },
     'cf-go': async () => {
@@ -113,7 +113,7 @@ Object.assign(ACT, {
         CF.id = ''; if (!g || !w || !a) { notify(); return; }
         remindAll(g, a);
         const { travelTo } = await import('./map.js');
-        await travelTo(a.place);
+        await travelTo(a.place, undefined, false);
         if (a.state === 'set' && g.player.loc === a.place) await waitFor(g, w, a);
     },
     'cf-part': async () => {
@@ -125,7 +125,7 @@ Object.assign(ACT, {
         const { finishWork, travelTo } = await import('./map.js');
         await finishWork(workShift(g, w, 'normal', h), o.name);
         await new Promise(r => setTimeout(r, 2900));   // the shift's transition, then off to the plan
-        await travelTo(a.place);
+        await travelTo(a.place, undefined, false);
         if (a.state === 'set' && g.player.loc === a.place) await waitFor(g, w, a);
     },
     'cf-skip': () => {

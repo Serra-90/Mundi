@@ -3,7 +3,7 @@
 // editing and deleting all use SillyTavern's own functions.
 import { isRpg } from '../sim/rpg.js';
 import { lex } from '../core/lexicon.js';
-import { setPrompt } from '../st/bridge.js';
+import { setPrompt, setAsk } from '../st/bridge.js';
 import { socialCheck } from '../sim/judge.js';
 import { pictureAt } from '../sim/daynight.js';
 import { nativeHost } from './native.js';
@@ -462,18 +462,30 @@ Object.assign(INPUT, { 'sc-q': (el) => { SC.q = el.value; notify(); } });
 
 // The invisible narrator for scenes with nobody else: your line goes into the chat, and the narrator answers with the
 // surroundings, the passing moment and how you feel. No character is made to appear.
-async function soloNarrate(g: Save, w: WorldDef, text: string) {
+async function soloNarrate(g: Save, w: WorldDef, text: string, extra = '') {
     state.generating = true; notify();
     try {
         await addUserLine(text);
         const me = personaName();
         const recent = chat().slice(-8).filter((m: any) => !m.is_system).map((m: any) => `${m.is_user ? me : m.name}: ${String(m.mes ?? '').replace(/\s+/g, ' ').slice(0, 300)}`).join('\n');
-        const out = await quiet(`${sceneText().replace(/\{\{user\}\}/g, me)}\n\n${recent}\n\nNarrate what happens next in 2 to 4 sentences, in the second person ("you"), following ${me}'s last line. ${me} is alone: describe only the place, small details, the passing moment and ${me}'s feelings and thoughts. No other character appears, speaks or arrives. Do not write ${me}'s words or decisions.${aiLangNote() ? ` ${aiLangNote()}` : ''}`, 260,
+        const out = await quiet(`${sceneText().replace(/\{\{user\}\}/g, me)}\n\n${recent}\n\nNarrate what happens next in 2 to 4 sentences, in the second person ("you"), following ${me}'s last line. ${me} is alone: describe only the place, small details, the passing moment and ${me}'s feelings and thoughts. No other character appears, speaks or arrives. Do not write ${me}'s words or decisions.${extra ? ` ${extra.replace(/\{\{user\}\}/g, me)}` : ''}${aiLangNote() ? ` ${aiLangNote()}` : ''}`, extra ? 400 : 260,
             'You are the quiet narrator of a life simulation. You never bring other characters into the scene.');
         if (out.trim()) await narratorLine(out.trim());
         else toast('No answer (is the AI connected?).', 'warn');
     } catch (e: any) { toast(String(e?.message ?? e), 'error'); }
     state.generating = false; notify();
+}
+
+// A line Mundi sends for you (you moved to another room, you did something): it goes into the chat as your action and
+// the AI narrates it. With people here they answer (and you are in a conversation with them); alone, the narrator.
+export async function autoLine(text: string, hint: string) {
+    const g = game(); const w = g && getWorld(g.world);
+    if (!g || !w || scenarioOpen() || state.generating) return;
+    const here = presentAt(g, w, g.player.loc);
+    if (!here.length) { await soloNarrate(g, w, text, hint.replace(/^\[|\]$/g, '')); return; }
+    setAsk(hint, 90000);
+    if (!sendText(text)) { toast('SillyTavern\'s message box was not found.', 'error'); return; }
+    lockScene(g, w); startTalk(g, w); saveGame(); notify();
 }
 
 /* ---------- the message box: Say / Do / Story / See (26) ---------- */

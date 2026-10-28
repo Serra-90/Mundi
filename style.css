@@ -1533,6 +1533,15 @@ body.mundi-open #toast-container { display: none !important; }
 #mundi-root .mu-plan.has-pic .mu-plan-room > b { font-size: clamp(10px, .85vw, 14px); padding: 2px 6px; line-height: 1.15; }
 #mundi-root .mu-plan.has-pic .mu-plan-room.is-off > b { opacity: .8; font-weight: 500; }
 #mundi-root:not([data-mobile]) .mu-map.is-plan .mu-plan-bar { left: 64px; }
+/* doing something: with whom, how, for how long */
+#mundi-root .mu-ad-who { display: flex; flex-wrap: wrap; gap: 6px; }
+#mundi-root .mu-ad-who .mu-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px 4px 4px !important; }
+#mundi-root .mu-ad-who .mu-chip.is-on { background: color-mix(in srgb, var(--accent) 45%, transparent) !important; border-color: var(--accent) !important; }
+#mundi-root .mu-ad-who img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+#mundi-root .mu-ad-modal .mh-ca-lens { display: flex; flex-wrap: wrap; align-items: center; }
+#mundi-root .mu-ad-modal .mh-ca-lens button { min-width: 64px; padding: 6px 10px; }
+#mundi-root .mu-ad-mins { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+#mundi-root .mu-ad-mins input { width: 80px; }
 /* What's new (after an update) and the "a newer Mundi is out" note on the main menu */
 #mundi-root .mu-wn { width: min(600px, 100%); }
 #mundi-root .mu-wn header small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
