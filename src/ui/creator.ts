@@ -82,7 +82,7 @@ function rulesSec(w: WorldDef) {
         <div class="mu-heropick is-start"><button class="mu-herocard ${home ? '' : 'is-on'}" data-act="cw-rules" data-v=""><b>Open world</b><p>Maps and towns (with buildings inside them if you like), work, money and the style's mechanics.</p></button>
             <button class="mu-herocard ${home ? 'is-on' : ''}" data-act="cw-rules" data-v="1"><b>Life in one house</b><p>One building (a house, a palace) and the people who live there: a premise, rooms chosen per game, no work or money; going out happens off-screen.</p></button></div>
         ${home && w.maps.length > 1 ? `<label class="mu-field"><span>The house is</span><select data-input="cw-house">${w.maps.map(m => `<option value="${esc(m.id)}" ${m.id === house?.id ? 'selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>` : ''}
-        <small class="mu-muted">${home ? 'The house is a building: its rooms and its floor plan are in Maps. The other maps are the outside (put a link to the house on one of them).' : 'Turning a house into an open world keeps its rooms and plan: the house stays a building on its map.'} Games already started follow the new rules from the next time they are loaded.</small></section>`;
+        <small class="mu-muted"><span>${home ? 'The house is a building: its rooms and its floor plan are in Maps. The other maps are the outside (put a link to the house on one of them).' : 'Turning a house into an open world keeps its rooms and plan: the house stays a building on its map.'}</span> <span>Games already started follow the new rules from the next time they are loaded.</span></small></section>`;
 }
 function tabGeneral(w: WorldDef) {
     return `<div class="mu-cw-grid">${rulesSec(w)}
