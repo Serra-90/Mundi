@@ -74,8 +74,18 @@ const traitOptions = (w: WorldDef) => (w.sheet.traits ?? []).flatMap(t => t.opti
 
 /* ---------- tabs ---------- */
 
+// How the world is lived: an open world, or life in one house (the Home's rules). It can be changed at any time.
+function rulesSec(w: WorldDef) {
+    const home = isScenario(w);
+    const house = w.maps.find(m => m.building) ?? w.maps[0];
+    return `<section class="mu-cw-sec mu-cw-wide"><h4>How it is lived</h4>
+        <div class="mu-heropick is-start"><button class="mu-herocard ${home ? '' : 'is-on'}" data-act="cw-rules" data-v=""><b>Open world</b><p>Maps and towns (with buildings inside them if you like), work, money and the style's mechanics.</p></button>
+            <button class="mu-herocard ${home ? 'is-on' : ''}" data-act="cw-rules" data-v="1"><b>Life in one house</b><p>One building (a house, a palace) and the people who live there: a premise, rooms chosen per game, no work or money; going out happens off-screen.</p></button></div>
+        ${home && w.maps.length > 1 ? `<label class="mu-field"><span>The house is</span><select data-input="cw-house">${w.maps.map(m => `<option value="${esc(m.id)}" ${m.id === house?.id ? 'selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>` : ''}
+        <small class="mu-muted">${home ? 'The house is a building: its rooms and its floor plan are in Maps. The other maps are the outside (put a link to the house on one of them).' : 'Turning a house into an open world keeps its rooms and plan: the house stays a building on its map.'} Games already started follow the new rules from the next time they are loaded.</small></section>`;
+}
 function tabGeneral(w: WorldDef) {
-    return `<div class="mu-cw-grid">
+    return `<div class="mu-cw-grid">${rulesSec(w)}
         <section class="mu-cw-sec"><h4>About this ${isScenario(w) ? 'Home' : 'world'}</h4>${txt('Name', 'name')}${sel('Made for (the tag on its card)', 'madeFor', RPG_LOCKED ? [['lifesim', 'Life-Sim']] : [['lifesim', 'Life-Sim'], ['rpg', 'RPG']])}<label class="mu-field"><span>Short description (shown when choosing a world)</span><textarea rows="3" maxlength="${WORLD_DESC_MAX}" data-input="cw" data-path="description" data-focus="description">${val('description')}</textarea><small class="mu-muted">Up to ${WORLD_DESC_MAX} characters. Only you see it: it is not sent to the AI (the setting below is).</small></label>
             ${area('Setting (what the AI always knows about this world)', 'setting', 5)}
             ${isScenario(w) ? `${area('Premise (how the story starts: shown when the game begins, and told to the AI)', 'scenario.premise', 5)}
@@ -842,6 +852,18 @@ Object.assign(ACT, {
         Object.assign(CW.start, { style: st.id, base: p.id, mode: 'copy' }); setWorldDicts(p.id, p.i18n ?? {}); notify();
     },
     'cw-start-preset': (el) => { const w = getWorld(el.dataset.id!); if (!w || !CW.start) return; Object.assign(CW.start, { base: w.id, mode: 'copy' }); setWorldDicts(w.id, w.i18n ?? {}); notify(); },
+    'cw-rules': (el) => {
+        const w = W(); const home = !!el.dataset.v;
+        if (home === isScenario(w)) return;
+        if (home) {
+            w.scenario = (w as any).scenarioWas ?? { premise: '' }; delete (w as any).scenarioWas;
+            w.mode = 'lifesim';
+            const house = w.maps.find(m => m.building) ?? w.maps[0];
+            if (house) { house.building = true; w.maps = [house, ...w.maps.filter(m => m !== house)]; }   // the house first
+            (w.features ??= {} as any); if ((w.features as any).offstage === undefined) (w.features as any).offstage = true;
+        } else { (w as any).scenarioWas = w.scenario; delete w.scenario; }   // its premise is kept, in case it comes back
+        CW.dirty = true; notify();
+    },
     'cw-start-type': (el) => { const s = CW.start; if (!s) return; s.scenario = !!el.dataset.v; s.base = presetsOf(s.style, s.scenario)[0]?.id ?? s.base; s.mode = 'copy'; notify(); },
     'cw-start-game': (el) => { if (!CW.start || GAME_MODES.find(m => m.id === el.dataset.v)?.soon) return; CW.start.game = el.dataset.v as GameMode; notify(); },
     'cw-mode': (el) => { const w = CW.w; if (!w || GAME_MODES.find(m => m.id === el.dataset.v)?.soon) return; w.mode = el.dataset.v as GameMode; CW.dirty = true; notify(); },
@@ -969,6 +991,7 @@ export async function importWorldFile() {
 }
 
 Object.assign(INPUT, {
+    'cw-house': (el) => { const w = W(); const m = w.maps.find(x => x.id === el.value); if (!m) return; m.building = true; w.maps = [m, ...w.maps.filter(x => x !== m)]; CW.dirty = true; notify(); },
     'cw-words-q': (el) => { WORDS.q = el.value; notify(); },
     'cw-alltabs': (el) => { CW.allTabs = (el as HTMLInputElement).checked; notify(); },
     cw: (el) => {
