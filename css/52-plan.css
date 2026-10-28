@@ -220,3 +220,7 @@
 #mundi-root .mu-building-exit { display: inline-flex; align-items: center; gap: 6px; }
 #mundi-root:not([data-mobile]) .mu-map.is-plan.is-building .mu-mapnav { top: 134px; }
 #mundi-root:not([data-mobile]) .mu-map.is-plan.is-building .mu-plan-stage { top: 192px; }
+/* who is on each floor: small faces inside its button, after the name */
+#mundi-root .mu-plan-floors button .mu-floor-faces { position: static; translate: none; order: 2; margin-left: 4px; }
+#mundi-root .mu-plan-floors button:has(.mu-floor-faces) { padding-right: 12px !important; }
+#mundi-root .mu-plan-floors .mu-floor-faces img { width: 20px; height: 20px; border-width: 1.5px; margin-left: -6px; }
