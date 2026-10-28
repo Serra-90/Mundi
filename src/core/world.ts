@@ -21,6 +21,13 @@ export interface MapDef {
     mood?: number; tension?: number; prices?: number; crowd?: number; ownWeather?: boolean;
     /** The map's picture for some parts of the day (period id → picture). */
     images?: Record<string, string>;
+    /** A building (a palace, an inn, a house): its places are rooms. You get in through the link pin on the map it is
+     *  inside; in the game it shows as rooms (or its floor plan), and going from room to room takes a minute or two. */
+    building?: boolean;
+    /** A building's floor plan (as a Home's). */
+    plan?: HousePlan;
+    /** A building: minutes from one room to another (default 1). */
+    roomMinutes?: number;
 }
 export interface Place {
     id: string; name: string; map: string; x: number; y: number;

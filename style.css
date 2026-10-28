@@ -1542,6 +1542,10 @@ body.mundi-open #toast-container { display: none !important; }
 #mundi-root .mu-ad-modal .mh-ca-lens button { min-width: 64px; padding: 6px 10px; }
 #mundi-root .mu-ad-mins { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
 #mundi-root .mu-ad-mins input { width: 80px; }
+/* a building of a world: its name and the way out above the rooms */
+#mundi-root .mu-building-exit { display: inline-flex; align-items: center; gap: 6px; }
+#mundi-root:not([data-mobile]) .mu-map.is-plan.is-building .mu-mapnav { top: 134px; }
+#mundi-root:not([data-mobile]) .mu-map.is-plan.is-building .mu-plan-stage { top: 192px; }
 /* What's new (after an update) and the "a newer Mundi is out" note on the main menu */
 #mundi-root .mu-wn { width: min(600px, 100%); }
 #mundi-root .mu-wn header small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }

@@ -115,6 +115,7 @@ export function mapEditorHtml(w) {
             ${sel('It is inside', `maps.${mi}.parent`, [['', '(nothing: a top map)'], ...w.maps.filter(x => x.id !== m.id).map(x => [x.id, x.name])])}
             ${m.parent ? num('Minutes to get here from the map it is inside (empty: like any trip between maps)', `maps.${mi}.trip`, 0, 5) : ''}
             ${w.maps.some(x => x.parent === m.id) ? chk('A town with districts (trips between its own places stay short)', `maps.${mi}.town`) : ''}
+            ${m.parent ? `${chk('A building (its places are rooms)', `maps.${mi}.building`, 'A palace, an inn, a house: in the game it shows as rooms (or a floor plan), and going from room to room takes a minute or two. Its door is the link pin on the map it is inside.')}${m.building ? num('Minutes from room to room', `maps.${mi}.roomMinutes`, 1, 1) : ''}` : ''}
             <details class="mu-me-region"><summary>Life in this region</summary>
                 ${num('Public mood (−100 … 100)', `maps.${mi}.mood`, -100)}${num('Tension (0 … 100)', `maps.${mi}.tension`, 0)}
                 ${num('Prices ×', `maps.${mi}.prices`, 0.2, 0.05)}${num('Crowds ×', `maps.${mi}.crowd`, 0, 0.1)}

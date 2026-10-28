@@ -93,7 +93,37 @@ export function travelMinutes(g, w, from, to) {
         return 0;
     if (isScenario(w))
         return 0; // Home: from one room to another takes no time
-    const a = placeOf(g, w, from), b = placeOf(g, w, to);
+    let a = placeOf(g, w, from), b = placeOf(g, w, to);
+    // buildings: from room to room a minute or two; in or out, the trip to (or from) the building's door outside
+    const bOf = (p) => { const m = p && w.maps.find(x => x.id === p.map); return m?.building ? m : null; };
+    const ba = bOf(a), bb = bOf(b);
+    if (ba && ba === bb)
+        return Math.max(1, Math.round(ba.roomMinutes ?? 1));
+    let extra = 0;
+    for (let i = 0; i < 4; i++) { // a building inside a building: out one step at a time
+        const xa = bOf(a), xb = bOf(b);
+        if (xa && xa !== bOf(b)) {
+            const door = w.places.find(p => p.link === xa.id);
+            if (!door)
+                break;
+            a = door;
+            extra += xa.roomMinutes ?? 1;
+            continue;
+        }
+        if (xb && xb !== bOf(a)) {
+            const door = w.places.find(p => p.link === xb.id);
+            if (!door)
+                break;
+            b = door;
+            extra += xb.roomMinutes ?? 1;
+            continue;
+        }
+        break;
+    }
+    if (a && b && a.id === b.id)
+        return Math.max(1, extra); // the building's own door: just in or out
+    if (extra)
+        return extra + travelMinutes(g, w, a.id, b.id);
     const isRegion = (mapId) => !!mapId && w.maps.some(m => m.parent === mapId) && !w.maps.find(m => m.id === mapId)?.town;
     const local = !!a && !!b && a.map === b.map && !isRegion(a.map);
     // districts and nearby villages: their own trip time to the town they hang from (siblings: the longer of the two)

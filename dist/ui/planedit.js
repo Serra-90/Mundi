@@ -2,7 +2,7 @@
 // plan. The plan has floors (each with a picture of the plan, optional); every room of the house and every bedroom
 // is drawn as a box on a floor: drag it to move it, drag its corner to resize it. A room on no floor shows a red "!".
 import { notify, esc, toast, ROOT_ID } from '../core/store.js';
-import { worldFile } from '../core/world.js';
+import { worldFile, isScenario } from '../core/world.js';
 import { planSlots } from '../sim/plan.js';
 import { uploadWorldPicture, imageRatio, newId } from '../sim/creator.js';
 import { pickFile } from './cropper.js';
@@ -10,12 +10,20 @@ import { TIME_SLOTS } from '../sim/daynight.js';
 import { icon } from './icons.js';
 import { ACT, INPUT } from './reg.js';
 import { CW, W, chk } from './creator.js';
-import { mapEditorHtml } from './mapedit.js';
+import { mapEditorHtml, ME } from './mapedit.js';
 export const PE = { view: 'rooms', floor: '', sel: '' };
-const planOf = (w) => (w.plan ??= { floors: [], rooms: [] });
+// Whose plan is edited: the Home's, or (in a world) the building chosen in Maps. `base` is its path for the fields.
+const target = (w) => {
+    if (isScenario(w))
+        return { obj: w, base: '', map: '' };
+    const i = Math.max(0, w.maps.findIndex(m => m.id === ME.map));
+    return { obj: w.maps[i] ?? {}, base: `maps.${i}.`, map: w.maps[i]?.id ?? '' };
+};
+const planOf = (w) => (target(w).obj.plan ??= { floors: [], rooms: [] });
 const NOT_ON = 'Not on the floor plan: where this room is has not been set. Click it to put it on this floor.';
 function planEditorHtml(w) {
     const plan = planOf(w);
+    const { base, map } = target(w);
     if (!plan.floors.length)
         return `<div class="mu-pe is-empty"><div class="mu-pe-intro"><h3>Floor plan</h3>
         <p class="mu-muted">Optional. With a floor plan, the house map in the game is a plan of the house: one per floor, each room where it really is. Without one, the game shows the pictures of the rooms (as now).</p>
@@ -23,7 +31,7 @@ function planEditorHtml(w) {
     const floor = plan.floors.find(f => f.id === PE.floor) ?? plan.floors[0];
     PE.floor = floor.id;
     const fi = plan.floors.indexOf(floor);
-    const slots = planSlots(w);
+    const slots = planSlots(w, map);
     const where = (id) => plan.rooms.find(r => r.id === id && plan.floors.some(f => f.id === r.floor));
     const name = (id) => slots.find(s => s.id === id)?.name ?? id;
     const sel = plan.rooms.find(r => r.id === PE.sel);
@@ -39,14 +47,14 @@ function planEditorHtml(w) {
     return `<div class="mu-pe">
         <div class="mu-pe-top">
             <nav class="mu-pe-floors">${plan.floors.map(f => `<button class="${f.id === floor.id ? 'is-on' : ''}" data-act="pe-floor" data-id="${esc(f.id)}" data-notr>${esc(f.name)}</button>`).join('')}<button class="mu-ghost" data-act="pe-floor-add" title="Add a floor">${icon('plus')}<span>Floor</span></button></nav>
-            ${chk('Use the floors in the game', 'plan.on', 'With a picture of the plan, the house map is the plan, floor by floor. Without one, the room pictures are listed floor by floor. Off: the room pictures, as always.')}
+            ${chk('Use the floors in the game', `${base}plan.on`, 'With a picture of the plan, the house map is the plan, floor by floor. Without one, the room pictures are listed floor by floor. Off: the room pictures, as always.')}
         </div>
         <div class="mu-pe-main">
             <div class="mu-pe-stage"><div class="mu-pe-plan ${floor.image ? 'has-pic' : ''}" data-pe-plan style="--r:${floor.ratio ?? 1.6};${floor.image ? `background-image:url('${esc(worldFile(w, floor.image))}')` : ''}">${boxes}
                 ${boxes ? '' : '<p class="mu-pe-hint">Click a room on the right to put it on this floor.</p>'}</div></div>
             <aside class="mu-pe-side">
                 <section class="mu-pe-card"><h4>This floor</h4>
-                    <label class="mu-field"><span>Name</span><input data-input="cw" data-path="plan.floors.${fi}.name" data-focus="pe-fname" value="${esc(floor.name)}"></label>
+                    <label class="mu-field"><span>Name</span><input data-input="cw" data-path="${base}plan.floors.${fi}.name" data-focus="pe-fname" value="${esc(floor.name)}"></label>
                     <div class="mu-row"><button class="mu-ghost" data-act="pe-floor-pic">${icon('image')}<span>${floor.image ? 'Change the plan picture' : 'Picture of the plan (optional)'}</span></button>${floor.image ? `<button class="mu-ghost mu-ibtn" data-act="pe-floor-pic-clear" title="No picture (a blueprint)">${icon('x')}</button>` : ''}</div>
                     ${floor.image ? `<details class="mu-me-times" ${Object.keys(floor.images ?? {}).length ? 'open' : ''}><summary>At other times of the day</summary>
                         ${TIME_SLOTS.map(per => {
@@ -62,8 +70,8 @@ function planEditorHtml(w) {
                     <small class="mu-muted">Drag the box to move it, its corner to resize it.</small>
                     <button class="mu-ghost" data-act="pe-room-off">${icon('x')}<span>Take it off the plan</span></button></section>` : ''}
                 <section class="mu-pe-card"><h4>On the plan</h4>
-                    <label class="mu-field"><span>Rooms light up with</span><input type="color" data-input="cw" data-path="plan.glow" value="${esc(plan.glow || '#ffa95c')}"></label>
-                    ${chk('Room names on the plan', 'plan.labels', 'Off: a name shows when the mouse is over its room.', true)}
+                    <label class="mu-field"><span>Rooms light up with</span><input type="color" data-input="cw" data-path="${base}plan.glow" value="${esc(plan.glow || '#ffa95c')}"></label>
+                    ${chk('Room names on the plan', `${base}plan.labels`, 'Off: a name shows when the mouse is over its room.', true)}
                     <small class="mu-muted">The boxes you draw here are the rooms: in the game, a room lights up when the mouse is over it, and a click goes there.</small></section>
                 <section class="mu-pe-card"><h4>Rooms ${lost ? `<em class="mu-pe-lostn" title="Rooms not on the plan">${lost} <b class="mu-plan-bang">!</b></em>` : ''}</h4><div class="mu-pe-list">${list(false)}</div>
                     <h4>Bedrooms</h4><div class="mu-pe-list">${list(true) || '<small class="mu-muted">No bedrooms (Homes tab).</small>'}</div></section>
@@ -72,7 +80,8 @@ function planEditorHtml(w) {
 }
 // The Maps tab of a scenario: the rooms (as before) or the floor plan.
 export function houseMapsHtml(w) {
-    const seg = `<div class="mu-pe-seg"><button class="${PE.view === 'rooms' ? 'is-on' : ''}" data-act="pe-view" data-v="rooms">${icon('pin')}<span>Rooms</span></button><button class="${PE.view === 'plan' ? 'is-on' : ''}" data-act="pe-view" data-v="plan">${icon('home')}<span>Floor plan${w.plan?.on ? ' · on' : ''}</span></button></div>`;
+    const plan = target(w).obj.plan;
+    const seg = `<div class="mu-pe-seg"><button class="${PE.view === 'rooms' ? 'is-on' : ''}" data-act="pe-view" data-v="rooms">${icon('pin')}<span>Rooms</span></button><button class="${PE.view === 'plan' ? 'is-on' : ''}" data-act="pe-view" data-v="plan">${icon('home')}<span>Floor plan${plan?.on ? ' · on' : ''}</span></button></div>`;
     return `<div class="mu-pe-wrap">${seg}${PE.view === 'plan' ? planEditorHtml(w) : mapEditorHtml(w)}</div>`;
 }
 /* ---------- placing, moving and resizing the boxes ---------- */
@@ -95,7 +104,7 @@ document.addEventListener('pointerdown', (e) => {
     if (!box || !CW.w)
         return;
     const planEl = box.closest('[data-pe-plan]');
-    const r = CW.w.plan?.rooms.find(x => x.id === box.dataset.peRoom);
+    const r = planOf(CW.w).rooms.find(x => x.id === box.dataset.peRoom);
     if (!planEl || !r)
         return;
     drag = { id: r.id, el: box, plan: planEl, resize: !!t.closest('[data-pe-handle]'), sx: e.clientX, sy: e.clientY, r: { ...r }, moved: false };
@@ -125,7 +134,7 @@ document.addEventListener('pointerup', () => {
         return;
     const d = drag;
     drag = null;
-    const r = CW.w?.plan?.rooms.find(x => x.id === d.id);
+    const r = CW.w ? planOf(CW.w).rooms.find(x => x.id === d.id) : null;
     if (!r)
         return;
     if (d.moved) {
