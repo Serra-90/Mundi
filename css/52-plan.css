@@ -224,3 +224,4 @@
 #mundi-root .mu-plan-floors button .mu-floor-faces { position: static; translate: none; order: 2; margin-left: 4px; }
 #mundi-root .mu-plan-floors button:has(.mu-floor-faces) { padding-right: 12px !important; }
 #mundi-root .mu-plan-floors .mu-floor-faces img { width: 20px; height: 20px; border-width: 1.5px; margin-left: -6px; }
+#mundi-root .mu-style-tag.is-home { background: rgba(217, 119, 6, .9); color: #fff; }

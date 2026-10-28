@@ -12,6 +12,7 @@ import { DIFFICULTIES } from '../sim/bills.js';
 import { slidesHtml, toneTag } from './slides.js';
 import { presetChipsHtml } from './castpresets.js';
 import { isScenario, SCENARIO_STARTS } from '../core/world.js';
+import { tr } from '../core/tr.js';
 import { lorebooks, loadLore, quiet } from '../st/bridge.js';
 import { worlds, getWorld, shortDesc, worldFile, isCustom, exampleTag, styleOf, GAME_MODES, worldLocked, lockedFor, hasTag } from '../core/world.js';
 import { openCreatorNew, openCreatorEdit, importWorldFile } from './creator.js';
@@ -49,22 +50,24 @@ export function startWizard() {
 }
 function stepWorld() {
     const wz = state.wizard;
-    const scen = wz.mode === 'scenario';
-    const list = worlds().filter(w => isScenario(w) === scen); // the Scenario mode lists scenarios; the World mode, worlds
+    // one list: the worlds, and the worlds with the Home's rules (one house) marked as such
+    const list = worlds();
     // Medieval and RPG worlds wait for the next update: shown, but locked
     const open = list.filter(w => !worldLocked(w)), locked = list.filter(w => worldLocked(w));
-    if (worldLocked(getWorld(wz.world)) || isScenario(getWorld(wz.world)) !== scen) {
+    if (worldLocked(getWorld(wz.world))) {
         wz.world = open[0]?.id ?? wz.world;
         wz.hero = freshHero(W());
     }
+    const scen = isScenario(W());
+    wz.mode = scen ? 'scenario' : 'world';
     const play = scen ? (HT = 'wizard', roomsPickHtml()) : playModeHtml();
-    return `<div class="mu-ng-world ${play ? 'has-play' : ''} ${scen ? 'is-scen' : ''}"><div class="mu-ng-worlds"><h3>${scen ? 'Home' : 'World'}</h3><div class="mu-cards mu-worldgrid">${[...open, ...locked].map(w => `
+    return `<div class="mu-ng-world ${play ? 'has-play' : ''} ${scen ? 'is-scen' : ''}"><div class="mu-ng-worlds"><h3>World</h3><div class="mu-cards mu-worldgrid">${[...open, ...locked].map(w => `
             <div class="mu-worldcard-wrap ${worldLocked(w) ? 'is-locked' : ''}"><button class="mu-worldcard ${wz.world === w.id ? 'is-on' : ''}" data-act="ng-world" data-id="${esc(w.id)}" ${worldLocked(w) ? `aria-disabled="true" title="${esc(LOCKED_NOTE)}"` : ''}>
-                <span class="mu-worldart" style="${w.cover ? `background-image:url('${worldFile(w, w.cover)}')` : ''}">${slidesHtml(w)}<span class="mu-style-tags"><em class="mu-style-tag is-${esc(styleOf(w))}">${esc(styleName(styleOf(w)))}</em>${toneTag(w)}</span>${worldLocked(w) ? `<span class="mu-lockbadge">${icon('pin')}<b>Soon</b><small>${lockedFor(w)}</small></span>` : ''}</span>
+                <span class="mu-worldart" style="${w.cover ? `background-image:url('${worldFile(w, w.cover)}')` : ''}">${slidesHtml(w)}<span class="mu-style-tags"><em class="mu-style-tag is-${esc(styleOf(w))}">${esc(styleName(styleOf(w)))}</em>${toneTag(w)}${isScenario(w) ? `<em class="mu-style-tag is-home">${esc(tr('Home'))}</em>` : ''}</span>${worldLocked(w) ? `<span class="mu-lockbadge">${icon('pin')}<b>Soon</b><small>${lockedFor(w)}</small></span>` : ''}</span>
                 <b data-notr>${esc(inWorld(w, w.name))}</b><small>${isCustom(w.id) ? 'Made by you' : 'Ready world'}</small><p data-notr>${esc(shortDesc(inWorld(w, w.description)))}</p>
             </button>${isCustom(w.id) ? `<button class="mu-ghost mu-ibtn mu-world-edit" data-act="ng-world-edit" data-id="${esc(w.id)}" title="Edit this world">${icon('edit')}</button>` : ''}</div>`).join('')}
             </div><div class="mu-worldnew">
-            <button class="mu-worldcard is-new" data-act="ng-world-new"><span class="mu-worldart">${icon('plus')}</span><b>Create a ${scen ? 'Home' : 'world'}</b><small>With the world creator</small><p>Choose a style, start from a ready world or from nothing, and change everything.</p></button>
+            <button class="mu-worldcard is-new" data-act="ng-world-new"><span class="mu-worldart">${icon('plus')}</span><b>Create a world</b><small>With the world creator</small><p>Choose a style, start from a ready world or from nothing, and change everything.</p></button>
             <button class="mu-worldcard is-new is-import" data-act="ng-world-import"><span class="mu-worldart">${icon('upload')}</span><b>Import a world</b><small>A .mundi-world.json file</small><p>A world someone exported from Mundi.</p></button></div></div>${play ? `<aside class="mu-ng-play">${play}</aside>` : ''}</div>`;
 }
 // A scenario: which rooms the house has in this game (the bedrooms are always there). The same picker works in a
@@ -382,8 +385,7 @@ function modeHtml() {
         <div class="mu-subhead"><button data-act="to-menu" data-sfx="back">← Menu</button><h2>New game</h2><span></span></div>
         <div class="mu-wizard-body"><div class="mu-heropick is-modes">
             <button class="mu-herocard" data-act="ng-mode" data-v="chat"><i>${icon('chat')}</i><b>Chat</b><p>Pick a character card and go straight into a chat with them, in Mundi's scene. No map, no clock: just the story.</p></button>
-            <button class="mu-herocard" data-act="ng-mode" data-v="scenario"><i>${icon('home')}</i><b>Home</b><p>One place (a house, a mansion) and the people who live there: a premise, their routines, your relations. Life outside happens off-screen.</p></button>
-            <button class="mu-herocard" data-act="ng-mode" data-v="world"><i>${icon('globe')}</i><b>World</b><p>A living world: maps and towns, time passing, people with routines, jobs, money and the style's own mechanics.</p></button>
+            <button class="mu-herocard" data-act="ng-mode" data-v="world"><i>${icon('globe')}</i><b>World</b><p>A living world: maps and towns, or a single house with its rooms; time passing, people with routines, and the style's own mechanics.</p></button>
         </div></div></div>`;
 }
 function scenarioHtml() {
@@ -418,6 +420,8 @@ export function newGameHtml() {
     const wz = state.wizard;
     if (!wz)
         return '';
+    if (wz.mode === 'world' || wz.mode === 'scenario')
+        wz.mode = isScenario(W()) ? 'scenario' : 'world'; // one mode: the world chosen decides the steps
     STEPS = wz.mode === 'scenario' ? STEPS_SCEN : STEPS_ALL;
     if (!wz.mode)
         return modeHtml();
@@ -435,7 +439,7 @@ export function newGameHtml() {
     </div>`;
 }
 Object.assign(ACT, {
-    'ng-world-new': () => openCreatorNew(styleOf(W()), state.wizard.mode === 'scenario'),
+    'ng-world-new': () => openCreatorNew(styleOf(W()), false),
     'ng-world-edit': (el) => openCreatorEdit(el.dataset.id),
     'ng-world-import': async () => { const w = await importWorldFile(); if (w) {
         state.wizard.world = w.id;

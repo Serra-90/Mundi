@@ -731,7 +731,7 @@ function startPage() {
     const presets = presetsOf(st.id, !!s.scenario);
     const base = getWorld(s.base);
     return `<div class="mu-settings mu-cw-new">
-        <div class="mu-subhead"><button data-act="cw-start-cancel" data-sfx="back">← Back</button><h2>${s.scenario ? 'New Home' : 'New world'}</h2></div>
+        <div class="mu-subhead"><button data-act="cw-start-cancel" data-sfx="back">← Back</button><h2>New world</h2></div>
         <div class="mu-cw-new-body mu-panel"><div class="mu-cw-new-grid"><section class="mu-cw-new-a">
             <!-- world or scenario: already chosen on the New game screen -->
             <label class="mu-field mu-cw-new-name ${CW.nameMiss ? 'is-missing' : ''}"><span>Name of your ${s.scenario ? 'Home' : 'world'}</span><input data-input="cw-start-name" data-focus="cwname" value="${esc(s.name)}" placeholder="${s.scenario ? 'My Home' : 'My world'}">${CW.nameMiss ? `<small class="mu-miss-note">Give your ${s.scenario ? 'Home' : 'world'} a name first.</small>` : ''}</label>
@@ -740,7 +740,10 @@ function startPage() {
             <div class="mu-styles">${STYLES.map(x => `<button class="mu-style ${x.id === st.id ? 'is-on' : ''} ${x.ready ? '' : 'is-soon'}" data-act="cw-start-style" data-id="${x.id}" ${x.ready ? '' : 'aria-disabled="true"'}>
                 <b>${x.name}</b><small>${x.ready ? x.tagline : x.soon ?? 'Coming later.'}</small></button>`).join('')}</div>
             <section class="mu-panel mu-style-info"><h4>What this style brings</h4><ul>${st.changes.map(c => `<li>${c}</li>`).join('')}</ul></section></section>
-            <section class="mu-cw-new-b">${s.scenario ? '<p class="mu-muted">A Home is always Life-Sim (realistic or fantasy), made for role-play: no work, money or courses.</p>' : `<h3>Game mode</h3>
+            <section class="mu-cw-new-b"><h3>How it is lived</h3>
+            <div class="mu-heropick is-start"><button class="mu-herocard ${s.scenario ? '' : 'is-on'}" data-act="cw-start-type" data-v=""><b>Open world</b><p>Maps and towns (with buildings inside them if you like), work, money and the style's mechanics.</p></button>
+                <button class="mu-herocard ${s.scenario ? 'is-on' : ''}" data-act="cw-start-type" data-v="1"><b>Life in one house</b><p>One building (a house, a palace) and the people who live there: a premise, rooms chosen per game, no work or money; going out happens off-screen.</p></button></div>
+            ${s.scenario ? '<p class="mu-muted">A Home is always Life-Sim (realistic or fantasy), made for role-play: no work, money or courses.</p>' : `<h3>Game mode</h3>
             <p class="mu-muted">What the game is about. Any style works with any mode.</p>
             ${modeCards(s.game, 'cw-start-game')}`}
             <h3>Start from</h3>
