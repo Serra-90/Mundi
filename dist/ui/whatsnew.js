@@ -70,7 +70,7 @@ async function update() {
     let ok = false;
     for (const global of [false, true]) {
         try {
-            const r = await fetch('/api/extensions/update', { method: 'POST', headers, body: JSON.stringify({ extensionName: 'Mundi', global }) });
+            const r = await fetch('/api/extensions/update', { method: 'POST', headers, body: JSON.stringify({ extensionName: decodeURIComponent(/third-party\/([^/]+)\//.exec(import.meta.url)?.[1] ?? 'Mundi'), global }) });
             if (r.ok) {
                 ok = true;
                 break;

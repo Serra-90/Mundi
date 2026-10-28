@@ -42,7 +42,7 @@ function addLauncher() {
         const item = document.createElement('div');
         item.id = 'mundi-launch';
         item.className = 'list-group-item flex-container flexGap5';
-        item.innerHTML = '<div class="fa-solid fa-earth-americas extensionsMenuExtensionButton"></div><span>Mundi</span>';
+        item.innerHTML = '<div class="fa-solid fa-earth-americas extensionsMenuExtensionButton"></div><span>Newworld</span>';
         item.addEventListener('click', () => openApp());
         menu.appendChild(item);
     }
@@ -56,10 +56,10 @@ function addSettingsBlock() {
     box.id = 'mundi-settings-block';
     box.className = 'extension_container';
     box.innerHTML = `<div class="inline-drawer">
-        <div class="inline-drawer-toggle inline-drawer-header"><b>Mundi</b><div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div></div>
+        <div class="inline-drawer-toggle inline-drawer-header"><b>Newworld</b><div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div></div>
         <div class="inline-drawer-content">
-            <div class="flex-container flexGap5" style="margin:6px 0"><div id="mundi-open-btn" class="menu_button menu_button_icon"><i class="fa-solid fa-earth-americas"></i><span>Open Mundi</span></div></div>
-            <label class="checkbox_label" for="mundi-open-start"><input id="mundi-open-start" type="checkbox"><span>Open Mundi when SillyTavern starts</span></label>
+            <div class="flex-container flexGap5" style="margin:6px 0"><div id="mundi-open-btn" class="menu_button menu_button_icon"><i class="fa-solid fa-earth-americas"></i><span>Apri Newworld</span></div></div>
+            <label class="checkbox_label" for="mundi-open-start"><input id="mundi-open-start" type="checkbox"><span>Apri Newworld all'avvio di SillyTavern</span></label>
         </div></div>`;
     host.appendChild(box);
     const chk = box.querySelector<HTMLInputElement>('#mundi-open-start')!;

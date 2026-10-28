@@ -1,3 +1,11 @@
+# Newworld
+
+**Newworld** è una versione indipendente di [Mundi](https://github.com/tjalis/Mundi) di Thales, un'estensione per SillyTavern.
+Interfaccia in italiano, bisogni personalizzabili, narrazione automatica di spostamenti e azioni, personaggi fissi e regola "resta finché non vi salutate"; in arrivo un'unica modalità Mondo con edifici a stanze.
+Distribuita con la stessa licenza dell'originale (AGPL-3.0).
+
+---
+
 # Mundi
 
 **Open worlds inside SillyTavern.** Mundi turns a SillyTavern group chat into a life you live: a city with a map and a clock, needs to look after, a job, bills, people with their own days, and the story the AI writes around what you do.

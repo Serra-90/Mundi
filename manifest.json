@@ -1,5 +1,5 @@
 {
-    "display_name": "Mundi",
+    "display_name": "Newworld",
     "loading_order": 100,
     "requires": [],
     "optional": [
@@ -7,9 +7,9 @@
     ],
     "js": "dist/index.js",
     "css": "style.css",
-    "author": "Thales",
+    "author": "Serra-90 (basato su Mundi di Thales)",
     "version": "0.2.0",
-    "homePage": "https://github.com/tjalis/Mundi",
+    "homePage": "https://github.com/Serra-90/Newworld",
     "auto_update": false,
-    "description": "Mundi: an open-world RPG creator for SillyTavern. Worlds with maps, time, routines, needs and a full visual-novel scene, built on SillyTavern's own cards, personas, lorebooks and group chats."
+    "description": "Newworld: mondi aperti in SillyTavern, con mappe, tempo, routine, bisogni ed edifici a stanze. Basato su Mundi di Thales (tjalis/Mundi), licenza AGPL-3.0."
 }

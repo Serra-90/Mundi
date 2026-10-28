@@ -60,7 +60,10 @@ export async function setLang(id) {
     }
 }
 // One text in the current language (as it is when there is no translation).
-export function tr(text) {
+// The project's name on screen: this version is Newworld (based on Mundi by Thales).
+const brand = (s) => s.includes('Mundi') ? s.replace(/\bMundi\b/g, 'Newworld') : s;
+export const tr = (text) => brand(trCore(text));
+function trCore(text) {
     if (!dict)
         return text;
     const t = norm(text);
@@ -125,7 +128,7 @@ const trKeep = (s) => { const t = tr(s); if (t === s)
 const SKIP = 'script,style,textarea,[data-notr],[contenteditable],[data-native],.mu-line-text,.mes_text,code,pre';
 const ATTRS = ['title', 'placeholder', 'aria-label', 'alt'];
 export function translateTree(root) {
-    if (!dict || !root)
+    if (!root)
         return;
     const walk = (n) => {
         if (n.nodeType === 3) {
@@ -167,8 +170,6 @@ let observer = null;
 export function installTranslator(root) {
     observer?.disconnect();
     observer = new MutationObserver(list => {
-        if (!dict)
-            return;
         for (const m of list) {
             if (m.type === 'childList')
                 m.addedNodes.forEach(n => { const p = n.parentElement; if (!p || !p.closest(SKIP))
