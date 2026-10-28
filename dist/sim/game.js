@@ -10,7 +10,7 @@ import { placeOf as placeOf2 } from './places.js';
 import { TUT, settings as settings2 } from '../core/store.js';
 import { note, placeName } from './facts.js';
 import { settings, saveSettings, state, game, setGame, saveGame, notify, toast, } from '../core/store.js';
-import { loadWorld, getWorld, exampleTag, fixedAt } from '../core/world.js';
+import { loadWorld, getWorld, exampleTag, exampleOf, fixedAt } from '../core/world.js';
 import { setWorldDicts } from '../core/tr.js';
 import { lang } from '../core/i18n.js';
 import { characters, charOf, createCharacter, createPersona, usePersona, createGroup, openGame, groupOf, clearGreetings, writeLorebook, bindChatLore, setPresent, saveMeta, chat, currentChatId, selectedGroup, pastChats, deleteChat, deleteGroup, setPersonaSheet, personaSheet, personaName, recentChats, ctx, deleteScenarioChat, saveName, copyGroupChat, groupChatId, readChatMeta, } from '../st/bridge.js';
@@ -136,7 +136,7 @@ export function resident(w, avatar, taken, avoid) {
     const ch = charOf(avatar);
     const card = ch?.data?.extensions?.mundi ?? {};
     // one of this world's own people: her job, home and routine come from the world (also in copied worlds)
-    const ex = w.cast.examples.find(e => exampleTag(w, e) === card.example);
+    const ex = exampleOf(w, ch);
     const meta = ex ? { world: w.id, occupation: ex.occupation, home: ex.home, routine: ex.routine, leisure: ex.leisure ?? [] } : card;
     const occupation = meta.world === w.id ? meta.occupation ?? null : pick([...w.occupations.map(o => o.id), null]);
     const templateId = meta.world === w.id && meta.routine ? meta.routine : (occupation ? pick(['office', 'early']) : pick(Object.keys(w.cast.routineTemplates)));
@@ -267,9 +267,8 @@ export async function startNewGame(o) {
     // relations: the world's own (between its example people) and the ones chosen for this game (anyone with anyone)
     const exAvatar = new Map();
     for (const a of Object.keys(save.cast)) {
-        const tag = charOf(a)?.data?.extensions?.mundi?.example;
-        const ex = w.cast.examples.find(e => exampleTag(w, e) === tag);
-        if (ex)
+        const ex = exampleOf(w, charOf(a));
+        if (ex && !exAvatar.has(ex.name))
             exAvatar.set(ex.name, a);
     }
     for (const ex of w.cast.examples)

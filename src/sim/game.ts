@@ -12,7 +12,7 @@ import { note, placeName } from './facts.js';
 import {
     settings, saveSettings, state, game, setGame, saveGame, notify, toast, type Save, type Resident, type GameEntry,
 } from '../core/store.js';
-import { loadWorld, getWorld, exampleTag, fixedAt, type WorldDef, type Origin, type GameMode } from '../core/world.js';
+import { loadWorld, getWorld, exampleTag, exampleOf, fixedAt, type WorldDef, type Origin, type GameMode } from '../core/world.js';
 import { setWorldDicts } from '../core/tr.js';
 import { lang } from '../core/i18n.js';
 import {
@@ -131,7 +131,7 @@ export function resident(w: WorldDef, avatar: string, taken: Set<string>, avoid?
     const ch = charOf(avatar);
     const card = ch?.data?.extensions?.mundi ?? {};
     // one of this world's own people: her job, home and routine come from the world (also in copied worlds)
-    const ex = w.cast.examples.find(e => exampleTag(w, e) === card.example);
+    const ex = exampleOf(w, ch);
     const meta = ex ? { world: w.id, occupation: ex.occupation, home: ex.home, routine: ex.routine, leisure: ex.leisure ?? [] } : card;
     const occupation = meta.world === w.id ? meta.occupation ?? null : pick([...w.occupations.map(o => o.id), null]);
     const templateId = meta.world === w.id && meta.routine ? meta.routine : (occupation ? pick(['office', 'early']) : pick(Object.keys(w.cast.routineTemplates)));
@@ -259,7 +259,7 @@ export async function startNewGame(o: NewGame) {
     }
     // relations: the world's own (between its example people) and the ones chosen for this game (anyone with anyone)
     const exAvatar = new Map<string, string>();
-    for (const a of Object.keys(save.cast)) { const tag = charOf(a)?.data?.extensions?.mundi?.example; const ex = w.cast.examples.find(e => exampleTag(w, e) === tag); if (ex) exAvatar.set(ex.name, a); }
+    for (const a of Object.keys(save.cast)) { const ex = exampleOf(w, charOf(a)); if (ex && !exAvatar.has(ex.name)) exAvatar.set(ex.name, a); }
     for (const ex of w.cast.examples) for (const t of ex.ties ?? []) { const a = exAvatar.get(ex.name), b = exAvatar.get(t.to); if (a && b && a !== b) setTie(save, { a, b, type: t.type as TieType, tone: t.tone as TieTone }); }
     for (const t of o.ties ?? []) {
         if ((t.a !== '__you' && !save.cast[t.a]) || (t.b !== '__you' && !save.cast[t.b]) || t.a === t.b) continue;

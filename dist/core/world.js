@@ -53,6 +53,16 @@ export function fixedAt(w, r) {
 }
 export const FIXED_WHY = 'They cannot leave the place where they are.';
 export const exampleTag = (w, ex) => `${ex.from ?? w.id}:${ex.name}`;
+// The world's own person a card is: the card made from the world (its tag), else a card of yours with the same name
+// (so a world's people can come from cards you already have: they get the world's home, job, routine and ties).
+const sameName = (a) => a.normalize('NFC').trim().replace(/\s+/g, ' ').toLowerCase();
+export function exampleOf(w, card) {
+    if (!card)
+        return undefined;
+    const tag = card.data?.extensions?.mundi?.example;
+    const n = sameName(String(card.name ?? card.data?.name ?? ''));
+    return (tag ? w.cast.examples.find(e => exampleTag(w, e) === tag) : undefined) ?? (n ? w.cast.examples.find(e => sameName(e.name) === n) : undefined);
+}
 // The phone's apps, as the Modern style has them (a world can rename them, change icons or turn them off).
 export const DEFAULT_APPS = [
     { id: 'messages', name: 'Messages', icon: 'chat', color: '#34c759', on: true },

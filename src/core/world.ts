@@ -169,6 +169,15 @@ export function fixedAt(w: WorldDef, r: { name: string; fixed?: string } | undef
 export const FIXED_WHY = 'They cannot leave the place where they are.';
 
 export const exampleTag = (w: WorldDef, ex: ExampleCharacter) => `${ex.from ?? w.id}:${ex.name}`;
+// The world's own person a card is: the card made from the world (its tag), else a card of yours with the same name
+// (so a world's people can come from cards you already have: they get the world's home, job, routine and ties).
+const sameName = (a: string) => a.normalize('NFC').trim().replace(/\s+/g, ' ').toLowerCase();
+export function exampleOf(w: WorldDef, card: { name?: string; data?: any } | null | undefined): ExampleCharacter | undefined {
+    if (!card) return undefined;
+    const tag = card.data?.extensions?.mundi?.example;
+    const n = sameName(String(card.name ?? card.data?.name ?? ''));
+    return (tag ? w.cast.examples.find(e => exampleTag(w, e) === tag) : undefined) ?? (n ? w.cast.examples.find(e => sameName(e.name) === n) : undefined);
+}
 /** A phone app: which one (`id`), and how it is called and looks in this world. */
 export interface AppDef { id: string; name: string; icon: string; color: string; on: boolean; rpg?: boolean }
 export interface LoreEntry { keys: string[]; content: string; constant?: boolean }

@@ -4,6 +4,8 @@
 
 - **The interface in Italiano** (Settings → Interface → Language). Like Português and Español, only Mundi's own
   screens are translated: the story's language is up to your preset, and the worlds keep their own names.
+- **A world's people from your own cards**: a card you already have with the same name as one of the world's
+  people takes that person's home, job, routine and relations in the game.
 
 ## 0.2.0 · 2026-10-25
 
