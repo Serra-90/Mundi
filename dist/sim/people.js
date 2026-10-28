@@ -5,7 +5,7 @@ import { festivalSpot } from './festivals.js';
 import { eventSpot } from './cityevents.js';
 import { lockedHere } from './life.js';
 import { nowAbs } from '../core/store.js';
-import { systemOn, isScenario, fixedAt } from '../core/world.js';
+import { systemOn, isScenario, fixedAt, offstageOn } from '../core/world.js';
 import { isWeekend } from './time.js';
 import { appointmentNow, isWith } from './social.js';
 import { weatherOn } from './weather.js';
@@ -90,7 +90,8 @@ export function routineAt(g, w, r, at) {
     // someone who lives with you (or with someone else) is at that home
     const homeId = r.homeWith === '__you' ? 'home:player' : r.homeWith ? `home:${r.homeWith}` : `home:${r.avatar}`;
     // Home: a job you wrote for them has its shift (out of the house while it lasts); without one, their routine
-    if (isScenario(w)) {
+    // a world with outings off-screen too: a job with a place on the map is still there
+    if (offstageOn(w)) {
         const j = homeJobOf(r), out = npcOut(g);
         if (out && onShift(j, at))
             return OUT;
@@ -99,6 +100,9 @@ export function routineAt(g, w, r, at) {
             return leisureSpot(g, w, r, day, start); // their own hours replace the routine's
         if (target === 'home')
             return homeId;
+        const job = !isScenario(w) && systemOn(w, 'jobs') ? w.occupations.find(o => o.id === r.occupation) : null;
+        if (target === 'work' && job)
+            return job.place;
         // work, errands and nights out happen off-screen (`OUT`), and they come back later (or they stay in)
         if (target === 'work' || target === 'out')
             return out ? OUT : leisureSpot(g, w, r, day, start);

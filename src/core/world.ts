@@ -521,6 +521,9 @@ export const SCENARIO_STARTS: ScenarioStart[] = [
 ];
 /** In a scenario every job happens off-screen: you leave the house for the shift and come back. */
 export const offScreenWork = (w: WorldDef | null | undefined) => isScenario(w);
+/** Going out off-screen (you say where; work, errands and nights out of the residents happen off the map): always in
+ *  a Home; in a world when it is turned on (features.offstage), for worlds that are mostly buildings. */
+export const offstageOn = (w: WorldDef | null | undefined) => !!w && (isScenario(w) || !!(w.features as any)?.offstage);
 export const isScenario = (w: WorldDef | null | undefined) => !!w?.scenario;
 export const loadAllWorlds = () => Promise.all([...BUILT_IN, ...customWorlds().map(c => c.id)].map(id => loadWorld(id).catch(e => console.warn('[Mundi] world', id, e))));
 export const getWorld = (id: string) => registry.get(id) ?? null;

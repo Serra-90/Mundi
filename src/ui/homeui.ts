@@ -1,14 +1,16 @@
 // Home settings (Settings › This save, in a Home game): the clock per message, whether the housemates go out, and
 // for each one a job in your own words with its shift.
 import { esc, notify, saveGame, cfg, game, type Save } from '../core/store.js';
-import { getWorld, isScenario } from '../core/world.js';
+import { getWorld, isScenario, offstageOn } from '../core/world.js';
 import { thumb } from '../st/bridge.js';
 import { REPLY_MINUTES, perMessage, npcOut, SHIFTS, DAYS, homeJobOf } from '../sim/hometime.js';
 import { refreshPrompt } from '../sim/prompt.js';
 import { INPUT } from './reg.js';
 
 export function homeSettingsHtml(g: Save): string {
-    const w = getWorld(g.world); if (!w || !isScenario(w)) return '';
+    const w = getWorld(g.world); if (!w || !offstageOn(w)) return '';
+    if (!isScenario(w)) return `<h4>Off the map</h4>
+        <label class="mu-check"><input type="checkbox" data-input="home-out" ${npcOut(g) ? 'checked' : ''}><span>People go out off-screen<small>With a shift of their own (This world › People), they are away during it, off the map. Off: only their routine and jobs on the map.</small></span></label>`;
     const people = Object.values(g.cast);
     return `<h4>Home</h4>
         <label class="mu-check"><input type="checkbox" data-input="home-permsg" ${perMessage(g) ? 'checked' : ''}><span>Time passes with each message<small>Each message you send is ${REPLY_MINUTES} minutes. Off: time only moves with "Let time pass", sleeping and what you do.</small></span></label>

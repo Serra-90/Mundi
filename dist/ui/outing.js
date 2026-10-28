@@ -4,12 +4,12 @@ import { state, notify, esc, game, saveGame, toast, nowAbs } from '../core/store
 import { advance, hm } from '../sim/time.js';
 import { runPlans } from './plans.js';
 const OUTING_MIN = 240; // the shortest time out, in game minutes
-import { getWorld, isScenario, styleOf, fixedAt } from '../core/world.js';
+import { getWorld, isScenario, styleOf, fixedAt, offstageOn } from '../core/world.js';
 import { thumb } from '../st/bridge.js';
 import { bgHead, bgGrid, bgHref } from './bgpick.js';
 import { whereNow } from '../sim/people.js';
 import { OUT } from '../sim/people.js';
-import { isOuting, outingName } from '../sim/places.js';
+import { isOuting, outingName, buildingAt } from '../sim/places.js';
 import { startOuting, endOuting, outingOf } from '../sim/outing.js';
 import { syncScene } from '../sim/game.js';
 import { refreshPrompt } from '../sim/prompt.js';
@@ -17,6 +17,7 @@ import { showTransition } from './lifeui.js';
 import { icon } from './icons.js';
 import { ACT, INPUT } from './reg.js';
 import { leaveBlock } from '../sim/leave.js';
+import { tr } from '../core/tr.js';
 export const OD = { open: false, bgOnly: false, place: '', with: [], bg: '', q: '', back: false, miss: false };
 export const bgStyle = (file) => (file ? `background-image:url('${bgHref(file)}');background-size:cover;background-position:center` : '');
 // Who can come: the people you know who are in the house now.
@@ -25,17 +26,19 @@ function canCome() {
     const w = g && getWorld(g.world);
     if (!g || !w)
         return [];
-    return Object.values(g.cast).filter(r => r.met && !fixedAt(w, r)).filter(r => { const at = whereNow(g, w, r); return at !== OUT && !isOuting(at); }).map(r => ({ avatar: r.avatar, name: r.name }));
+    const b = buildingAt(g, w, g.player.loc);
+    const near = (at) => isScenario(w) || at === g.player.loc || (!!b && buildingAt(g, w, at) === b);
+    return Object.values(g.cast).filter(r => r.met && !fixedAt(w, r)).filter(r => { const at = whereNow(g, w, r); return at !== OUT && !isOuting(at) && near(at); }).map(r => ({ avatar: r.avatar, name: r.name }));
 }
 export function outingHtml() {
     const g = game();
     const w = g && getWorld(g.world);
-    if (!g || !w || !isScenario(w))
+    if (!g || !w || !offstageOn(w))
         return '';
     if (OD.back)
-        return `<div class="mu-dlg-veil" data-act="out-back-no"></div><div class="mu-panel mu-dlg mu-glassdlg mu-outback" role="dialog"><h3>Go back home?</h3>
-        <p class="mu-muted">${(outingOf(g)?.with ?? []).length ? `${esc((outingOf(g).with).map(a => g.cast[a]?.name).filter(Boolean).join(', '))} ${outingOf(g).with.length === 1 ? 'comes' : 'come'} back with you.` : 'You head back to the house.'} <span>Some hours go by while you are out (4 at least).</span></p>
-        <div class="mu-row mu-dlg-btns"><button data-act="out-back-no">Stay out</button><button class="mu-primary" data-act="out-back-yes">${icon('home')}<span>Back home</span></button></div></div>`;
+        return `<div class="mu-dlg-veil" data-act="out-back-no"></div><div class="mu-panel mu-dlg mu-glassdlg mu-outback" role="dialog"><h3>${isScenario(w) ? 'Go back home?' : 'Go back?'}</h3>
+        <p class="mu-muted">${(outingOf(g)?.with ?? []).length ? `${esc((outingOf(g).with).map(a => g.cast[a]?.name).filter(Boolean).join(', '))} ${outingOf(g).with.length === 1 ? 'comes' : 'come'} back with you.` : (isScenario(w) ? 'You head back to the house.' : 'You head back to where you were.')} <span>Some hours go by while you are out (4 at least).</span></p>
+        <div class="mu-row mu-dlg-btns"><button data-act="out-back-no">Stay out</button><button class="mu-primary" data-act="out-back-yes">${icon('home')}<span>${isScenario(w) ? 'Back home' : 'Go back'}</span></button></div></div>`;
     if (!OD.open)
         return '';
     const people = canCome();
@@ -45,7 +48,7 @@ export function outingHtml() {
         <div class="mu-row mu-dlg-btns"><button data-act="out-close">Cancel</button><button class="mu-primary" data-act="out-bg-save">Use it</button></div></div>`;
     return `<div class="mu-dlg-veil" data-act="out-close"></div><div class="mu-panel mu-scpick mu-glassdlg mu-outdlg" role="dialog"><header><h3>${icon('map')} Go out</h3><button class="mu-ibtn mu-ghost" data-act="out-close" aria-label="Close">${icon('x')}</button></header>
         <label class="mu-field mu-out-place ${OD.miss ? 'is-missing' : ''}"><span>Where are you going?</span><input type="text" maxlength="80" data-input="out-place" data-focus="outplace" placeholder="${styleOf(w) === 'medieval' ? 'the market square, the village tavern, the riverbank…' : 'the beach, a café downtown, the cinema…'}" value="${esc(OD.place)}">${OD.miss ? '<small class="mu-miss-note">Write where you are going first.</small>' : ''}</label>
-        <div class="mu-field"><span>Who comes with you</span>${people.length ? `<div class="mu-out-people">${people.map(p => `<button class="mu-chip ${OD.with.includes(p.avatar) ? 'is-on' : ''}" data-act="out-with" data-who="${esc(p.avatar)}"><img src="${esc(thumb(p.avatar))}" alt=""><span data-notr>${esc(p.name)}</span></button>`).join('')}</div>` : '<small class="mu-muted">Nobody you know is in the house right now: you go alone.</small>'}</div>
+        <div class="mu-field"><span>Who comes with you</span>${people.length ? `<div class="mu-out-people">${people.map(p => `<button class="mu-chip ${OD.with.includes(p.avatar) ? 'is-on' : ''}" data-act="out-with" data-who="${esc(p.avatar)}"><img src="${esc(thumb(p.avatar))}" alt=""><span data-notr>${esc(p.name)}</span></button>`).join('')}</div>` : `<small class="mu-muted">${isScenario(w) ? 'Nobody you know is in the house right now: you go alone.' : 'Nobody you know is here with you: you go alone.'}</small>`}</div>
         <div class="mu-field"><span>Background</span>${grid}</div>
         <div class="mu-row mu-dlg-btns"><button data-act="out-close">Cancel</button><button class="mu-primary ${OD.place.trim() ? '' : 'is-dim'}" data-act="out-go">${icon('map')}<span>Go</span></button></div></div>`;
 }
@@ -88,7 +91,7 @@ Object.assign(ACT, {
         await syncScene();
         refreshPrompt();
         state.view = 'scene';
-        showTransition(place, OD.with.length ? `With ${OD.with.map(a => g.cast[a]?.name).filter(Boolean).join(', ')}` : 'Out of the house', 'time');
+        showTransition(place, OD.with.length ? `With ${OD.with.map(a => g.cast[a]?.name).filter(Boolean).join(', ')}` : isScenario(w) ? 'Out of the house' : 'Off the map', 'time');
         notify();
     },
     'out-back': () => { if (state.generating) {
@@ -116,7 +119,7 @@ Object.assign(ACT, {
         await syncScene();
         refreshPrompt();
         state.view = 'scene';
-        showTransition('Back home', `${where ? `From ${where} · ` : ''}${hm(g.minutes)}`, 'time');
+        showTransition(isScenario(w) ? 'Back home' : tr('Back'), `${where ? `From ${where} · ` : ''}${hm(g.minutes)}`, 'time');
         notify();
     },
 });

@@ -4,7 +4,7 @@ import { castLevel, neighbors, NEIGHBORS_MIN, FRIEND_BOND } from '../sim/happeni
 import { bondOf } from '../sim/social.js';
 import { state, notify, esc, game, toast, saveGame, cfg, type Save } from '../core/store.js';
 import { DIFFICULTIES, difficultyOf } from '../sim/bills.js';
-import { isCustom, getWorld, activeStatuses, gameMode, GAME_MODES, systemOn, isScenario, type WorldDef } from '../core/world.js';
+import { isCustom, getWorld, activeStatuses, gameMode, GAME_MODES, systemOn, isScenario, type WorldDef, offstageOn } from '../core/world.js';
 import { dressHtml } from './dressui.js';
 import { homeJobOf, SHIFTS, DAYS } from '../sim/hometime.js';
 import './homeui.js';
@@ -45,12 +45,12 @@ function personForm(g: Save, w: WorldDef): string {
     const bond = social(g).bond[r.avatar] ?? 0;
     const leisure = w.places.filter(p => (p.tags ?? []).some(t => ['leisure', 'food', 'shop'].includes(t)));
     return `<header class="mu-wc-head"><img src="${esc(thumb(r.avatar))}" alt=""><div><h3 data-notr>${esc(r.name)}</h3><small>${esc(homeAddress(w, r.home))}</small></div></header>
-        ${isScenario(w) ? (() => { const j = homeJobOf(r); const timed = !!SHIFTS.find(x => x.id === j.shift && x.from !== undefined);
+        ${offstageOn(w) ? (() => { const j = homeJobOf(r); const timed = !!SHIFTS.find(x => x.id === j.shift && x.from !== undefined);
             // Home: no ready-made jobs; write what they do, and when they are out for it (the bedroom is in the Bedrooms tab)
             return `<label class="mu-field"><span>What they do (optional)</span><input type="text" maxlength="60" placeholder="nurse, barista, student…" value="${esc(j.name ?? '')}" data-input="home-job" data-who="${esc(r.avatar)}" data-focus="wcjob"></label>
             <div class="mu-row2"><label class="mu-field"><span>When they are out for it</span><select data-input="home-shift" data-who="${esc(r.avatar)}">${SHIFTS.map(x => opt(x.id, x.name, x.id === (j.shift ?? ''))).join('')}</select></label>
                 ${timed ? `<label class="mu-field"><span>Days</span><select data-input="home-days" data-who="${esc(r.avatar)}">${DAYS.map(([v, l]) => opt(v, l, (j.days ?? 'weekdays') === v)).join('')}</select></label>` : ''}</div>`; })()
-        : `<label class="mu-field"><span>Job</span><select data-input="wc-job">${opt('', 'No job', !r.occupation)}${w.occupations.map(o => opt(o.id, `${o.name} · ${placeOf(g, w, o.place)?.name ?? ''}`, r.occupation === o.id)).join('')}</select></label>
+        : ''}${isScenario(w) ? '' : `<label class="mu-field"><span>Job</span><select data-input="wc-job">${opt('', 'No job', !r.occupation)}${w.occupations.map(o => opt(o.id, `${o.name} · ${placeOf(g, w, o.place)?.name ?? ''}`, r.occupation === o.id)).join('')}</select></label>
         <label class="mu-field"><span>Lives in</span><select data-input="wc-zone">${w.homes.zones.map(z => opt(z.id, `${z.name} (${w.homes.kinds[z.kind]?.name ?? z.kind})`, r.home.zone === z.id)).join('')}</select></label>`}
         <label class="mu-check"><input type="checkbox" data-input="wc-met" ${r.met ? 'checked' : ''}><span>You know them<small>They show up by name, in People and in Messages.</small></span></label>
         ${tiesHtml(g, r.avatar)}

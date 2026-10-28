@@ -110,6 +110,7 @@ function tabFeatures(w: WorldDef) {
             ${pairChips(WORLD_TAGS.filter(t => !RPG_LOCKED || t.id !== 'rpg').map(t => [t.id, `${t.name}: ${t.desc}`] as [string, string]), 'tags')}</section>
         ${isScenario(w) ? '' : `<section class="mu-cw-sec mu-cw-wide"><h4>Game mode</h4><p class="mu-muted">How a new game starts (the player can pick another way the tags allow).</p>${modeCards(gameMode(w), 'cw-mode')}
             ${gameMode(w) === 'custom' ? '<small class="mu-muted">Custom: turn each need on or off in the Needs tab, and the systems below here.</small>' : ''}</section>`}
+        ${isScenario(w) ? '' : `<section class="mu-cw-sec"><h4>Off the map</h4>${chk('Going out off-screen', 'features.offstage', 'For worlds made mostly of buildings: "Go out" takes you somewhere you name (with who you want and a background), and people can have shifts of their own when they are away, off the map.')}</section>`}
         <section class="mu-cw-sec"><h4>Phone</h4>${chk('The player has a phone', 'features.phone')}${txt('What it is called', 'features.device', 'Phone')}
             <div class="mu-cw-apps">${apps.map((a, k) => `<div class="mu-cw-app ${a.on && (!appSystem(a.id) || systemOn(w, appSystem(a.id)!)) ? '' : 'is-off'}" ${appSystem(a.id) && !systemOn(w, appSystem(a.id)!) ? `title="Its system is off (Systems, below)"` : ''}><i style="--c:${esc(a.color)}">${icon(a.icon)}</i>
                 <input type="checkbox" data-input="cw" data-type="bool" data-path="features.apps.${k}.on" ${a.on ? 'checked' : ''} title="On">

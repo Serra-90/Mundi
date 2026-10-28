@@ -53,7 +53,7 @@ import { petLine } from './pets.js';
 import { mentorLine } from './mentors.js';
 import './letters.js';
 import './journey.js';
-import { systemOn, blockSystem, isScenario, SCENARIO_STARTS } from '../core/world.js';
+import { systemOn, blockSystem, isScenario, offstageOn, SCENARIO_STARTS } from '../core/world.js';
 export const PROMPT_KEY = 'mundi_scene';
 export const BLOCKS = [
     { id: 'core', name: 'Scene basics', desc: 'World, day and time, weather, place, who is here, and the rules of the scene.' },
@@ -105,8 +105,12 @@ export function scenarioPremise(g, w) {
 }
 // A scenario: the house is the whole stage; the premise, and who is out of the house right now (off-screen).
 export function scenarioLines(g, w) {
-    if (!isScenario(w))
-        return [];
+    if (!isScenario(w)) {
+        if (!offstageOn(w))
+            return [];
+        const away = Object.values(g.cast ?? {}).filter((r) => r.met && whereNow(g, w, r) === OUT).map((r) => r.name);
+        return [away.length ? `Away right now (off-screen, not in any scene): ${away.join(', ')}.` : '', homeJobsLine(g)].filter(Boolean);
+    }
     const out = Object.values(g.cast ?? {}).filter((r) => whereNow(g, w, r) === OUT).map((r) => r.name);
     const premise = scenarioPremise(g, w);
     return [`Home: everything happens in and around this one house; when someone goes out (work, errands, nights out) it is off-screen and only told afterwards.${premise ? ` Premise: ${premise}` : ''}`,

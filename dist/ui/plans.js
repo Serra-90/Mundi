@@ -8,7 +8,7 @@ import { friendTier, romanceTier } from '../sim/romance.js';
 // Calendar app on the phone, and the toasts the clock produces (reminders, arrivals, missed plans).
 import { housePartyHtml, partyForm } from './lifeui.js';
 import { notify, esc, game, toast, saveGame, nowAbs, state } from '../core/store.js';
-import { getWorld, fixedAt, isScenario, styleOf } from '../core/world.js';
+import { getWorld, fixedAt, isScenario, styleOf, offstageOn } from '../core/world.js';
 import { outingId } from '../sim/places.js';
 import { tr } from '../core/tr.js';
 import { thumb, sendCanned, addUserLine, replyAs, personaName, setAsk } from '../st/bridge.js';
@@ -91,7 +91,7 @@ export function planForm(g, w, avatar, face = false) {
         PL.kind = 'hangout';
     // a scenario: plans are made in a room of the house (the rooms of this game, and your room)
     const places = isScenario(w) ? [...pins(g, w).filter(p => !p.link && !p.home), { id: playerHomeId, name: 'Your room' }, { id: OUT_PICK, name: 'Somewhere out… (write where)' }]
-        : [...w.places.filter(p => !p.link), ...(placeOf(g, w, playerHomeId) ? [{ id: playerHomeId, name: 'Your home' }] : [])];
+        : [...w.places.filter(p => !p.link), ...(placeOf(g, w, playerHomeId) ? [{ id: playerHomeId, name: 'Your home' }] : []), ...(offstageOn(w) ? [{ id: OUT_PICK, name: 'Somewhere out… (write where)' }] : [])];
     if (!places.some(p => p.id === PL.place))
         PL.place = places.find(p => (p.tags ?? []).includes('leisure'))?.id ?? places[0]?.id ?? '';
     const times = slots(g);

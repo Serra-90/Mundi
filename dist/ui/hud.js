@@ -15,7 +15,7 @@ import { payOf, lockedOut } from '../sim/bills.js';
 import { needWord } from '../sim/life.js';
 import { lifeOverlays, soloOf } from './lifeui.js';
 import { game, esc, state, UI, saveSettings, notify, nowAbs, clockMode, onPhone, toast, saveGame } from '../core/store.js';
-import { getWorld, activeStatuses, systemOn, deviceLook, offScreenWork, isScenario } from '../core/world.js';
+import { getWorld, activeStatuses, systemOn, deviceLook, offScreenWork, isScenario, offstageOn } from '../core/world.js';
 import { levelChip } from './rpgui.js';
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 import { personaThumb, personaName, thumb, setPrompt } from '../st/bridge.js';
@@ -132,11 +132,11 @@ function corner(g, w) {
     return `<div class="mh-corner">
         <button class="mh-menu mh-glass ${menuOpen ? 'is-on' : ''}" data-act="hud-menu" title="Menu">${icon('menu')}</button>
         ${g.player.job && featureOn(w, 'jobs') && !offScreenWork(w) && g.player.loc !== jobDef(w, g.player.job.id)?.place ? `<button class="mh-mapbtn mh-glass" data-act="go-work" title="Go to work">${icon('briefcase')}<span>Work</span></button>` : ''}
-        ${isScenario(w) && isOuting(g.player.loc) ? `<button class="mh-mapbtn mh-glass" data-act="out-back" title="Go back home">${icon('home')}<span>Back home</span></button>` : state.view === 'scene' ? `<button class="mh-mapbtn mh-glass" data-act="to-map" title="${state.generating ? 'Wait until they finish speaking' : 'Map'}" ${state.generating ? 'aria-disabled="true"' : ''}>${icon(isScenario(w) ? 'home' : 'map')}<span>${isScenario(w) ? 'Rooms' : 'Map'}</span></button>` : `<button class="mh-mapbtn mh-glass" data-act="go-home" title="${isScenario(w) ? 'Go to my room' : 'Go home'}">${icon('home')}<span>${isScenario(w) ? 'My room' : 'Home'}</span></button>${isScenario(w) ? `<button class="mh-mapbtn mh-glass" data-act="out-open" title="Leave the house for a while">${icon('map')}<span>Go out</span></button>` : ''}`}
+        ${offstageOn(w) && isOuting(g.player.loc) ? `<button class="mh-mapbtn mh-glass" data-act="out-back" title="${isScenario(w) ? 'Go back home' : 'Go back'}">${icon('home')}<span>${isScenario(w) ? 'Back home' : 'Go back'}</span></button>` : state.view === 'scene' ? `<button class="mh-mapbtn mh-glass" data-act="to-map" title="${state.generating ? 'Wait until they finish speaking' : 'Map'}" ${state.generating ? 'aria-disabled="true"' : ''}>${icon(isScenario(w) ? 'home' : 'map')}<span>${isScenario(w) ? 'Rooms' : 'Map'}</span></button>` : `<button class="mh-mapbtn mh-glass" data-act="go-home" title="${isScenario(w) ? 'Go to my room' : 'Go home'}">${icon('home')}<span>${isScenario(w) ? 'My room' : 'Home'}</span></button>${offstageOn(w) && !isOuting(g.player.loc) ? `<button class="mh-mapbtn mh-glass" data-act="out-open" title="${isScenario(w) ? 'Leave the house for a while' : 'Go somewhere off the map for a while'}">${icon('map')}<span>Go out</span></button>` : ''}`}
         ${menuOpen ? `<nav class="mh-menu-pop mh-glass">
             ${clockMode(g) === 'live' ? `<button data-act="speed">${icon('pause')}<span>Clock speed: ${g.speed ? `×${g.speed / 60}` : 'paused'}</span></button>` : ''}
             ${g.player.loc !== playerHomeId && !isOuting(g.player.loc) ? `<button data-act="go-home">${icon('home')}<span>${isScenario(w) ? 'Go to my room' : 'Go home'}</span></button>` : ''}
-            ${isScenario(w) ? (isOuting(g.player.loc) ? `<button data-act="out-bg-open">${icon('image')}<span>Background</span></button>` : `<button data-act="out-open">${icon('map')}<span>Go out</span></button>`) : ''}
+            ${offstageOn(w) ? (isOuting(g.player.loc) ? `<button data-act="out-bg-open">${icon('image')}<span>Background</span></button>` : `<button data-act="out-open">${icon('map')}<span>Go out</span></button>`) : ''}
             ${isScenario(w) ? `<button data-act="res-open">${icon('users')}<span>Who lives here</span></button>` : ''}
             ${isScenario(w) ? `<button data-act="sc-open" data-v="persona"><span class="mh-drawer-mew"><img class="mh-drawer-me" src="${esc(personaThumb())}" alt=""></span><span>Your persona<small data-notr>${esc(personaName())}</small></span></button>` : ''}
             <button data-act="open-world">${icon('globe')}<span>${isScenario(w) ? 'This Home' : 'This world'}</span></button>

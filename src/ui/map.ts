@@ -13,7 +13,7 @@ import { maybeBump } from './bump.js';
 import { rollAction, gradeName } from '../sim/dice.js';
 import { setPrompt } from '../st/bridge.js';
 import { beforeTravel, beforeSleep } from '../sim/plans.js';
-import { getWorld, worldFile, systemOn, type WorldDef, type ActionDef, type MapDef, isScenario } from '../core/world.js';
+import { getWorld, worldFile, systemOn, type WorldDef, type ActionDef, type MapDef, isScenario, offstageOn } from '../core/world.js';
 import { openNow, pictureAt } from '../sim/daynight.js';
 import { isRpg, longRest } from '../sim/rpg.js';
 import { journeyOf, travelRoad } from '../sim/journey.js';
@@ -378,6 +378,7 @@ export async function travelTo(loc: string, road?: 'camp' | 'push', narrate = tr
     if (loc === g.player.loc) return;
     if (state.generating) { toast('Wait until they finish speaking.', 'info'); return; }   // nobody walks out mid-sentence
     { const why = leaveBlock(g, w); if (why) { toast(why, 'info'); return; } }   // "stay until goodbye"
+    if (isOuting(g.player.loc) && !isOuting(loc)) { const { endOuting } = await import('../sim/outing.js'); endOuting(g); }   // back from off the map first
     const mins = travelMinutes(g, w, g.player.loc, loc);
     const trip = journeyOf(g, w, g.player.loc, loc, mins);
     if (trip && trip.camps > 0 && !road) { Object.assign(JOURNEY, { to: loc, minutes: mins, camps: trip.camps }); notify(); return; }
@@ -492,7 +493,7 @@ async function goTo(loc: string) {
     const { g, w } = ctxW();
     popFor = '';
     // Home: a plan somewhere out of the house: going there is going out (who comes, the background)
-    if (isScenario(w) && isOuting(loc) && loc !== g.player.loc) { const { openGoOut } = await import('./outing.js'); openGoOut(outingName(loc)); return; }
+    if (offstageOn(w) && isOuting(loc) && loc !== g.player.loc) { const { openGoOut } = await import('./outing.js'); openGoOut(outingName(loc)); return; }
     const door = doorAnswer(g, w, loc);
     if (!door.ok) { toast(door.text, 'info'); notify(); return; }
     if (door.text) toast(door.text, 'info');
