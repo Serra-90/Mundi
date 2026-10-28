@@ -4,6 +4,9 @@
 import { cfg, state, type Save } from '../core/store.js';
 import { isScenario, type WorldDef } from '../core/world.js';
 import { presentAt } from './people.js';
+import { buildingAt } from './places.js';
+// Dress codes are for a Home's rooms and for the rooms of a world's buildings.
+const dressHere = (g: Save, w: WorldDef) => isScenario(w) || !!buildingAt(g, w, g.player.loc);
 import { outfitOf, wearOutfit } from '../st/bridge.js';
 
 export const dressCodes = (g: Save): Record<string, string> => ((cfg(g) as any).dress ??= {});
@@ -14,7 +17,7 @@ const dressed = (g: Save): Record<string, string> => (((g as any).dressed ??= {}
 // Puts on (or takes off) the dress code's outfit for the people in the scene. `has`: the outfits someone has
 // (null while still looking: nothing changes for them yet).
 export function applyDress(g: Save, w: WorldDef, has: (avatar: string) => string[] | null): boolean {
-    if (!isScenario(w)) return false;
+    if (!dressHere(g, w)) return false;
     const code = dressAt(g, g.player.loc).toLowerCase();
     const worn = dressed(g); let changed = false;
     for (const r of presentAt(g, w, g.player.loc)) {
@@ -31,7 +34,7 @@ export function applyDress(g: Save, w: WorldDef, has: (avatar: string) => string
 }
 // For the AI: what people wear in this room.
 export function dressLine(g: Save, w: WorldDef): string {
-    if (!isScenario(w)) return '';
+    if (!dressHere(g, w)) return '';
     const code = dressAt(g, g.player.loc);
     return code ? `Dress code here: people wear their ${code} (outfit) in this room.` : '';
 }

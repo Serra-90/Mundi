@@ -19,7 +19,7 @@ import { isRpg, longRest } from '../sim/rpg.js';
 import { journeyOf, travelRoad } from '../sim/journey.js';
 import type { Save } from '../core/store.js';
 import { thumb, personaName } from '../st/bridge.js';
-import { pins, placeOf, travelMinutes, playerHomeId, isOuting, outingName } from '../sim/places.js';
+import { pins, placeOf, travelMinutes, playerHomeId, isOuting, outingName, buildingAt } from '../sim/places.js';
 import { planOn, floorsOn, planTarget, unplaced, floorOf, buildingOf, scopePins, type PlanScope } from '../sim/plan.js';
 import { presentAt, whereNow } from '../sim/people.js';
 import { writeDiary, diaryOn, markDayStart } from '../sim/diary.js';
@@ -383,7 +383,7 @@ export async function travelTo(loc: string, road?: 'camp' | 'push', narrate = tr
     if (trip && trip.camps > 0 && !road) { Object.assign(JOURNEY, { to: loc, minutes: mins, camps: trip.camps }); notify(); return; }
     // the scene you leave closes; the next one starts clean. Not in a Home: walking from room to room (often with
     // the same people) is one long scene, and closing it made them forget what was just said.
-    if (!isScenario(w)) await endVisit(g, w);
+    { const bf = buildingAt(g, w, g.player.loc); if (!isScenario(w) && !(bf && bf === buildingAt(g, w, loc))) await endVisit(g, w); }   // inside a building, room to room is one scene too
     beforeTravel(g, w, loc).forEach(m => toast(m, 'info'));
     const from = g.player.loc;
     (g as any).traveling = true;   // the trip itself costs no energy (only what you do does)

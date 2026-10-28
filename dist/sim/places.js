@@ -88,6 +88,14 @@ export function realmOf(w, mapId) {
     }
     return '';
 }
+// The building a place is in (a world's map marked as a building), or null.
+export function buildingAt(g, w, loc) {
+    if (isScenario(w))
+        return null;
+    const p = placeOf(g, w, loc);
+    const m = p && w.maps.find(x => x.id === p.map);
+    return m?.building ? m : null;
+}
 export function travelMinutes(g, w, from, to) {
     if (from === to)
         return 0;

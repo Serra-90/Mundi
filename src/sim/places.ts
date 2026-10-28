@@ -79,6 +79,12 @@ export function realmOf(w: WorldDef, mapId?: string): string {
     }
     return '';
 }
+// The building a place is in (a world's map marked as a building), or null.
+export function buildingAt(g: Save, w: WorldDef, loc: string) {
+    if (isScenario(w)) return null;
+    const p = placeOf(g, w, loc); const m = p && w.maps.find(x => x.id === p.map);
+    return m?.building ? m : null;
+}
 export function travelMinutes(g: Save, w: WorldDef, from: string, to: string): number {
     if (from === to) return 0;
     if (isScenario(w)) return 0;   // Home: from one room to another takes no time
