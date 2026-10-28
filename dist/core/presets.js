@@ -255,6 +255,7 @@ export const presetOf = (w) => PRESETS[styleId(w)] ?? PRESETS.modern;
 // Fills what a world lacks from its style's preset (older worlds, and worlds made before these were editable).
 // Safe to run again: only what is missing is added; nothing the world has is changed.
 export function upgradeWorld(w) {
+    homeToBuilding(w);
     const p = presetOf(w);
     const c = (w.catalogs ??= {});
     c.shop ??= structuredClone(p.shop);
@@ -393,5 +394,22 @@ export function upgradeWorld(w) {
         }
         w.presetCrises = true;
     }
+    return w;
+}
+// Newworld has one mode: a Home is a world whose house is a building (its map), with the floor plan on it and going
+// out off-screen on. The Home's own rules (no money, rooms chosen per game…) stay with the world's `scenario`.
+export function homeToBuilding(w) {
+    if (!w.scenario || !w.maps?.length)
+        return w;
+    const house = w.maps.find(m => m.building) ?? w.maps[0];
+    house.building = true;
+    if (w.plan) {
+        if (!house.plan)
+            house.plan = w.plan;
+        delete w.plan;
+    }
+    (w.features ??= {});
+    if (w.features.offstage === undefined)
+        w.features.offstage = true;
     return w;
 }

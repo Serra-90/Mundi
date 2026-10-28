@@ -20,7 +20,7 @@ import { journeyOf, travelRoad } from '../sim/journey.js';
 import type { Save } from '../core/store.js';
 import { thumb, personaName } from '../st/bridge.js';
 import { pins, placeOf, travelMinutes, playerHomeId, isOuting, outingName, buildingAt } from '../sim/places.js';
-import { planOn, floorsOn, planTarget, unplaced, floorOf, buildingOf, scopePins, type PlanScope } from '../sim/plan.js';
+import { planOn, floorsOn, planTarget, unplaced, floorOf, buildingOf, scopePins, houseOf, type PlanScope } from '../sim/plan.js';
 import { presentAt, whereNow } from '../sim/people.js';
 import { writeDiary, diaryOn, markDayStart } from '../sim/diary.js';
 import { openWork, diaryWaiting, diaryReady } from './relui.js';
@@ -202,7 +202,7 @@ function roomsHtml(g: Save, w: WorldDef, b: MapDef | null = null) {
 // bottom left, and the rooms not on the plan yet with a red "!".
 export const PV = { floor: '', at: '' };
 function planHtml(g: Save, w: WorldDef, sc: PlanScope) {
-    const plan = sc.plan; const b = buildingOf(w, sc.map);
+    const plan = sc.plan; const b = buildingOf(w, sc.map) ?? (isScenario(w) && w.maps.length > 1 ? houseOf(w) : null);
     if (PV.at !== g.player.loc) { PV.at = g.player.loc; PV.floor = ''; }
     const floor = plan.floors.find(f => f.id === PV.floor) ?? plan.floors.find(f => f.id === floorOf(g, w, g.player.loc, sc)) ?? plan.floors[0];
     const kindPic = (loc: string) => { const k = loc === playerHomeId ? w.homes.kinds[g.player.home.kind] : w.homes.kinds[w.homes.zones.find(z => z.id === g.cast[loc.slice(5)]?.home.zone)?.kind ?? '']; return k ? pictureAt(w, g.minutes, k.image, k.images) : ''; };
@@ -230,8 +230,9 @@ function planHtml(g: Save, w: WorldDef, sc: PlanScope) {
 
 export function mapHtml() {
     const { g, w } = ctxW();
-    if (isScenario(w)) { const sc = planOn(w); return sc ? planHtml(g, w, sc) : roomsHtml(g, w); }
     const map = curMap(g, w);
+    // a Home: its house (rooms or plan); a Home with maps of the outside too shows them as a world does
+    if (isScenario(w)) { const house = houseOf(w); if (!house || map.id === house.id || w.maps.length < 2) { const sc = planOn(w); return sc ? planHtml(g, w, sc) : roomsHtml(g, w, w.maps.length > 1 ? house : null); } }
     // a building: its rooms (or its floor plan), and the way out to the map it is on
     if (map.building) { const sc = planOn(w, map.id); return sc ? planHtml(g, w, sc) : roomsHtml(g, w, map); }
     const parent = map.parent ? w.maps.find(m => m.id === map.parent) : null;
@@ -407,7 +408,7 @@ export async function travelTo(loc: string, road?: 'camp' | 'push', narrate = tr
 
 // The name of a place in a line of the story (a bedroom is "X's room").
 const storyName = (g: Save, w: WorldDef, loc: string) => {
-    if (loc === playerHomeId) return fmt("{0}'s room", personaName());
+    if (loc === playerHomeId) { const z = w.homes.zones.find(x => x.id === g.player.home.zone); return z?.name || tr(isScenario(w) ? 'your room' : 'your home'); }
     const n = String(placeOf(g, w, loc)?.name ?? loc);
     return /'s home$/.test(n) ? fmt("{0}'s room", n.replace(/'s home$/, '')) : n;
 };

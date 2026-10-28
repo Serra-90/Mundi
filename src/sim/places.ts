@@ -87,8 +87,12 @@ export function buildingAt(g: Save, w: WorldDef, loc: string) {
 }
 export function travelMinutes(g: Save, w: WorldDef, from: string, to: string): number {
     if (from === to) return 0;
-    if (isScenario(w)) return 0;   // Home: from one room to another takes no time
     let a = placeOf(g, w, from), b = placeOf(g, w, to);
+    if (isScenario(w)) {   // Home: from one room to another takes no time (and going out has its own time)
+        const house = w.maps.find(m => m.building) ?? w.maps[0];
+        const inHouse = (p: typeof a, id: string) => !p || isOuting(id) || p.map === house?.id;
+        if (inHouse(a, from) && inHouse(b, to)) return 0;
+    }
     // buildings: from room to room a minute or two; in or out, the trip to (or from) the building's door outside
     const bOf = (p: typeof a) => { const m = p && w.maps.find(x => x.id === p.map); return m?.building ? m : null; };
     const ba = bOf(a), bb = bOf(b);

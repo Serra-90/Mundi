@@ -14,9 +14,11 @@ import { mapEditorHtml, ME } from './mapedit.js';
 export const PE = { view: 'rooms', floor: '', sel: '' };
 // Whose plan is edited: the Home's, or (in a world) the building chosen in Maps. `base` is its path for the fields.
 const target = (w) => {
-    if (isScenario(w))
+    if (isScenario(w) && !w.maps.length)
         return { obj: w, base: '', map: '' };
-    const i = Math.max(0, w.maps.findIndex(m => m.id === ME.map));
+    const i = isScenario(w) ? Math.max(0, w.maps.findIndex(m => m.building)) : Math.max(0, w.maps.findIndex(m => m.id === ME.map));
+    if (isScenario(w))
+        return { obj: w.maps[i], base: `maps.${i}.`, map: '' };
     return { obj: w.maps[i] ?? {}, base: `maps.${i}.`, map: w.maps[i]?.id ?? '' };
 };
 const planOf = (w) => (target(w).obj.plan ??= { floors: [], rooms: [] });

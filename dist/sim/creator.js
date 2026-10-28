@@ -48,7 +48,7 @@ function absolutize(w, src) {
             p.bg = abs(p.bg);
         absAll(p.bgs);
     }
-    for (const f of w.plan?.floors ?? []) {
+    for (const f of [...(w.plan?.floors ?? []), ...w.maps.flatMap(m => m.plan?.floors ?? [])]) {
         if (f.image)
             f.image = abs(f.image);
         absAll(f.images);
@@ -128,7 +128,7 @@ export async function uploadWorldPicture(w, file, what) {
 export const imageRatio = (url) => new Promise(ok => { const i = new Image(); i.onload = () => ok(+(i.naturalWidth / i.naturalHeight).toFixed(4) || 1.6); i.onerror = () => ok(1.6); i.src = url; });
 function assetsOf(w) {
     const parts = (o) => Object.values(o ?? {}); // the pictures for each part of the day
-    return [w.cover, ...Object.values(w.music ?? {}), ...w.maps.flatMap(m => [m.image, ...parts(m.images)]), ...Object.values(w.homes.kinds).flatMap(k => [k.image, ...parts(k.images)]), ...w.places.flatMap(p => [p.bg, ...parts(p.bgs)]), ...(w.plan?.floors ?? []).flatMap(f => [f.image, ...parts(f.images)])].filter((x) => !!x);
+    return [w.cover, ...Object.values(w.music ?? {}), ...w.maps.flatMap(m => [m.image, ...parts(m.images)]), ...Object.values(w.homes.kinds).flatMap(k => [k.image, ...parts(k.images)]), ...w.places.flatMap(p => [p.bg, ...parts(p.bgs)]), ...[...(w.plan?.floors ?? []), ...w.maps.flatMap(m => m.plan?.floors ?? [])].flatMap(f => [f.image, ...parts(f.images)])].filter((x) => !!x);
 }
 /* ---------- export and import ---------- */
 const toDataUrl = async (url) => {

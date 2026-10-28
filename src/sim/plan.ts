@@ -13,10 +13,12 @@ export const buildingOf = (w: WorldDef | null | undefined, mapId?: string): MapD
     if (!w || isScenario(w)) return null;
     const m = w.maps.find(x => x.id === mapId); return m?.building ? m : null;
 };
+// A Home's house: its building (the first map, before Newworld).
+export const houseOf = (w: WorldDef): MapDef | null => w.maps.find(m => m.building) ?? w.maps[0] ?? null;
 // The plan of a Home, or of a building of a world.
 export function scopeOf(w: WorldDef | null | undefined, mapId?: string): PlanScope | null {
     if (!w) return null;
-    if (isScenario(w)) return w.plan ? { plan: w.plan, map: '' } : null;
+    if (isScenario(w)) { const h = houseOf(w); const plan = h?.plan ?? w.plan; return plan ? { plan, map: '' } : null; }
     const b = buildingOf(w, mapId); return b?.plan ? { plan: b.plan, map: b.id } : null;
 }
 // The plan is drawn only with a picture of it (a blueprint) on a floor; floors without one still sort the rooms

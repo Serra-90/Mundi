@@ -5,7 +5,7 @@ import { getWorld, isScenario } from '../core/world.js';
 import { characters, thumb, charOf } from '../st/bridge.js';
 import { addResident, moveToRoom, removeResident } from '../sim/game.js';
 import { normalizeHomes } from '../sim/living.js';
-import { planSlots, spotOf } from '../sim/plan.js';
+import { planSlots, spotOf, scopeOf } from '../sim/plan.js';
 import { refreshPrompt } from '../sim/prompt.js';
 import { charPicker } from './charpick.js';
 import { icon } from './icons.js';
@@ -28,7 +28,8 @@ export function residentsHtml(): string {
             ${charPicker({ key: 'resadd', list: characters().filter(c => !g.cast[c.avatar]), selected: [], act: 'res-add', placeholder: 'Search your characters' })}</div>`;
     }
     const beds = planSlots(w).filter(s => s.bedroom);
-    const floorOfSpot = (id: string) => { const r = w.plan?.rooms.find(x => x.id === id); return r ? w.plan!.floors.find(f => f.id === r.floor)?.name ?? '' : ''; };
+    const hp = scopeOf(w)?.plan;
+    const floorOfSpot = (id: string) => { const r = hp?.rooms.find(x => x.id === id); return r ? hp!.floors.find(f => f.id === r.floor)?.name ?? '' : ''; };
     const roomName = (id: string) => { const f = floorOfSpot(id); return `${f ? `${f} · ` : ''}${beds.find(b => b.id === id)?.name ?? id}`; };
     const mine = spotOf(w, g.player.home);
     // who is in each bedroom now
