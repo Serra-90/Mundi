@@ -16,7 +16,8 @@ import { getWorld, worldFile, systemOn, isScenario, offstageOn } from '../core/w
 import { openNow, pictureAt } from '../sim/daynight.js';
 import { isRpg, longRest } from '../sim/rpg.js';
 import { journeyOf, travelRoad } from '../sim/journey.js';
-import { thumb, personaName } from '../st/bridge.js';
+import { thumb, personaName, chat } from '../st/bridge.js';
+import { consentCheck, consentHint, consentAfter, consentOn, refusedLately, agreed } from '../sim/consent.js';
 import { pins, placeOf, travelMinutes, playerHomeId, isOuting, outingName, buildingAt } from '../sim/places.js';
 import { planOn, floorsOn, planTarget, unplaced, floorOf, buildingOf, scopePins, houseOf } from '../sim/plan.js';
 import { presentAt, whereNow } from '../sim/people.js';
@@ -504,6 +505,8 @@ async function narrateMove(g, w, from, to) {
     await autoLine(fmt('*{0} goes from {1} to {2}.*', personaName(), a, b), hint);
 }
 /* ---------- doing something: with whom, how, for how long ---------- */
+// The line you send when you propose something to someone (they answer it).
+const proposalLine = (a, names, how, mins) => `*${fmt('{0} proposes to {1}: {2}', personaName(), names.join(', '), a.name)}${how ? ` — ${how}` : ''} (${durText(mins)})*`;
 const AD = { id: '', who: [], how: '', mins: 0 };
 export function actDlgHtml() {
     const g = game();
@@ -527,12 +530,48 @@ export function actDlgHtml() {
             <small class="mu-muted">For how long?</small>
             <div class="mh-ca-lens">${presets.map(m => `<button class="${AD.mins === m ? 'is-on' : ''}" data-act="ad-mins" data-v="${m}"><b>${durText(m)}</b></button>`).join('')}
                 <label class="mu-ad-mins"><input type="number" min="1" max="720" step="5" value="${AD.mins}" data-input="ad-mins"> <span>min</span></label></div>
-            <small class="mu-muted">The narrator tells it in the chat.</small>
+            <small class="mu-muted">${AD.who.length && consentOn(g) ? 'With someone, it is a proposal: they may say no (the AI judges it, the dice decide).' : 'The narrator tells it in the chat.'}</small>
         </div>
-        <footer class="mh-ca-row"><button class="mu-ghost" data-act="ad-close">Cancel</button><button class="mu-primary" data-act="ad-go">${icon('check')}<span>Do it</span></button></footer>
+        <footer class="mh-ca-row"><button class="mu-ghost" data-act="ad-close">Cancel</button><button class="mu-primary" data-act="ad-go">${icon('check')}<span>${AD.who.length && consentOn(g) ? 'Propose it' : 'Do it'}</span></button></footer>
     </section></div>`;
 }
 async function runAction(g, w, a, mins, who, how) {
+    // together with someone: first, do they want to? (the AI judges, the dice decide, the AI answers, the bond moves)
+    let consent = null;
+    const people = who.map(x => g.cast[x]).filter(Boolean);
+    if (people.length && consentOn(g)) {
+        const no = refusedLately(g, a, who).map(x => g.cast[x]?.name).filter(Boolean);
+        if (no.length) {
+            toast(fmt('{0} said no to this a little while ago: give it some time.', no.join(', ')), 'info');
+            return;
+        }
+        state.generating = true;
+        notify();
+        const me = personaName();
+        const recent = chat().slice(-8).filter((m) => !m.is_system).map((m) => `${m.is_user ? me : m.name}: ${String(m.mes ?? '').replace(/\s+/g, ' ').slice(0, 300)}`).join('\n');
+        try {
+            consent = await consentCheck(g, w, a, people, how, mins, recent);
+        }
+        finally {
+            state.generating = false;
+        }
+        const ok = agreed(consent);
+        toast(`${tr(ok ? 'They agree' : 'They decline')} · d20 ${consent.d20}${consent.bonus ? ` ${consent.bonus > 0 ? '+' : '−'} ${Math.abs(consent.bonus)}` : ''} = ${consent.total} ${tr('vs DC')} ${consent.dc}${consent.impossible ? ` (${tr('impossible')})` : ''}${consent.grade.startsWith('critical') ? ` · ${tr(consent.grade === 'critical-success' ? 'critical!' : 'critical failure')}` : ''}`, ok ? 'success' : 'warn', { ms: 7000 });
+        if (!ok) {
+            // the action does not happen: a few minutes go by, the bond takes it, and they say no in the chat
+            advance(g, w, 5).forEach(m => toast(m, 'warn'));
+            consentAfter(g, a, people, consent).forEach(m => toast(m, 'warn'));
+            runPlans();
+            saveGame();
+            await syncScene();
+            if (isScenario(w))
+                state.view = 'scene';
+            notify();
+            const { autoLine } = await import('./scene.js');
+            await autoLine(proposalLine(a, people.map(r => r.name), how, mins), consentHint(consent, a, people.map(r => r.name), how, durText(mins)));
+            return;
+        }
+    }
     actionSound(a.effects, a.id);
     await doing(a.label, a.icon ?? '⏳', mins); // a moment on screen while the time passes
     applyAction(g, w, a);
@@ -557,6 +596,13 @@ async function runAction(g, w, a, mins, who, how) {
     notify();
     // the action goes into the chat as yours, and the narrator tells it (with the people taking part)
     const names = who.map(x => g.cast[x]?.name).filter(Boolean);
+    if (consent) {
+        consentAfter(g, a, people, consent).forEach(m => toast(m, 'success'));
+        saveGame();
+        const { autoLine } = await import('./scene.js');
+        await autoLine(proposalLine(a, names, how, mins), consentHint(consent, a, names, how, durText(mins)));
+        return;
+    }
     const line = `*${personaName()} — ${a.name}${names.length ? ` ${fmt('with {0}', names.join(', '))}` : ''}${how ? `: ${how}` : ''} (${durText(mins)})*`;
     const hint = `[{{user}} is doing this now: ${a.name} (${a.label})${names.length ? `, together with ${names.join(', ')}` : ''}${how ? `, like this: ${how}` : ''}. It takes about ${durText(mins)}. Narrate the action as it happens in the scene${names.length ? `, with ${names.join(', ')} taking part in character` : ''}${roll ? `; it went this way: ${gradeName(roll.grade).toLowerCase()}, ${roll.text}` : ''}. Do not write {{user}}'s words or decisions beyond what is stated.]`;
     const { autoLine } = await import('./scene.js');

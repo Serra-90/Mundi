@@ -176,7 +176,7 @@ function tabRules(g: Save, w: WorldDef): string {
         `<label class="mu-field slider"><span>${label} · ${v}${unit}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${v}" data-input="wc-cfg" data-k="${key}"></label>`;
     const live = (c.clock ?? 'action') === 'live';
     return `<section class="mu-wc-sec"><h4>${esc(w.name)}</h4><p>${esc(w.description)}</p><p class="mu-muted">Game mode: <b>${GAME_MODES.find(m => m.id === gameMode(w))!.name}</b> (change it in the world creator).</p></section>
-        <section class="mu-wc-sec"><h4>Scene</h4><label class="mu-check"><input type="checkbox" data-input="wc-stay" ${c.stayInScene ? 'checked' : ''}><span>Stay until goodbye<small>While you are talking with someone or an event is going on, you cannot leave the room, go out, go to a plan, sleep or let time pass. Take your leave first (they say goodbye back), or end the event.</small></span></label></section>
+        <section class="mu-wc-sec"><h4>Scene</h4><label class="mu-check"><input type="checkbox" data-input="wc-stay" ${c.stayInScene ? 'checked' : ''}><span>Stay until goodbye<small>While you are talking with someone or an event is going on, you cannot leave the room, go out, go to a plan, sleep or let time pass. Take your leave first (they say goodbye back), or end the event.</small></span></label><label class="mu-check"><input type="checkbox" data-input="wc-consent" ${(c as any).consent !== false ? 'checked' : ''}><span>Consent checks<small>An action done with someone ("With whom") is first a proposal: the AI judges how much it asks of them, the dice decide, and they agree or say no. A no can hurt the bond.</small></span></label></section>
         ${isScenario(w) ? `${dressHtml(g, w)}${systemOn(w, 'romance') ? `<section class="mu-wc-sec"><h4>Love</h4><label class="mu-check"><input type="checkbox" data-input="wc-poly" ${c.poly ? 'checked' : ''}><span>Open relationships</span></label></section>` : ''}<section class="mu-wc-sec"><h4>Rooms</h4>${list(w.places.map(p => p.name))}</section>` : `
         <section class="mu-wc-sec"><h4>Time</h4>
             <div class="mu-heropick is-start">
@@ -343,6 +343,7 @@ Object.assign(INPUT, {
         } else l.splice(l.indexOf(n), 1);
         saveGame(); await applyGameLore(); notify();
     },
+    'wc-consent': (el) => { const g = game(); if (!g) return; (cfg(g) as any).consent = (el as HTMLInputElement).checked ? undefined : false; saveGame(); notify(); },
     'wc-stay': (el) => { const g = game(); if (!g) return; cfg(g).stayInScene = (el as HTMLInputElement).checked || undefined; if (!cfg(g).stayInScene) (social(g) as any).talk = null; saveGame(); notify(); },
     'wc-poly': (el) => { const g = game(); if (!g) return; cfg(g).poly = (el as HTMLInputElement).checked || undefined; saveGame(); notify(); },
     'wc-cfg': (el) => { const g = game(); if (!g) return; (cfg(g) as any)[el.dataset.k!] = Number(el.value); saveGame(); notify(); },
