@@ -261,7 +261,9 @@ export async function startNewGame(o: NewGame) {
     const exAvatar = new Map<string, string>();
     for (const a of Object.keys(save.cast)) { const ex = exampleOf(w, charOf(a)); if (ex && !exAvatar.has(ex.name)) exAvatar.set(ex.name, a); }
     for (const ex of w.cast.examples) for (const t of ex.ties ?? []) { const a = exAvatar.get(ex.name), b = exAvatar.get(t.to); if (a && b && a !== b) setTie(save, { a, b, type: t.type as TieType, tone: t.tone as TieTone }); }
-    for (const t of o.ties ?? []) {
+    // the origin's own relations with you (your secretary, your old scouts…), before the ones chosen for this game
+    const originTies = (origin?.ties ?? []).flatMap(t => { const a = exAvatar.get(t.to); return a && save.cast[a] ? [{ a, b: '__you', type: t.type as TieType, tone: (t.tone ?? 'neutral') as TieTone }] : []; });
+    for (const t of [...originTies, ...(o.ties ?? [])]) {
         if ((t.a !== '__you' && !save.cast[t.a]) || (t.b !== '__you' && !save.cast[t.b]) || t.a === t.b) continue;
         setTie(save, t);
         const other = t.a === '__you' ? t.b : t.b === '__you' ? t.a : '';
@@ -299,7 +301,9 @@ export async function startNewGame(o: NewGame) {
     // the world's lorebooks and the characters' lorebooks chosen to stay on in this world
     const books = [...new Set([...(w.lorebooks ?? []), ...(o.lore ?? [])])];
     if (books.length) (save as any).cfg = { ...(save as any).cfg, lore: books };   // keeps the difficulty
-    Object.values(save.cast).slice(0, origin?.knows ?? 0).forEach(r => { r.met = true; });
+    // the people you already know: the world's first ones, in the world's order (any order if none of them is here)
+    const known = w.cast.examples.map(e => exAvatar.get(e.name)).filter((a): a is string => !!a && !!save.cast[a]);
+    (known.length ? known.map(a => save.cast[a]) : Object.values(save.cast)).slice(0, origin?.knows ?? 0).forEach(r => { r.met = true; });
     setGame(save);
     await bindChatLore(loreName);
     if (w.note?.text) {   // the world's Author's Note, the same one SillyTavern uses

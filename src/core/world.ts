@@ -100,6 +100,8 @@ export interface Attribute { id: string; name: string; desc?: string }
 export interface TraitGroup { id: string; label: string; max: number; options: string[] }
 export interface Origin {
     id: string; name: string; desc?: string; money: number; home?: string; knows?: number;
+    /** People of the world you already know from this origin, and what they are to you ("to" is the example person's name). */
+    ties?: { to: string; type: string; tone?: string }[];
     attributes?: Record<string, number>;
     /** RPG: the skills this background is trained in, and what it gives you (like a BG3 background). */
     skills?: string[]; feature?: string;

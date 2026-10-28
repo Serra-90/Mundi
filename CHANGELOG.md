@@ -6,6 +6,8 @@
   screens are translated: the story's language is up to your preset, and the worlds keep their own names.
 - **A world's people from your own cards**: a card you already have with the same name as one of the world's
   people takes that person's home, job, routine and relations in the game.
+- **The people you already know from your origin** are the world's own, in the world's order, and an origin can
+  say what each of them is to you (colleague, old friend, rival…): the relation and where you stand start on day one.
 
 ## 0.2.0 · 2026-10-25
 
