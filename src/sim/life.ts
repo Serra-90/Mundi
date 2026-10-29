@@ -96,14 +96,16 @@ function checkAspiration(g: Save, w: WorldDef): string[] {
 // unlock things to do at home (an action with `needsItem`).
 export type Item = ShopItem;
 export const shopItems = (w: WorldDef): Item[] => (systemOn(w, 'shop') ? (w.catalogs as any).shop ?? [] : []) as Item[];
-export const hasItem = (g: Save, id: string) => life(g).items.includes(id);
+export const hasItem = (g: Save, id: string | string[]): boolean => Array.isArray(id) ? id.some(i => hasItem(g, i)) : life(g).items.includes(id);
+/** How many copies of an item the player owns (consumables can stack). */
+export const itemCount = (g: Save, id: string): number => life(g).items.filter(x => x === id).length;
 // What an item costs now: the difficulty, then the prices where you live (the living world).
 export const shopPrice = (g: Save, w: WorldDef, it: Item) => Math.round(priceOf(g, it.price) * priceHere(g, w, playerHomeId));
 const owned = (g: Save, w: WorldDef) => shopItems(w).filter(it => hasItem(g, it.id));
 export function buy(g: Save, w: WorldDef, id: string): string {
     const it = shopItems(w).find(x => x.id === id);
     if (!it) return '';
-    if (hasItem(g, id)) return 'You already have it.';
+    if (hasItem(g, id) && !it.stack) return 'You already have it.';
     const price = shopPrice(g, w, it);
     if (g.player.money < price) return 'Not enough money.';
     g.player.money -= price; book(g, it.name, -price);
@@ -142,6 +144,16 @@ export const isBlocked = (g: Save, a: ActionDef, w?: WorldDef | null) => !!a.hom
 // After an action (the engine's own and the world's): its special results.
 export function afterAction(g: Save, w: WorldDef, a: ActionDef, success: boolean | null): string[] {
     const l = life(g); const out: string[] = [];
+    // The action spends one copy of its `consume` item(s): the first one the player owns.
+    if (a.consume) {
+        const ids = Array.isArray(a.consume) ? a.consume : [a.consume];
+        const got = ids.find(id => l.items.includes(id));
+        if (got !== undefined) {
+            l.items.splice(l.items.indexOf(got), 1);
+            const it = shopItems(w).find(x => x.id === got);
+            if (it) { out.push(`${it.name}: used up.`); note(g, '{u} used up: {0}.', [it.name], [], g.player.loc, 'shop'); }
+        }
+    }
     if (a.id === 'x-workout' || a.id === 'x-treadmill' || a.id === 'x-run') l.fitness = Math.min(100, l.fitness + (a.id === 'x-run' ? 3 : 5));
     if (a.id.startsWith('x-repair-')) { const b = a.id.slice(9); l.broken = l.broken.filter(x => x !== b); out.push(`${cap(thing(w, b))} works again.`); }
     if (a.id === 'fix' && success && l.broken.length) { const b = l.broken.shift()!; out.push(`You fixed ${thing(w, b)}.`); }

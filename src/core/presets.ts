@@ -6,7 +6,8 @@ import { MEDIEVAL_RPG, MODERN_RPG, type RpgDef } from './rpgdef.js';
 
 export interface ShopItem { id: string; name: string; desc: string; icon: string; price: number;
     /** trips take this share of the time (0.5 = half); the best vehicle you own counts */ travel?: number;
-    /** mood gained each morning you wake up at home */ sleepMood?: number }
+    /** mood gained each morning you wake up at home */ sleepMood?: number;
+    /** can be bought again and again (consumables); actions may spend one copy via `consume` */ stack?: boolean }
 export interface Breakable { id: string; name: string; blocks: string[] }
 export interface Kinds { deviceLook: 'phone' | 'book'; socialKind: 'feed' | 'board'; messageKind: 'texts' | 'letters'; voice: string }
 

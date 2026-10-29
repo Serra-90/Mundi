@@ -96,8 +96,10 @@ export interface ActionDef {
     /** A one-click skill action (fishing, fixing something): an invisible d20 roll + trait bonuses against `dc`.
      *  Time and the base effects always apply; then `success` or `fail` adds its own effects and money. */
     roll?: { dc: number; traits?: string[]; success: RollOutcome; fail: RollOutcome };
-    /** Only shown when the player owns this shop item (a coffee machine, a loom…). */
-    needsItem?: string;
+    /** Only shown when the player owns this shop item (a coffee machine, a loom…), or one of them. */
+    needsItem?: string | string[];
+    /** Shop item(s) spent by this action: one owned copy is removed (the first found in `consume`). */
+    consume?: string | string[];
     /** Not offered in places with any of these tags (a run is not for the gym). */
     notTags?: string[];
     /** The hobby this action trains (its level adds to the roll and raises what it pays). Set by the engine from `hobbies`. */

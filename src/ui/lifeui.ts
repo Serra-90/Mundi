@@ -16,7 +16,7 @@ import { add, check, earliest, HANGOUT_BOND } from '../sim/plans.js';
 import { note } from '../sim/facts.js';
 import { syncScene } from '../sim/game.js';
 import { houseParty, partyRooms, throwHouseParty, cancelHouseParty, PARTY_HOURS } from '../sim/houseparty.js';
-import { shopPrice, shopItems, hasItem, buy, ASPIRATIONS, aspirationOf, setAspiration, lifeOf, pendingInvite, clearInvite, activeFeelings } from '../sim/life.js';
+import { shopPrice, shopItems, hasItem, itemCount, buy, ASPIRATIONS, aspirationOf, setAspiration, lifeOf, pendingInvite, clearInvite, activeFeelings } from '../sim/life.js';
 import { thumb, charOf, personaName, personaThumb } from '../st/bridge.js';
 import { swapOf, switchTo, roster } from '../sim/playas.js';
 import { refreshPrompt } from '../sim/prompt.js';
@@ -91,7 +91,7 @@ export function lifeOverlays() {
 export function shopApp(g: Save, w: WorldDef, head: string) {
     return `${head}<div class="mu-ph-body mu-shop">${shopItems(w).map(it => `<article class="mu-shop-item">
         <i>${it.icon}</i><span><b>${esc(it.name)}</b><small>${esc(it.desc)}</small><small class="mu-shop-price">${money(w, shopPrice(g, w, it))}</small></span>
-        ${hasItem(g, it.id) ? '<em>Owned</em>' : `<button data-act="shop-buy" data-id="${esc(it.id)}" ${g.player.money >= shopPrice(g, w, it) ? '' : 'aria-disabled="true"'}>Buy</button>`}</article>`).join('')}</div>`;
+        ${hasItem(g, it.id) && !it.stack ? '<em>Owned</em>' : `${it.stack && itemCount(g, it.id) ? `<em>× ${itemCount(g, it.id)}</em>` : ''}<button data-act="shop-buy" data-id="${esc(it.id)}" ${g.player.money >= shopPrice(g, w, it) ? '' : 'aria-disabled="true"'}>Buy</button>`}</article>`).join('')}</div>`;
 }
 export function goalsApp(g: Save, w: WorldDef, head: string) {
     const cur = aspirationOf(g); const l = lifeOf(g);

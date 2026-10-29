@@ -89,7 +89,7 @@ export function lifeOverlays() {
 export function shopApp(g, w, head) {
     return `${head}<div class="mu-ph-body mu-shop">${shopItems(w).map(it => `<article class="mu-shop-item">
         <i>${it.icon}</i><span><b>${esc(it.name)}</b><small>${esc(it.desc)}</small><small class="mu-shop-price">${money(w, shopPrice(g, w, it))}</small></span>
-        ${hasItem(g, it.id) ? '<em>Owned</em>' : `<button data-act="shop-buy" data-id="${esc(it.id)}" ${g.player.money >= shopPrice(g, w, it) ? '' : 'aria-disabled="true"'}>Buy</button>`}</article>`).join('')}</div>`;
+        ${hasItem(g, it.id) && !it.stack ? '<em>Owned</em>' : `${it.stack && itemCount(g, it.id) ? `<em>× ${itemCount(g, it.id)}</em>` : ''}<button data-act="shop-buy" data-id="${esc(it.id)}" ${g.player.money >= shopPrice(g, w, it) ? '' : 'aria-disabled="true"'}>Buy</button>`}</article>`).join('')}</div>`;
 }
 export function goalsApp(g, w, head) {
     const cur = aspirationOf(g);

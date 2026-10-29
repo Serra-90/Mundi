@@ -86,7 +86,9 @@ function checkAspiration(g, w) {
     return [`Life goal reached: ${a.name}!${got ? ` You are now ${a.reward}.` : ''}`];
 }
 export const shopItems = (w) => (systemOn(w, 'shop') ? w.catalogs.shop ?? [] : []);
-export const hasItem = (g, id) => life(g).items.includes(id);
+export const hasItem = (g, id) => Array.isArray(id) ? id.some(i => hasItem(g, i)) : life(g).items.includes(id);
+// How many copies of an item the player owns (consumables can stack).
+export const itemCount = (g, id) => life(g).items.filter(x => x === id).length;
 // What an item costs now: the difficulty, then the prices where you live (the living world).
 export const shopPrice = (g, w, it) => Math.round(priceOf(g, it.price) * priceHere(g, w, playerHomeId));
 const owned = (g, w) => shopItems(w).filter(it => hasItem(g, it.id));
@@ -94,7 +96,7 @@ export function buy(g, w, id) {
     const it = shopItems(w).find(x => x.id === id);
     if (!it)
         return '';
-    if (hasItem(g, id))
+    if (hasItem(g, id) && !it.stack)
         return 'You already have it.';
     const price = shopPrice(g, w, it);
     if (g.player.money < price)
@@ -135,6 +137,19 @@ export const isBlocked = (g, a, w) => !!a.home && blocked(g, w).has(a.id);
 export function afterAction(g, w, a, success) {
     const l = life(g);
     const out = [];
+    // The action spends one copy of its `consume` item(s): the first one the player owns.
+    if (a.consume) {
+        const ids = Array.isArray(a.consume) ? a.consume : [a.consume];
+        const got = ids.find(id => l.items.includes(id));
+        if (got !== undefined) {
+            l.items.splice(l.items.indexOf(got), 1);
+            const it = shopItems(w).find(x => x.id === got);
+            if (it) {
+                out.push(`${it.name}: used up.`);
+                note(g, '{u} used up: {0}.', [it.name], [], g.player.loc, 'shop');
+            }
+        }
+    }
     if (a.id === 'x-workout' || a.id === 'x-treadmill' || a.id === 'x-run')
         l.fitness = Math.min(100, l.fitness + (a.id === 'x-run' ? 3 : 5));
     if (a.id.startsWith('x-repair-')) {
