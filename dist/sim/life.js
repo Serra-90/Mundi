@@ -87,7 +87,7 @@ function checkAspiration(g, w) {
 }
 export const shopItems = (w) => (systemOn(w, 'shop') ? w.catalogs.shop ?? [] : []);
 export const hasItem = (g, id) => Array.isArray(id) ? id.some(i => hasItem(g, i)) : life(g).items.includes(id);
-// How many copies of an item the player owns (consumables can stack).
+/** How many copies of an item the player owns (consumables can stack). */
 export const itemCount = (g, id) => life(g).items.filter(x => x === id).length;
 // What an item costs now: the difficulty, then the prices where you live (the living world).
 export const shopPrice = (g, w, it) => Math.round(priceOf(g, it.price) * priceHere(g, w, playerHomeId));
@@ -199,7 +199,7 @@ export function doorAnswer(g, w, loc) {
         return { ok: true, text: '' };
     const home = whereNow(g, w, r) === loc;
     // an invitation opens the door before any bond does: a plan with them here, live or about to start
-    const invited = social(g).appts.some(a => a.avatar === r.avatar && a.place === loc
+    const invited = social(g).appts.some((a) => a.avatar === r.avatar && a.place === loc
         && (a.state === 'met' || (a.state === 'set' && nowAbs(g) + 90 >= a.from && nowAbs(g) <= a.to + 120)));
     if (invited)
         return { ok: true, text: home ? lex(w, 'doorIn', r.name) : '' };

@@ -395,9 +395,11 @@ export async function narratorLine(text: string) {
 // Models that think before answering (Claude with thinking, reasoning models) spend part of the length on thinking:
 // a small length left nothing for the answer ("No message generated"). So the length asked is never small, the
 // answer is cut by Mundi afterwards, and an empty answer is tried once more with room to spare.
-export async function quiet(prompt: string, responseLength = 300, systemPrompt = ''): Promise<string> {
+export async function quiet(prompt: string, responseLength = 300, systemPrompt = '', opts: { exact?: boolean } = {}): Promise<string> {
     const ask = async (len: number) => String(await ctx().generateRaw({ prompt, systemPrompt, responseLength: len }) ?? '')
         .replace(/<(think|thinking|reasoning)>[\s\S]*?<\/\1>/gi, '').trim();
+    // exact: a quick question on the way of something else (a chat line waits for it): its own length, one try only
+    if (opts.exact) { try { return await ask(responseLength); } catch { return ''; } }
     try {
         const out = await ask(Math.max(responseLength, 1000));
         if (out) return out;

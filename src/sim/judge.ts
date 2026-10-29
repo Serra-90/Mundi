@@ -16,8 +16,11 @@ import { note } from './facts.js';
 export const SOCIAL_SKILLS = ['persuasion', 'deception', 'intimidation', 'insight', 'performance'];
 // Words that sound like an attempt (English and Portuguese, Spanish): only then the judge is asked.
 export const SOUNDS_LIKE = /\b(convince|persuade|lie|lying|pretend|bluff|threaten|intimidate|charm|flatter|bargain|haggle|beg|plead|bribe|trick|deceive|negotiate|insist|demand|swear|promise you|trust me|convenc|persuad|minto|mentir|fing|blef|amea[cç]|intimid|lisonje|barganh|pechinch|implor|supl|subor|engan|negoci|insist|exij|confie em mim|juro|enga[ñn]|amenaz|soborn)/i;
-// Italian, by stem (convinc- matches convinco, convincere, convincerebbe…): the same idea.
-export const SOUNDS_LIKE_IT = /(convinc\w*|persuad\w*|bugiard\w*|\bballe\b|\bfing\w*|bluff\w*|minacc\w*|intimid\w*|incant\w*|lusing\w*|adula\w*|mercantegg\w*|implor\w*|supplic\w*|corromp\w*|mazzett\w*|ingann\w*|negozi\w*|insist\w*|esig\w*|pretend\w*|giur\w*|promett\w*|fidati di me)/i;
+// Italian, by stem, only words that clearly mean an attempt (convinc- matches convinco, convincere…). Each one starts
+// a word, so ordinary talk (negozio, giurisprudenza, esigenza, ti prometto…) never sends a line to the judge.
+export const SOUNDS_LIKE_IT = /\b(convinc|persuad|minacc|intimid|ingann|imbrogl|ricatt|corromp|mazzett|lusing|implor|supplic|mercantegg|bugiard|fingi|fingere|fingerò|bluff|fidati di me)\w*/i;
+// Life-Sim (the checks run on their own, before every reply): English words as clear as the Italian ones.
+export const SOUNDS_LIKE_STRICT = /\b(convince|persuade|lie to|lying to|bluff|threaten|intimidate|blackmail|bribe|deceive|trick (him|her|them)|trust me)\b/i;
 // What each social skill leans on in Life-Sim: the world's traits (English or Italian).
 const SOCIAL_TRAITS: Record<string, string[]> = {
     persuasion: ['Eloquent', 'Charming', 'Kind', 'Eloquente', 'Affascinante', 'Gentile'],
@@ -58,7 +61,9 @@ export interface SocialResult { check: Check; target: string; skill: string; pro
 // Asks the judge, rolls, and returns what to tell the AI (null: not a check). `force`: the player asked for a roll.
 export async function socialCheck(g: Save, w: WorldDef, text: string, present: Resident[], force = false): Promise<SocialResult | null> {
     if (!present.length || !socialOn(g)) return null;
-    if (!force && !SOUNDS_LIKE.test(text) && !SOUNDS_LIKE_IT.test(text)) return null;
+    const rpgOn = isRpg(w) && !!sheetOf(g);
+    // the RPG listens for any attempt; Life-Sim only for clear ones (a chat line waits for the judge)
+    if (!force && !(rpgOn ? SOUNDS_LIKE.test(text) || SOUNDS_LIKE_IT.test(text) : SOUNDS_LIKE_STRICT.test(text) || SOUNDS_LIKE_IT.test(text))) return null;
     const me = personaName();
     const out = await quiet(`[You are the rules judge of a role-play game. You do not write the story.]
 Place: ${g.player.loc}. People here: ${present.map(r => `${r.name} (${bondOf(g, r.avatar) >= 60 ? 'close to' : bondOf(g, r.avatar) >= 25 ? 'friendly with' : 'not close to'} ${me})`).join(', ')}.
@@ -70,7 +75,7 @@ CHECK: yes or no
 SKILL: persuasion, deception, intimidation, insight or performance
 TARGET: the name of the person (or none)
 DIFFICULTY: easy, medium, hard or very hard (how much it asks of that person: a small favor is easy; risking their job, money or safety is very hard)
-QUALITY: a number from -2 to 2 (how good the approach is: clumsy -2, ordinary 0, clever and fitting 2)`, 60);
+QUALITY: a number from -2 to 2 (how good the approach is: clumsy -2, ordinary 0, clever and fitting 2)`, force ? 60 : 120, '', { exact: !force });
     const v = parseVerdict(out);
     if (!v.check && !force) return null;
     const target = present.find(r => v.target && r.name.toLowerCase().split(/\s+/)[0] === v.target.split(/\s+/)[0]) ?? (present.length === 1 ? present[0] : null);

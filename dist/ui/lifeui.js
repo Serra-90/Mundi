@@ -16,7 +16,7 @@ import { add, check, earliest, HANGOUT_BOND } from '../sim/plans.js';
 import { note } from '../sim/facts.js';
 import { syncScene } from '../sim/game.js';
 import { houseParty, partyRooms, throwHouseParty, cancelHouseParty, PARTY_HOURS } from '../sim/houseparty.js';
-import { shopPrice, shopItems, hasItem, buy, ASPIRATIONS, aspirationOf, setAspiration, lifeOf, pendingInvite, clearInvite, activeFeelings } from '../sim/life.js';
+import { shopPrice, shopItems, hasItem, itemCount, buy, ASPIRATIONS, aspirationOf, setAspiration, lifeOf, pendingInvite, clearInvite, activeFeelings } from '../sim/life.js';
 import { thumb, charOf, personaName, personaThumb } from '../st/bridge.js';
 import { swapOf, switchTo, roster } from '../sim/playas.js';
 import { refreshPrompt } from '../sim/prompt.js';

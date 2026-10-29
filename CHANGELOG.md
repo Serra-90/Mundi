@@ -10,6 +10,8 @@
   the AI and decided by the dice in Life-Sim too (before, only the RPG had it). There the d20 leans on the world's
   own traits (Eloquent, Dominant… English or Italian), and Italian attempts are heard (convincere, minacciare,
   ingannare…). The dice button works there too. Per game they can be turned off (`cfg.socialChecks = false`).
+  In Life-Sim only clear attempts go to the judge (ordinary talk is never held up), and the judge's question is
+  short and asked once.
 - **The story comes first**: an action's results — the dice, the money, the needs, the clock — now show with the
   AI's narration instead of before it, and a refused proposal shows its cost with the refusal. The engine still
   decides everything up front; only the telling changes.
