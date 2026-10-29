@@ -27,6 +27,7 @@ import { money, actionsHere, canAfford } from '../sim/needs.js';
 import { placeOf, playerHomeId } from '../sim/places.js';
 import { traitsOf, jobDef, isOpen } from '../sim/work.js';
 import { presentAt } from '../sim/people.js';
+import { extrasHere, promoteExtra } from '../sim/extras.js';
 import { period, weekday, seasonOf, toNextPeriod } from '../sim/time.js';
 import { icon } from './icons.js';
 import { featureOn } from '../sim/creator.js';
@@ -169,9 +170,25 @@ function hereBar(g, w) {
     if (state.view !== 'scene')
         return '';
     const list = presentAt(g, w, g.player.loc); // everyone in the place, the people who came with you too
-    if (!list.length)
+    const extras = extrasHere(g, w, g.player.loc); // the place's own people, with no card
+    if (!list.length && !extras.length)
         return '';
-    return `<nav class="mh-here mh-glass" aria-label="Who is here"><small>Here</small>${list.map(r => `<button class="mh-here-p ${PL.card === r.avatar ? 'is-on' : ''} ${soloOf(g) === r.avatar ? 'is-solo' : ''} ${isWith(g, r.avatar) ? 'is-with' : ''}" data-act="pc-open" data-who="${esc(r.avatar)}" title="${esc(r.met ? r.name : 'Someone')}"><img src="${esc(thumb(r.avatar))}" alt=""><b data-notr>${esc(r.met ? r.name : '?')}</b></button>`).join('')}</nav>`;
+    return `<nav class="mh-here mh-glass" aria-label="Who is here"><small>Here</small>${list.map(r => `<button class="mh-here-p ${PL.card === r.avatar ? 'is-on' : ''} ${soloOf(g) === r.avatar ? 'is-solo' : ''} ${isWith(g, r.avatar) ? 'is-with' : ''}" data-act="pc-open" data-who="${esc(r.avatar)}" title="${esc(r.met ? r.name : 'Someone')}"><img src="${esc(thumb(r.avatar))}" alt=""><b data-notr>${esc(r.met ? r.name : '?')}</b></button>`).join('')}${extras.map(e => `<button class="mh-here-p is-extra ${EXD.id === e.id ? 'is-on' : ''}" data-act="ex-open" data-id="${esc(e.id)}" title="${esc(`${e.name} · ${e.role}`)}"><span class="mh-ex-ini" data-notr>${esc(initials(e.name))}</span><b data-notr>${esc(e.name)}</b></button>`).join('')}</nav>`;
+}
+const initials = (n) => n.split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('');
+// One of the place's people (no card): who she is, and making her a real card for this game.
+const EXD = { id: '', busy: false };
+function extraDlgHtml(g, w) {
+    if (!EXD.id)
+        return '';
+    const e = extrasHere(g, w, g.player.loc).find(x => x.id === EXD.id);
+    if (!e)
+        return '';
+    return `<div class="mu-dlg-veil" data-act="ex-close"></div><div class="mu-panel mu-dlg mu-glassdlg" role="dialog"><h3 data-notr>${esc(e.name)}</h3>
+        <p data-notr><b>${esc(e.role)}</b>${e.hours ? ` · ${String(e.hours[0]).padStart(2, '0')}:00–${String(e.hours[1]).padStart(2, '0')}:00` : ''}</p>
+        ${e.desc ? `<p class="mu-muted" data-notr>${esc(e.desc)}</p>` : ''}
+        <p class="mu-muted">One of this place's people: the AI plays them when you talk to them. Make them a card to have them in the cast, with a home and days of their own.</p>
+        <div class="mu-row mu-dlg-btns"><button data-act="ex-close">Close</button><button class="mu-primary" data-act="ex-promote" ${EXD.busy ? 'aria-disabled="true"' : ''}>${icon('plus')}<span>Make a card</span></button></div></div>`;
 }
 /* ---------- things to do (inside a scene) ---------- */
 function actsColumn(g, w) {
@@ -227,7 +244,7 @@ export function hudHtml() {
     if (!g || !w)
         return '';
     // Home: no card of your own (no money, no needs); your persona is in the menu, as in a chat
-    return `${noCard(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${actDlgHtml()}${skipAskHtml(g, w)}${personaPickHtml()}${offstageOn(w) ? outingHtml() : ''}${isScenario(w) ? residentsHtml() : ''}${doingHtml()}${lifeOverlays()}`;
+    return `${noCard(w) ? '' : personaCard(g, w)}${houseBar(g, w)}${clockCard(g, w)}${corner(g, w)}${eventPanelHtml(g, w)}${talkPanelHtml(g, w)}${hereBar(g, w)}${peopleColumn(g, w)}${actsColumn(g, w)}${phoneButton(w)}${bumpHtml()}${apptReminderHtml(g, w)}${conflictHtml(g, w)}${facePlanHtml()}${customModalHtml()}${actDlgHtml()}${skipAskHtml(g, w)}${extraDlgHtml(g, w)}${personaPickHtml()}${offstageOn(w) ? outingHtml() : ''}${isScenario(w) ? residentsHtml() : ''}${doingHtml()}${lifeOverlays()}`;
 }
 Object.assign(ACT, {
     'quest-step': (el) => {
@@ -267,6 +284,30 @@ Object.assign(ACT, {
         }
     } SKIP.ask = true; notify(); },
     'skip-no': () => { SKIP.ask = false; notify(); },
+    'ex-open': (el) => { EXD.id = EXD.id === el.dataset.id ? '' : el.dataset.id; notify(); },
+    'ex-close': () => { EXD.id = ''; notify(); },
+    'ex-promote': async () => {
+        const g = game();
+        const w = g && getWorld(g.world);
+        if (!g || !w || EXD.busy)
+            return;
+        const e = extrasHere(g, w, g.player.loc).find(x => x.id === EXD.id);
+        if (!e)
+            return;
+        EXD.busy = true;
+        notify();
+        try {
+            await promoteExtra(g, w, g.player.loc, e);
+            saveGame();
+            toast(`${e.name} now has a card of their own.`, 'success');
+            EXD.id = '';
+        }
+        catch (err) {
+            toast(String(err?.message ?? err), 'error');
+        }
+        EXD.busy = false;
+        notify();
+    },
     'skip-yes': async () => { SKIP.ask = false; notify(); await ACT.skip?.(document.body, undefined); },
 });
 // the menu closes after a choice in it, or a click anywhere else

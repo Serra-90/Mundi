@@ -3783,6 +3783,14 @@ const DICT = {
     "Use Midnight Glass": "Usar Midnight Glass",
     "Use Rose Dusk": "Usar Rose Dusk",
     "Use Forest Calm": "Usar Forest Calm",
-    "Some hours go by while you are out (4 at least).": "Algumas horas passam enquanto você está fora (pelo menos 4)."
+    "Some hours go by while you are out (4 at least).": "Algumas horas passam enquanto você está fora (pelo menos 4).",
+    "One of this place's people: the AI plays them when you talk to them. Make them a card to have them in the cast, with a home and days of their own.": "Uma das pessoas deste lugar: a IA a interpreta quando você fala com ela. Crie um cartão para tê-la no elenco, com casa e dias próprios.",
+    "Make a card": "Criar um cartão",
+    "Write what you do or say; the narrator describes the moment and the people of the place answer.": "Escreva o que você faz ou diz; o narrador descreve o momento e as pessoas do lugar respondem.",
+    "Its people, with no card (one a line: name | role | hours | days | what they are like)": "Suas pessoas, sem cartão (uma por linha: nome | papel | horário | dias | como é)",
+    "The AI plays them while they are there. Hours 7-14 or 18-2; days 1 (Monday) to 7, as 1-5 or 6,7; both optional.": "A IA as interpreta enquanto estão lá. Horário 7-14 ou 18-2; dias de 1 (segunda) a 7, como 1-5 ou 6,7; ambos opcionais.",
+    "Who is around, in the background": "Quem está por perto, ao fundo",
+    "At any time": "A qualquer hora",
+    "{0} now has a card of their own.": "Agora {0} tem um cartão próprio."
 };
 export default DICT;

@@ -44,7 +44,15 @@ export interface Place {
     scenarioOff?: boolean;
     /** What the place is for the game (a healer, a jail, a contracts board…); none given: guessed from its name. */
     roles?: string[];
+    /** The people who belong to the place without a card (the barman, the receptionist, a regular): the AI plays them
+     *  as minor characters while they are there. Any of them can become a real card in a game. */
+    people?: Extra[];
+    /** Who else is around, by part of the day (period id → a line; 'any' for every part): the background crowd. */
+    crowdText?: Record<string, string>;
 }
+/** Someone of a place with no card. `hours`: when they are there, [from, to] in hours (to may pass midnight; none:
+ *  whenever the place is open); `days`: the days of the week (1 Monday … 7 Sunday; none: every day). */
+export interface Extra { id: string; name: string; role: string; desc?: string; hours?: [number, number]; days?: number[] }
 // Roles a place can have. A place with its own list uses only that list; one without is guessed from its name, so
 // older worlds keep working and any world can set them in the map editor.
 export const PLACE_ROLES: { id: string; name: string; re: RegExp }[] = [

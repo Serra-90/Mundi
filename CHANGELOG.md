@@ -8,6 +8,10 @@
   people takes that person's home, job, routine and relations in the game.
 - **The people you already know from your origin** are the world's own, in the world's order, and an origin can
   say what each of them is to you (colleague, old friend, rival…): the relation and where you stand start on day one.
+- **Places with their own people**: a place can have people with no card (the barman, the receptionist, a regular),
+  each with hours and days, and a background crowd for each part of the day. The AI plays them as minor characters,
+  also when you are there alone; they show under "Here" and any of them can become a real card for the game. Set them
+  in the World creator, on the place.
 
 ## 0.2.0 · 2026-10-25
 

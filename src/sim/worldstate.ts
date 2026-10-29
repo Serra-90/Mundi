@@ -3,6 +3,7 @@
 // All of it is the engine's (deterministic, no AI): the AI is only told what it is like around here.
 // The save keeps one small record per region (save.regions), made the first time it is needed, so old saves and
 // new maps need nothing special. With the "living world" system off, nothing here runs or is shown.
+import { extrasHere } from './extras.js';
 import { festivalPrice } from './festivals.js';
 import { weatherOverride } from './elements.js';
 import { tradeMul } from './realm.js';
@@ -82,7 +83,7 @@ export function crowdLevel(g: Save, w: WorldDef, place: string): number {
     const r = regionDef(w, p.map);
     const mood = moodNow(g, w, p.map);
     const own = p.crowd;   // a place can be quieter (0.5) or busier (1.5) than its kind
-    const score = rhythm * (r?.crowd ?? 1) * (own ?? 1) * (1 + mood / 400) * 3 + presentAt(g, w, place).length * 0.6;
+    const score = rhythm * (r?.crowd ?? 1) * (own ?? 1) * (1 + mood / 400) * 3 + presentAt(g, w, place).length * 0.6 + extrasHere(g, w, place).length * 0.4;
     return clamp(Math.round(score), 0, 4);
 }
 export const crowdWord = (n: number) => CROWD[clamp(n, 0, 4)];

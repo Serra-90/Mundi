@@ -3867,6 +3867,14 @@ const DICT = {
     "With whom? (optional)": "Con chi? (facoltativo)",
     "How? (optional)": "Come? (facoltativo)",
     "Slowly, in silence, singing…": "Con calma, in silenzio, cantando…",
-    "The narrator tells it in the chat.": "Il narratore lo racconterà in chat."
+    "The narrator tells it in the chat.": "Il narratore lo racconterà in chat.",
+    "One of this place's people: the AI plays them when you talk to them. Make them a card to have them in the cast, with a home and days of their own.": "Una delle persone di questo luogo: l'IA la interpreta quando le parli. Creale una scheda per averla nel cast, con una casa e giornate sue.",
+    "Make a card": "Crea una scheda",
+    "Write what you do or say; the narrator describes the moment and the people of the place answer.": "Scrivi cosa fai o dici; il narratore descrive il momento e le persone del luogo rispondono.",
+    "Its people, with no card (one a line: name | role | hours | days | what they are like)": "Le sue persone, senza scheda (una per riga: nome | ruolo | orari | giorni | com'è)",
+    "The AI plays them while they are there. Hours 7-14 or 18-2; days 1 (Monday) to 7, as 1-5 or 6,7; both optional.": "L'IA le interpreta mentre sono lì. Orari 7-14 o 18-2; giorni da 1 (lunedì) a 7, come 1-5 o 6,7; entrambi facoltativi.",
+    "Who is around, in the background": "Chi c'è intorno, sullo sfondo",
+    "At any time": "In qualsiasi momento",
+    "{0} now has a card of their own.": "Ora {0} ha una scheda sua."
 };
 export default DICT;

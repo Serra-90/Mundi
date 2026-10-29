@@ -1,5 +1,6 @@
 // What the AI knows about the scene right now. Injected as an extension prompt before every reply, so it works
 // with SillyTavern's normal generation (and with any preset). The world's lore lives in its lorebook instead.
+import { extrasLines } from './extras.js';
 import { homeJobsLine } from './hometime.js';
 import { dressLine } from './dress.js';
 import { approvalLine, couplesLine, rumorLines, activeWorldLore } from './living.js';
@@ -133,7 +134,11 @@ export function sceneBlocks(): Built[] {
             `Now: ${weekday(g.day)}, day ${g.day}, ${hm(g.minutes)} (${period(w, g.minutes).name.toLowerCase()}). Weather: ${weatherHere(g, w).name.toLowerCase()}. Season: ${seasonOf(g).name.toLowerCase()}.`,
             `Place: ${here?.name ?? 'somewhere'}${here?.desc ? ` — ${here.desc}` : ''}${here && !here.home && systemOn(w, 'living') && !openNow(g, w, here.id) ? ' (closed at this hour: the doors are shut; only staff, if anyone, is around)' : ''}`,
             ...(() => { const b = buildingAt(g, w, g.player.loc); return b ? [`Inside: ${b.name} (a building; this is one of its rooms, a minute or two from the others).`, dressLine(g, w)].filter(Boolean) : []; })(),
-            names.length ? `Here with {{user}}: ${names.join(', ')}. Only they are in this scene; nobody else speaks or appears.` : 'Nobody else is here right now.',
+            ...(() => {
+                const extra = here && !here.home ? extrasLines(g, w, g.player.loc) : [];
+                if (!extra.length) return [names.length ? `Here with {{user}}: ${names.join(', ')}. Only they are in this scene; nobody else speaks or appears.` : 'Nobody else is here right now.'];
+                return [names.length ? `Here with {{user}}: ${names.join(', ')}. They are the main characters of this scene; besides them, only the place's own people below may appear.` : 'None of the main characters is here right now; only the place\'s own people below are around.', ...extra];
+            })(),
             ...(present.some(r => !r.met) ? [`Strangers to {{user}}: ${present.filter(r => !r.met).map(r => r.name).join(', ')}. They and {{user}} have never met: they do not know each other's names until they talk and introduce themselves.`] : []),
         ],
         // only the people in this scene and this place: nobody else's memories, nobody else's whereabouts

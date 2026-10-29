@@ -70,7 +70,7 @@
     padding: 4px 8px 4px 10px; gap: 5px; overflow-x: auto; overflow-y: visible; scrollbar-width: none; }
 #mundi-root[data-mobile] .mh-here::-webkit-scrollbar { display: none; }
 #mundi-root[data-mobile] .mh-here > small { font-size: 10px; letter-spacing: 1px; margin-right: 2px; }
-#mundi-root[data-mobile] .mh-here-p img { width: 34px; height: 34px; }
+#mundi-root[data-mobile] .mh-here-p img, #mundi-root[data-mobile] .mh-ex-ini { width: 34px; height: 34px; }
 #mundi-root[data-mobile] .mh-here-p b { display: none; }
 #mundi-root[data-mobile] .mh-people { top: calc(var(--m-gap) + var(--m-row3, 132px)); left: var(--m-gap); right: auto; bottom: auto; width: auto; max-width: calc(100% - 2 * var(--m-gap)); grid-auto-flow: column; padding: 6px; gap: 6px; overflow-x: auto; }
 #mundi-root[data-mobile] .mh-here ~ .mh-people { display: none; }   /* in a place, "Here" already shows them */

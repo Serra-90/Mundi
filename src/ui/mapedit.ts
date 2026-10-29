@@ -3,7 +3,7 @@
 // (one of SillyTavern's backgrounds, or a picture you upload).
 import { TIME_SLOTS } from '../sim/daynight.js';
 import { notify, esc, toast, ROOT_ID } from '../core/store.js';
-import { worldFile, isScenario, PLACE_ROLES, placeIs, guessRoles, getWorld, builtInIds, type WorldDef, type Place, type MapDef } from '../core/world.js';
+import { worldFile, isScenario, PLACE_ROLES, placeIs, guessRoles, getWorld, builtInIds, type WorldDef, type Place, type MapDef, type Extra } from '../core/world.js';
 import { bgHead, bgGrid, bgHref } from './bgpick.js';
 import { uploadWorldPicture, imageRatio, newId } from '../sim/creator.js';
 import { closedOf } from '../sim/daynight.js';
@@ -45,7 +45,12 @@ function placeForm(w: WorldDef): string {
             <button class="mu-danger" data-act="me-del-pin">${icon('trash')}<span>Remove</span></button>`;
     }
     const bg = p.bg ? worldFile(w, p.bg) : '';
-    return `<h4>Place</h4><div class="mu-me-pf"><div class="mu-me-pfcol">${txt('Name', `${path}.name`)}${area('What it is (the AI and the map card use it)', `${path}.desc`, 3)}${txt('What is going on there (optional)', `${path}.event`, 'Always busy at lunch.')}</div>
+    return `<h4>Place</h4><div class="mu-me-pf"><div class="mu-me-pfcol">${txt('Name', `${path}.name`)}${area('What it is (the AI and the map card use it)', `${path}.desc`, 3)}${txt('What is going on there (optional)', `${path}.event`, 'Always busy at lunch.')}
+            <label class="mu-field"><span>Its people, with no card (one a line: name | role | hours | days | what they are like)</span><textarea rows="4" data-input="me-people" data-focus="${path}.people" placeholder="Franca | barista | 7-14 | 1-6 | sixty, sharp tongue, knows everyone">${esc(peopleText(p))}</textarea>
+                <small class="mu-muted">The AI plays them while they are there. Hours 7-14 or 18-2; days 1 (Monday) to 7, as 1-5 or 6,7; both optional.</small></label>
+            <details class="mu-me-times" ${Object.keys(p.crowdText ?? {}).length ? 'open' : ''}><summary>Who is around, in the background</summary>
+                ${area('At any time', `${path}.crowdText.any`, 2, 'Pensioners at the tables, a couple of tourists.')}
+                ${w.time.periods.map(per => area(esc(per.name), `${path}.crowdText.${per.id}`, 2)).join('')}</details></div>
         <div class="mu-me-pfcol"><div class="mu-field"><span>Tags</span><div class="mu-chips">${TAGS.map(t => `<button class="mu-chip ${(p.tags ?? []).includes(t) ? 'is-on' : ''}" data-act="cw-chip" data-path="${path}.tags" data-v="${t}">${TAG_NAMES[t]}</button>`).join('')}</div>
             <small class="mu-muted">Leisure: people spend free time here. Food and Shopping: what can be bought. Work: jobs can be here.</small></div>
             <div class="mu-field"><span>What it is for the game</span><div class="mu-chips">${PLACE_ROLES.map(r => `<button class="mu-chip ${placeIs(p, r.id) ? 'is-on' : ''}" data-act="me-role" data-v="${r.id}">${esc(r.name)}</button>`).join('')}</div>
@@ -281,7 +286,22 @@ Object.assign(ACT, {
     },
     'me-bg-clear': (el) => { const p = W().places.find(p => p.id === ME.pin); if (p) { setBg(p, el.dataset.period ?? '', ''); CW.dirty = true; } notify(); },
 });
+// the place's people as lines of text, and back
+const peopleText = (p: Place) => (p.people ?? []).map(e => [e.name, e.role, e.hours ? `${e.hours[0]}-${e.hours[1]}` : '', e.days?.length ? e.days.join(',') : '', e.desc ?? ''].join(' | ').replace(/( \| )+$/, '')).join('\n');
+function parsePeople(text: string, old: Extra[] = []): Extra[] {
+    const out: Extra[] = [];
+    for (const line of text.split('\n')) {
+        const [name = '', role = '', hours = '', days = '', ...rest] = line.split('|').map(x => x.trim());
+        if (!name) continue;
+        const h = /^(\d{1,2})\s*-\s*(\d{1,2})$/.exec(hours);
+        const d = days.split(',').flatMap(x => { const r = /^(\d)\s*-\s*(\d)$/.exec(x.trim()); if (r) { const a = +r[1], b = +r[2]; return Array.from({ length: Math.max(0, b - a + 1) }, (_, k) => a + k); } return /^\d$/.test(x.trim()) ? [+x.trim()] : []; }).filter(n => n >= 1 && n <= 7);
+        const id = old.find(e => e.name === name)?.id ?? (name.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') || newId('extra'));
+        out.push({ id, name, role: role || 'regular', ...(h ? { hours: [Math.min(24, +h[1]), Math.min(24, +h[2])] as [number, number] } : {}), ...(d.length ? { days: [...new Set(d)] } : {}), ...(rest.join('|').trim() ? { desc: rest.join('|').trim() } : {}) });
+    }
+    return out;
+}
 Object.assign(INPUT, {
+    'me-people': (el) => { const p = W().places.find(x => x.id === ME.pin); if (!p) return; const list = parsePeople(el.value, p.people); if (list.length) p.people = list; else delete p.people; CW.dirty = true; },
     'me-zone': (el) => { ME.zone = el.value; notify(); },
     'me-bgq': (el) => { ME.bgq = el.value; notify(); },
 });

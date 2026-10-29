@@ -313,6 +313,9 @@
 #mundi-root .mh-here-p.is-on img, #mundi-root .mh-here-p.is-solo img { box-shadow: 0 0 0 3px var(--accent); }
 #mundi-root .mh-here-p b { position: absolute; left: 50%; top: calc(100% + 6px); transform: translateX(-50%); white-space: nowrap; font-size: 11px; padding: 2px 8px; border-radius: 8px; background: rgba(0, 0, 0, .75); color: #fff; opacity: 0; pointer-events: none; transition: opacity .12s; }
 #mundi-root .mh-here-p:hover b { opacity: 1; }
+#mundi-root .mh-ex-ini { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #fff; background: rgba(71, 85, 105, .85); box-shadow: 0 0 0 2px rgba(255, 255, 255, .35); border: 1px dashed rgba(255, 255, 255, .5); transition: transform .12s; }
+#mundi-root .mh-here-p:hover .mh-ex-ini { transform: scale(1.08); }
+#mundi-root .mh-here-p.is-on .mh-ex-ini { box-shadow: 0 0 0 3px var(--accent); }
 @media (max-width: 1100px) { #mundi-root .mh-here { max-width: calc(100% - 28px); top: 166px; } }
 @media (max-width: 760px) { #mundi-root .mh-here { top: 96px; } }
 /* the person's options open over everything in the scene, the dialogue box included */

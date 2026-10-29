@@ -1,6 +1,7 @@
 // The scene: the place, the people in it (Expressions sprites), the conversation and the composer.
 // The conversation IS the group chat: generation, streaming, swipes, regenerate, continue, impersonate,
 // editing and deleting all use SillyTavern's own functions.
+import { hasExtras } from '../sim/extras.js';
 import { isRpg } from '../sim/rpg.js';
 import { lex } from '../core/lexicon.js';
 import { setPrompt, setAsk } from '../st/bridge.js';
@@ -222,7 +223,7 @@ export function sceneHtml() {
             <div class="mu-log" data-keep="log" data-bottom>${logHtml()}</div>
             <div class="mu-composer">
                 ${modesHtml()}
-                <textarea data-focus="composer" rows="2" placeholder="${nobody ? 'You are alone here. Write what you do or think; the narrator describes the moment.' : 'Write what you say or do…'}">${esc(state.composer)}</textarea>
+                <textarea data-focus="composer" rows="2" placeholder="${nobody ? (hasExtras(g, w, g.player.loc) ? 'Write what you do or say; the narrator describes the moment and the people of the place answer.' : 'You are alone here. Write what you do or think; the narrator describes the moment.') : 'Write what you say or do…'}">${esc(state.composer)}</textarea>
                 <div class="mu-composer-tools">
                     ${state.generating
             ? '<button class="mu-danger" data-act="stop">■ Stop</button>'
@@ -468,8 +469,12 @@ async function soloNarrate(g: Save, w: WorldDef, text: string, extra = '') {
         await addUserLine(text);
         const me = personaName();
         const recent = chat().slice(-8).filter((m: any) => !m.is_system).map((m: any) => `${m.is_user ? me : m.name}: ${String(m.mes ?? '').replace(/\s+/g, ' ').slice(0, 300)}`).join('\n');
-        const out = await quiet(`${sceneText().replace(/\{\{user\}\}/g, me)}\n\n${recent}\n\nNarrate what happens next in 2 to 4 sentences, in the second person ("you"), following ${me}'s last line. ${me} is alone: describe only the place, small details, the passing moment and ${me}'s feelings and thoughts. No other character appears, speaks or arrives. Do not write ${me}'s words or decisions.${extra ? ` ${extra.replace(/\{\{user\}\}/g, me)}` : ''}${aiLangNote() ? ` ${aiLangNote()}` : ''}`, extra ? 400 : 260,
-            'You are the quiet narrator of a life simulation. You never bring other characters into the scene.');
+        const others = hasExtras(g, w, g.player.loc);   // the place's own people (the barman, the people around)
+        const who = others
+            ? `None of the main characters is here, but the place's own people listed above are: describe the place, the passing moment and ${me}'s feelings, and if ${me} speaks to one of them (or the moment calls for it) they answer or act briefly, true to their role. No main character appears, speaks or arrives.`
+            : `${me} is alone: describe only the place, small details, the passing moment and ${me}'s feelings and thoughts. No other character appears, speaks or arrives.`;
+        const out = await quiet(`${sceneText().replace(/\{\{user\}\}/g, me)}\n\n${recent}\n\nNarrate what happens next in 2 to 4 sentences, in the second person ("you"), following ${me}'s last line. ${who} Do not write ${me}'s words or decisions.${extra ? ` ${extra.replace(/\{\{user\}\}/g, me)}` : ''}${aiLangNote() ? ` ${aiLangNote()}` : ''}`, extra || others ? 400 : 260,
+            others ? 'You are the narrator of a life simulation: you also play the minor characters of the place (staff, passers-by), never the main characters.' : 'You are the quiet narrator of a life simulation. You never bring other characters into the scene.');
         if (out.trim()) await narratorLine(out.trim());
         else toast('No answer (is the AI connected?).', 'warn');
     } catch (e: any) { toast(String(e?.message ?? e), 'error'); }
