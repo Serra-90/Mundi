@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **One action, home and away**: an action can be `home` and carry `tags` at the same time now — it shows at your
+  place and everywhere the tag fits (a shower at home or in any bathroom, cooking in your kitchen or any other).
+  Worlds can merge their doubled "at home / here" actions into one.
+
 - **Social checks in every mode**: a line in the chat that tries to persuade, lie, threaten or charm is judged by
   the AI and decided by the dice in Life-Sim too (before, only the RPG had it). There the d20 leans on the world's
   own traits (Eloquent, Dominant… English or Italian), and Italian attempts are heard (convincere, minacciare,

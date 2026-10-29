@@ -146,7 +146,7 @@ export function actionsHere(g, w) {
     const base = w.actions.filter(useful).filter(a => !homeMode || !earns(a)).filter(a => !isBlocked(g, a, w)).filter(a => a.id !== 'fix' || broken)
         .filter(a => homeMode || !a.needsItem || hasItem(g, a.needsItem)).filter(a => chosen || !(a.notTags ?? []).some(t => tags.includes(t))).filter(a => chosen ? (a.anywhere || chosen.includes(a.id)) : (a.home && atHome)
         || (a.place && a.place === g.player.loc)
-        || (!a.home && !a.place && (a.anywhere || (a.tags ?? []).some(t => tags.includes(t))))).filter(a => !closed || a.anywhere);
+        || (!a.place && (a.anywhere || (a.tags ?? []).some(t => tags.includes(t))))).filter(a => !closed || a.anywhere);
     // prices after the difficulty; at home, what a cut-off service stops is left out
     // out and about, what you buy costs what it costs in this region now (the living world)
     const here = atHome ? 1 : priceHere(g, w);
