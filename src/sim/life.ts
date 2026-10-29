@@ -184,9 +184,14 @@ export function doorAnswer(g: Save, w: WorldDef, loc: string): { ok: boolean; te
     const r = g.cast[loc.slice(5)];
     if (!r) return { ok: true, text: '' };
     const home = whereNow(g, w, r) === loc;
+    // an invitation opens the door before any bond does: a plan with them here, live or about to start
+    const invited = social(g).appts.some((a: any) => a.avatar === r.avatar && a.place === loc
+        && (a.state === 'met' || (a.state === 'set' && nowAbs(g) + 90 >= a.from && nowAbs(g) <= a.to + 120)));
+    if (invited) return { ok: true, text: home ? lex(w, 'doorIn', r.name) : '' };
     if (isPartner(g, r.avatar) || bondOf(g, r.avatar) >= 50) return { ok: true, text: home ? '' : `${r.name} is out, but you know where the key is.` };
     if (!home) return { ok: false, text: lex(w, 'doorNobody', r.name) };
-    if (bondOf(g, r.avatar) >= 15) return { ok: true, text: lex(w, 'doorIn', r.name) };
+    // only a good friend lets you in without notice; an acquaintance talks to you through the door
+    if (bondOf(g, r.avatar) >= 35) return { ok: true, text: lex(w, 'doorIn', r.name) };
     return { ok: false, text: lex(w, 'doorOut', r.name) };
 }
 

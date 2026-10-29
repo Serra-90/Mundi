@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Actions that spend what you use**: a world action can have `consume`, and one owned copy of that shop item
+  is removed when the action is done (the diary notes it). `needsItem` also accepts a list — the action shows up
+  when you own any of them — and shop items marked `stack: true` can be bought again and again, with an "× N"
+  count in the shop. Used by the Shrinking world for consumables.
+- **Homes are by invitation**: you no longer walk into someone's home just because you know them a little. A live
+  invitation (a plan at their place) or a good friend opens the door; an acquaintance talks to you through it.
+- **World scene rules**: a world can set `ai.rules`, and its text is sent to the AI with every reply, after the
+  scene's own rules — privacy, customs, how people behave there (used by Shrinking: no one enters your home
+  uninvited, and no casual encounters in bathrooms and other intimate rooms).
+
 - **The interface in Italiano** (Settings → Interface → Language). Like Português and Español, only Mundi's own
   screens are translated: the story's language is up to your preset, and the worlds keep their own names.
 - **A world's people from your own cards**: a card you already have with the same name as one of the world's

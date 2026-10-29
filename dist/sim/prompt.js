@@ -78,6 +78,8 @@ export const BLOCKS = [
 ];
 // The scene's rules, sent last (the game handles travel and time). Editable: an empty text means this one.
 export const DEFAULT_RULES = 'Write only what happens in this place and at this moment. Do not move the story to another place or skip time; the game handles travel and time.';
+// The world's own scene rules (its `ai.rules`): privacy and customs a world wants the AI to keep.
+export const worldRules = (w) => String(w?.ai?.rules ?? '').trim();
 // A block's own text: `{text}` is where Mundi puts what it wrote for the block; without it, the text replaces it
 // (sent only when the block has something to say). SillyTavern's macros ({{user}}, {{char}}…) work as usual.
 export const applyTemplate = (tpl, text) => (!tpl?.trim() || !text.trim() ? text : tpl.includes('{text}') ? tpl.split('{text}').join(text) : tpl);
@@ -161,7 +163,7 @@ export function sceneBlocks() {
         needs: [feelings(g, w)],
         extra: [pc.extra],
     };
-    const tail = [pc.rules.trim() || DEFAULT_RULES, aiLangNote()].filter(Boolean).join('\n');
+    const tail = [pc.rules.trim() || DEFAULT_RULES, worldRules(w), aiLangNote()].filter(Boolean).join('\n');
     // a block whose system is off in this world is not there at all (not even as "off")
     const out = blocksOf(w).map(b => {
         const own = (raw[b.id] ?? []).filter(Boolean).join('\n');
