@@ -14,7 +14,8 @@
   short and asked once.
 - **The story comes first**: an action's results — the dice, the money, the needs, the clock — now show with the
   AI's narration instead of before it, and a refused proposal shows its cost with the refusal. The engine still
-  decides everything up front; only the telling changes.
+  decides everything up front; only the telling changes. (When you are alone the narrator has already told it, so
+  the results show at once.)
 
 - **Actions that spend what you use**: a world action can have `consume`, and one owned copy of that shop item
   is removed when the action is done (the diary notes it). `needsItem` also accepts a list — the action shows up

@@ -529,7 +529,7 @@ function tabShop(w) {
         ${master('shop', 'catalogs.shop', it => `<b>${esc(it.icon ?? '')} ${esc(it.name)}</b><small>${esc(money(w, it.price ?? 0))}</small>`, i => {
         const p = `catalogs.shop.${i}`;
         const it = list[i];
-        const unlocks = w.actions.filter(a => a.needsItem === it.id).map(a => a.label || a.name);
+        const unlocks = w.actions.filter(a => [a.needsItem ?? []].flat().includes(it.id)).map(a => a.label || a.name);
         return `<div class="mu-row2">${txt('Name', `${p}.name`)}${txt('Icon (an emoji)', `${p}.icon`, '🛏️')}</div>
                 ${area('Description', `${p}.desc`, 2)}
                 <div class="mu-row2">${num(`Price (${esc(w.currency.symbol)})`, `${p}.price`)}${num('Mood when you wake up at home (+)', `${p}.sleepMood`)}</div>

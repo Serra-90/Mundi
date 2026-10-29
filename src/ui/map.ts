@@ -472,8 +472,8 @@ async function runAction(g: Save, w: WorldDef, a: ActionDef, mins: number, who: 
             runPlans(); saveGame(); await syncScene();
             if (isScenario(w)) state.view = 'scene';
             const { autoLine, afterNarration } = await import('./scene.js');
-            await autoLine(proposalLine(a, people.map(r => r.name), how, mins), consentHint(consent, a, people.map(r => r.name), how, durText(mins)));
-            await afterNarration(); // the story tells the refusal before the results show
+            // the story tells the refusal before the results show (alone, the narrator has already told it)
+            if (await autoLine(proposalLine(a, people.map(r => r.name), how, mins), consentHint(consent, a, people.map(r => r.name), how, durText(mins)))) await afterNarration();
             later.forEach(([m, kind]) => toast(m, kind));
             notify();
             return;
@@ -503,14 +503,15 @@ async function runAction(g: Save, w: WorldDef, a: ActionDef, mins: number, who: 
     await syncScene();
     // the action goes into the chat as yours, the AI narrates it, and only then the results show with the story
     const { autoLine, afterNarration } = await import('./scene.js');
+    let sent = false;
     if (consent) {
-        await autoLine(proposalLine(a, names, how, mins), consentHint(consent, a, names, how, durText(mins)));
+        sent = await autoLine(proposalLine(a, names, how, mins), consentHint(consent, a, names, how, durText(mins)));
     } else {
         const line = `*${personaName()} — ${a.name}${names.length ? ` ${fmt('with {0}', names.join(', '))}` : ''}${how ? `: ${how}` : ''} (${durText(mins)})*`;
         const hint = `[{{user}} is doing this now: ${a.name} (${a.label})${names.length ? `, together with ${names.join(', ')}` : ''}${how ? `, like this: ${how}` : ''}. It takes about ${durText(mins)}. Narrate the action as it happens in the scene${names.length ? `, with ${names.join(', ')} taking part in character` : ''}${roll ? `; it went this way: ${gradeName(roll.grade).toLowerCase()}, ${roll.text}` : ''}. Do not write {{user}}'s words or decisions beyond what is stated.]`;
-        await autoLine(line, hint);
+        sent = await autoLine(line, hint);
     }
-    await afterNarration(); // wait for the AI's narration: the results appear with the story
+    if (sent) await afterNarration(); // wait for the AI's narration: the results appear with the story
     later.forEach(([m, kind]) => toast(m, kind));
     notify();
 }

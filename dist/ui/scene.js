@@ -557,25 +557,27 @@ async function soloNarrate(g, w, text, extra = '') {
 }
 // A line Mundi sends for you (you moved to another room, you did something): it goes into the chat as your action and
 // the AI narrates it. With people here they answer (and you are in a conversation with them); alone, the narrator.
+// Returns true when SillyTavern was asked for a reply (the narrator, alone, has already answered when it returns).
 export async function autoLine(text, hint) {
     const g = game();
     const w = g && getWorld(g.world);
     if (!g || !w || scenarioOpen() || state.generating)
-        return;
+        return false;
     const here = presentAt(g, w, g.player.loc);
     if (!here.length) {
         await soloNarrate(g, w, text, hint.replace(/^\[|\]$/g, ''));
-        return;
+        return false;
     }
     setAsk(hint, 90000);
     if (!sendText(text)) {
         toast('SillyTavern\'s message box was not found.', 'error');
-        return;
+        return false;
     }
     lockScene(g, w);
     startTalk(g, w);
     saveGame();
     notify();
+    return true;
 }
 // After a line was sent for the AI to narrate: wait for SillyTavern's generation to end (or give up waiting),
 // so results can show with the story instead of before it.
