@@ -2,7 +2,6 @@
 // The conversation IS the group chat: generation, streaming, swipes, regenerate, continue, impersonate,
 // editing and deleting all use SillyTavern's own functions.
 import { hasExtras } from '../sim/extras.js';
-import { isRpg } from '../sim/rpg.js';
 import { lex } from '../core/lexicon.js';
 import { setPrompt, setAsk } from '../st/bridge.js';
 import { socialCheck } from '../sim/judge.js';
@@ -125,7 +124,7 @@ const CHECK = { on: false };
 function diceButton(nobody) {
     const g = game();
     const w = g && getWorld(g.world);
-    if (!g || !w || !isRpg(w) || nobody)
+    if (!g || !w || nobody)
         return '';
     return `<button data-act="roll-next" class="${CHECK.on ? 'is-on' : ''}" title="${esc(lex(w, 'rollAsk'))}: your next line is a d20 check">🎲</button>`;
 }
@@ -461,8 +460,9 @@ Object.assign(ACT, {
             await soloNarrate(g0, w0, text);
             return;
         }
-        // RPG: an attempt to persuade, lie, threaten… is judged by the AI and decided by the dice before anyone answers
-        if (g0 && w0 && isRpg(w0) && !scenarioOpen()) {
+        // Social checks (RPG skills or Life-Sim traits): an attempt to persuade, lie, threaten… is judged by the AI
+        // and decided by the dice before anyone answers
+        if (g0 && w0 && !scenarioOpen()) {
             const force = CHECK.on;
             CHECK.on = false;
             try {
@@ -576,6 +576,15 @@ export async function autoLine(text, hint) {
     startTalk(g, w);
     saveGame();
     notify();
+}
+// After a line was sent for the AI to narrate: wait for SillyTavern's generation to end (or give up waiting),
+// so results can show with the story instead of before it.
+export async function afterNarration() {
+    const { nextGen } = await import('../st/bridge.js');
+    try {
+        await nextGen();
+    }
+    catch { /* no events: go on */ }
 }
 const MODES = [['say', 'Say', 'chat'], ['do', 'Do', 'forward'], ['story', 'Story', 'book'], ['see', 'See', 'search']];
 export const INPUT_MODE = { v: 'say' };

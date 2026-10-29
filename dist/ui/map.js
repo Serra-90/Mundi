@@ -558,55 +558,63 @@ async function runAction(g, w, a, mins, who, how) {
         const ok = agreed(consent);
         toast(`${tr(ok ? 'They agree' : 'They decline')} · d20 ${consent.d20}${consent.bonus ? ` ${consent.bonus > 0 ? '+' : '−'} ${Math.abs(consent.bonus)}` : ''} = ${consent.total} ${tr('vs DC')} ${consent.dc}${consent.impossible ? ` (${tr('impossible')})` : ''}${consent.grade.startsWith('critical') ? ` · ${tr(consent.grade === 'critical-success' ? 'critical!' : 'critical failure')}` : ''}`, ok ? 'success' : 'warn', { ms: 7000 });
         if (!ok) {
-            // the action does not happen: a few minutes go by, the bond takes it, and they say no in the chat
-            advance(g, w, 5).forEach(m => toast(m, 'warn'));
-            consentAfter(g, a, people, consent).forEach(m => toast(m, 'warn'));
+            // the action does not happen: a few minutes go by, the bond takes it, and they say no in the chat.
+            // The results wait for the story: the toasts show with the refusal, not before it.
+            const later = [];
+            advance(g, w, 5).forEach(m => later.push([m, 'warn']));
+            consentAfter(g, a, people, consent).forEach(m => later.push([m, 'warn']));
             runPlans();
             saveGame();
             await syncScene();
             if (isScenario(w))
                 state.view = 'scene';
-            notify();
-            const { autoLine } = await import('./scene.js');
+            const { autoLine, afterNarration } = await import('./scene.js');
             await autoLine(proposalLine(a, people.map(r => r.name), how, mins), consentHint(consent, a, people.map(r => r.name), how, durText(mins)));
+            await afterNarration(); // the story tells the refusal before the results show
+            later.forEach(([m, kind]) => toast(m, kind));
+            notify();
             return;
         }
     }
     actionSound(a.effects, a.id);
     await doing(a.label, a.icon ?? '⏳', mins); // a moment on screen while the time passes
+    // The engine decides everything first (dice, money, needs); nothing shows until the story tells it.
+    const later = [];
     applyAction(g, w, a);
-    advance(g, w, mins).forEach(m => toast(m, 'warn'));
+    advance(g, w, mins).forEach(m => later.push([m, 'warn']));
     const roll = rollAction(g, w, a);
-    afterAction(g, w, a, roll ? roll.grade.includes('success') : null).forEach(m => toast(m, 'success'));
+    afterAction(g, w, a, roll ? roll.grade.includes('success') : null).forEach(m => later.push([m, 'success']));
     afterEvent(g, w, a);
-    practice(g, w, a, roll ? roll.grade.includes('success') : null, roll?.grade === 'critical-success').forEach(m => toast(m, 'success'));
+    practice(g, w, a, roll ? roll.grade.includes('success') : null, roll?.grade === 'critical-success').forEach(m => later.push([m, 'success']));
     runPlans();
-    saveGame();
-    await syncScene();
     if (roll) {
-        toast(`${gradeName(roll.grade)} — ${roll.text}`, roll.grade.includes('success') ? 'success' : 'warn');
+        later.push([`${gradeName(roll.grade)} — ${roll.text}`, roll.grade.includes('success') ? 'success' : 'warn']);
         // the AI only tells the story of the result the engine decided
         setPrompt('mundi_roll', `[Just now {{user}} tried to ${a.label.toLowerCase()}: ${gradeName(roll.grade).toLowerCase()}. ${roll.text} Narrate it in that light.]`);
     }
     else
-        toast(`${a.name}: done.`, 'success');
+        later.push([`${a.name}: done.`, 'success']);
+    const names = who.map(x => g.cast[x]?.name).filter(Boolean);
+    if (consent)
+        consentAfter(g, a, people, consent).forEach(m => later.push([m, 'success']));
     maybeBump(g, w);
     if (isScenario(w))
         state.view = 'scene';
-    notify();
-    // the action goes into the chat as yours, and the narrator tells it (with the people taking part)
-    const names = who.map(x => g.cast[x]?.name).filter(Boolean);
+    saveGame();
+    await syncScene();
+    // the action goes into the chat as yours, the AI narrates it, and only then the results show with the story
+    const { autoLine, afterNarration } = await import('./scene.js');
     if (consent) {
-        consentAfter(g, a, people, consent).forEach(m => toast(m, 'success'));
-        saveGame();
-        const { autoLine } = await import('./scene.js');
         await autoLine(proposalLine(a, names, how, mins), consentHint(consent, a, names, how, durText(mins)));
-        return;
     }
-    const line = `*${personaName()} — ${a.name}${names.length ? ` ${fmt('with {0}', names.join(', '))}` : ''}${how ? `: ${how}` : ''} (${durText(mins)})*`;
-    const hint = `[{{user}} is doing this now: ${a.name} (${a.label})${names.length ? `, together with ${names.join(', ')}` : ''}${how ? `, like this: ${how}` : ''}. It takes about ${durText(mins)}. Narrate the action as it happens in the scene${names.length ? `, with ${names.join(', ')} taking part in character` : ''}${roll ? `; it went this way: ${gradeName(roll.grade).toLowerCase()}, ${roll.text}` : ''}. Do not write {{user}}'s words or decisions beyond what is stated.]`;
-    const { autoLine } = await import('./scene.js');
-    await autoLine(line, hint);
+    else {
+        const line = `*${personaName()} — ${a.name}${names.length ? ` ${fmt('with {0}', names.join(', '))}` : ''}${how ? `: ${how}` : ''} (${durText(mins)})*`;
+        const hint = `[{{user}} is doing this now: ${a.name} (${a.label})${names.length ? `, together with ${names.join(', ')}` : ''}${how ? `, like this: ${how}` : ''}. It takes about ${durText(mins)}. Narrate the action as it happens in the scene${names.length ? `, with ${names.join(', ')} taking part in character` : ''}${roll ? `; it went this way: ${gradeName(roll.grade).toLowerCase()}, ${roll.text}` : ''}. Do not write {{user}}'s words or decisions beyond what is stated.]`;
+        await autoLine(line, hint);
+    }
+    await afterNarration(); // wait for the AI's narration: the results appear with the story
+    later.forEach(([m, kind]) => toast(m, kind));
+    notify();
 }
 // The journey dialog: the road takes hours; make camp at night, or push on without rest.
 export function journeyHtml() {

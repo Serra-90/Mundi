@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Social checks in every mode**: a line in the chat that tries to persuade, lie, threaten or charm is judged by
+  the AI and decided by the dice in Life-Sim too (before, only the RPG had it). There the d20 leans on the world's
+  own traits (Eloquent, Dominant… English or Italian), and Italian attempts are heard (convincere, minacciare,
+  ingannare…). The dice button works there too. Per game they can be turned off (`cfg.socialChecks = false`).
+- **The story comes first**: an action's results — the dice, the money, the needs, the clock — now show with the
+  AI's narration instead of before it, and a refused proposal shows its cost with the refusal. The engine still
+  decides everything up front; only the telling changes.
+
 - **Actions that spend what you use**: a world action can have `consume`, and one owned copy of that shop item
   is removed when the action is done (the diary notes it). `needsItem` also accepts a list — the action shows up
   when you own any of them — and shop items marked `stack: true` can be bought again and again, with an "× N"

@@ -1,12 +1,26 @@
+import { cfg } from '../core/store.js';
 import { quiet, personaName } from '../st/bridge.js';
 import { bondOf, bump } from './social.js';
 import { approvalOf, approve } from './living.js';
 import { regionState, regionOf } from './worldstate.js';
 import { isRpg, sheetOf, rollCheck, checkWon, gradeWord, addXp, count, skillOf, DCS } from './rpg.js';
+import { traitsOf } from './work.js';
 import { note } from './facts.js';
 export const SOCIAL_SKILLS = ['persuasion', 'deception', 'intimidation', 'insight', 'performance'];
 // Words that sound like an attempt (English and Portuguese, Spanish): only then the judge is asked.
 export const SOUNDS_LIKE = /\b(convince|persuade|lie|lying|pretend|bluff|threaten|intimidate|charm|flatter|bargain|haggle|beg|plead|bribe|trick|deceive|negotiate|insist|demand|swear|promise you|trust me|convenc|persuad|minto|mentir|fing|blef|amea[cç]|intimid|lisonje|barganh|pechinch|implor|supl|subor|engan|negoci|insist|exij|confie em mim|juro|enga[ñn]|amenaz|soborn)/i;
+// Italian, by stem (convinc- matches convinco, convincere, convincerebbe…): the same idea.
+export const SOUNDS_LIKE_IT = /(convinc\w*|persuad\w*|bugiard\w*|\bballe\b|\bfing\w*|bluff\w*|minacc\w*|intimid\w*|incant\w*|lusing\w*|adula\w*|mercantegg\w*|implor\w*|supplic\w*|corromp\w*|mazzett\w*|ingann\w*|negozi\w*|insist\w*|esig\w*|pretend\w*|giur\w*|promett\w*|fidati di me)/i;
+// What each social skill leans on in Life-Sim: the world's traits (English or Italian).
+const SOCIAL_TRAITS = {
+    persuasion: ['Eloquent', 'Charming', 'Kind', 'Eloquente', 'Affascinante', 'Gentile'],
+    deception: ['Creative', 'Sarcastic', 'Intelligent', 'Creativo', 'Sarcastico', 'Intelligente'],
+    intimidation: ['Dominant', 'Strong', 'Irascible', 'Dominante', 'Forte', 'Irascibile'],
+    insight: ['Intelligent', 'Curious', 'Calm', 'Intelligente', 'Curioso', 'Calmo'],
+    performance: ['Outgoing', 'Charming', 'Cheerful', 'Estroverso', 'Affascinante', 'Allegro'],
+};
+// Chat checks can be turned off per game (cfg.socialChecks = false), like consent.
+export const socialOn = (g) => cfg(g).socialChecks !== false;
 export function parseVerdict(out) {
     const get = (k) => (out.match(new RegExp(`${k}\\s*:\\s*([^\\n]+)`, 'i'))?.[1] ?? '').trim().toLowerCase();
     const skill = SOCIAL_SKILLS.find(s => get('skill').includes(s)) ?? 'persuasion';
@@ -40,9 +54,9 @@ const OUTCOME = {
 };
 // Asks the judge, rolls, and returns what to tell the AI (null: not a check). `force`: the player asked for a roll.
 export async function socialCheck(g, w, text, present, force = false) {
-    if (!isRpg(w) || !sheetOf(g) || !present.length)
+    if (!present.length || !socialOn(g))
         return null;
-    if (!force && !SOUNDS_LIKE.test(text))
+    if (!force && !SOUNDS_LIKE.test(text) && !SOUNDS_LIKE_IT.test(text))
         return null;
     const me = personaName();
     const out = await quiet(`[You are the rules judge of a role-play game. You do not write the story.]
@@ -61,10 +75,17 @@ QUALITY: a number from -2 to 2 (how good the approach is: clumsy -2, ordinary 0,
         return null;
     const target = present.find(r => v.target && r.name.toLowerCase().split(/\s+/)[0] === v.target.split(/\s+/)[0]) ?? (present.length === 1 ? present[0] : null);
     const dc = difficultyFor(g, w, v, target);
-    const c = rollCheck(g, w, v.skill, dc, v.quality);
+    const rpg = isRpg(w) && !!sheetOf(g);
+    // Life-Sim has no skill sheet: a plain d20 that leans on the world's own traits, like the world's roll actions
+    const c = rpg ? rollCheck(g, w, v.skill, dc, v.quality) : (() => {
+        const d20 = 1 + Math.floor(Math.random() * 20);
+        const bonus = v.quality + traitsOf(g).filter(t => (SOCIAL_TRAITS[v.skill] ?? []).includes(t)).length * 2;
+        const total = d20 + bonus;
+        return { d20, other: 0, adv: false, bonus, total, dc, grade: d20 === 20 ? 'critical-success' : d20 === 1 ? 'critical-fail' : total >= dc ? 'success' : 'fail' };
+    })();
     const won = checkWon(c);
     const who = target?.name ?? 'the people here';
-    const msgs = [...addXp(g, w, won ? (c.grade === 'critical-success' ? 50 : 25) : 5, 'social check'), ...(won ? count(g, w, 'socialWins') : [])];
+    const msgs = rpg ? [...addXp(g, w, won ? (c.grade === 'critical-success' ? 50 : 25) : 5, 'social check'), ...(won ? count(g, w, 'socialWins') : [])] : [];
     if (target && c.grade === 'critical-fail') {
         approve(g, target.avatar, -5);
         bump(g, target.avatar, -3);

@@ -986,3 +986,21 @@ export const on = (name: string, fn: (...a: any[]) => void) => {
     const c = ctx();
     if (c.eventTypes?.[name]) c.eventSource.on(c.eventTypes[name], fn);
 };
+// Resolves when the generation SillyTavern is running (or is about to run) ends — or after a while, if none comes.
+// Used to show an action's results with the story, instead of before it.
+export function nextGen(armMs = 8000, ms = 180000): Promise<void> {
+    return new Promise(resolve => {
+        const c = ctx();
+        const types = c.eventTypes ?? {};
+        const src = c.eventSource as { on: (t: string, f: () => void) => void; once?: (t: string, f: () => void) => void };
+        if (!src?.on || !types.GENERATION_ENDED) { resolve(); return; }
+        let done = false;
+        const fin = () => { if (done) return; done = true; clearTimeout(arm); clearTimeout(t); resolve(); };
+        const arm = setTimeout(fin, armMs); // nothing started in time: there was nothing to wait for
+        const t = setTimeout(fin, ms);
+        const once = (type: string, fn: () => void) => (src.once ? src.once(type, fn) : src.on(type, fn));
+        if (types.GENERATION_STARTED) once(types.GENERATION_STARTED, () => clearTimeout(arm));
+        once(types.GENERATION_ENDED, fin);
+        if (types.GENERATION_FAILED) once(types.GENERATION_FAILED, fin);
+    });
+}
