@@ -1,6 +1,9 @@
 // What the AI knows about the scene right now. Injected as an extension prompt before every reply, so it works
 // with SillyTavern's normal generation (and with any preset). The world's lore lives in its lorebook instead.
 import { extrasLines } from './extras.js';
+import { narrativeLines } from './narrative.js';
+import { directorLines } from './narrative-director.js';
+import { cfg } from '../core/store.js';
 import { homeJobsLine } from './hometime.js';
 import { dressLine } from './dress.js';
 import { approvalLine, couplesLine, rumorLines, activeWorldLore } from './living.js';
@@ -56,7 +59,10 @@ import './letters.js';
 import './journey.js';
 import { systemOn, blockSystem, isScenario, offstageOn, SCENARIO_STARTS } from '../core/world.js';
 export const PROMPT_KEY = 'mundi_scene';
+let narrativeSpeaker = '';
+export const setNarrativeSpeaker = (avatar) => { narrativeSpeaker = avatar; };
 export const BLOCKS = [
+    { id: 'narrative', name: 'Internal states', desc: 'Individual knowledge, agreements, feelings, intentions, clothing and unresolved matters.', cut: 10 },
     { id: 'core', name: 'Scene basics', desc: 'World, day and time, weather, place, who is here, and the rules of the scene.' },
     { id: 'world', name: 'The mood around', desc: 'How busy it is here, the public mood and tension of the region, and its prices.', cut: 4 },
     { id: 'memories', name: 'Memories', desc: 'What the people here remember about you, and what happened earlier in this place.', cut: 9 },
@@ -130,6 +136,11 @@ export function sceneBlocks() {
     const names = present.map(r => r.name);
     const pc = promptCfg();
     const raw = {
+        narrative: cfg(g).narrativeStates === false ? [] : [
+            ...narrativeLines(g, present, present.some(r => r.avatar === narrativeSpeaker) ? narrativeSpeaker : undefined),
+            ...directorLines(g, present, present.some(r => r.avatar === narrativeSpeaker) ? narrativeSpeaker : undefined),
+            'Play only the selected character and the scene the engine supplies. Private states belong only to their owner. A suspicion or reported claim is not certain truth. Other characters know only what they witnessed or were explicitly told. The engine owns time, locations, money and needs. Never print internal states or mechanical bookkeeping in the story.',
+        ],
         core: [
             `[World state — ${w.name}]`,
             ...scenarioLines(g, w),

@@ -1,7 +1,8 @@
 // "AI context": what Mundi sends to the AI with every reply, block by block. Each block can be switched off, a token
 // budget drops the least important blocks first, and the count shows how much of the model's context it takes.
 // The texts are yours to change: each block's own text, the scene's rules, and instructions of your own.
-import { esc, notify, saveSettings, game } from '../core/store.js';
+import { esc, notify, saveSettings, saveGame, game, cfg } from '../core/store.js';
+import { narrativeOn, narrativeBusy, narrativeDiagnostics, ensureNarrativeLedger, syncNarrative } from '../sim/narrative-runtime.js';
 import { getWorld } from '../core/world.js';
 import { ctx } from '../st/bridge.js';
 import { blocksOf, promptCfg, sceneBlocks, sceneText, estTokens, refreshPrompt, DEFAULT_RULES } from '../sim/prompt.js';
@@ -34,6 +35,7 @@ export function tabAiContext(): string {
     const steps = [0, 200, 300, 400, 500, 600, 800, 1000, 1200, 1500, 2000];
     const bi = Math.max(0, steps.indexOf(pc.budget));
     return `<section class="mu-wc-sec mu-aic">
+            ${internalStatesHtml()}
             <h4>What Mundi sends to the AI</h4>
             <p class="mu-muted">Sent with every reply, on top of your preset, the character cards and the chat. Only what is about this place and the people here.</p>
             <div class="mu-aic-meter"><b>${A.count >= 0 ? '' : '≈ '}${n.toLocaleString('en-US')} tokens</b>
@@ -62,6 +64,19 @@ export function tabAiContext(): string {
             ${A.preview ? `<div class="mu-lib-text is-code" data-notr>${esc(text)}</div>` : ''}</section>`;
 }
 
+function internalStatesHtml(): string {
+    const g = game();
+    if (!g) return '';
+    const ledger = (g as any).narrativeLedger;
+    return `<h4>Stati interni autonomi</h4>
+        <label class="mu-check"><input type="checkbox" data-input="aic-narrative" ${narrativeOn(g) ? 'checked' : ''}><span>Memoria narrativa individuale<small>Conoscenze, bugie, accordi, relazioni direzionali, agende, emozioni, vestiario e fili aperti. Funziona senza il vecchio preset.</small></span></label>
+        <p class="mu-muted">Una chiamata AI aggiuntiva per risposta completata. I nuovi stati iniziano dall’attivazione; orario, posizioni, bisogni e barre native restano gestiti dal gioco.</p>
+        <p class="mu-muted" data-notr>${esc(narrativeDiagnostics(g))}</p>
+        <button class="mu-ghost" data-act="aic-narrative-sync" ${narrativeBusy() ? 'disabled' : ''}>${narrativeBusy() ? 'Aggiornamento in corso…' : 'Aggiorna / riprova estrazioni'}</button>
+        <details><summary>Diagnostica degli stati (include informazioni private dei personaggi)</summary>
+            <pre class="mu-lib-text is-code" data-notr>${esc(JSON.stringify({ state: (g as any).narrative ?? {}, sources: ledger?.records?.length ?? 0 }, null, 2))}</pre></details>`;
+}
+
 // A block's own text, under its row. {text} is what Mundi wrote for the block; your words go around it, or replace it.
 function editor(id: string, own: string, now: string) {
     if (id === 'extra') return `<div class="mu-aic-edit">
@@ -75,11 +90,23 @@ function editor(id: string, own: string, now: string) {
 }
 
 Object.assign(ACT, {
+    'aic-narrative-sync': async () => {
+        const g = game(); if (!g || narrativeBusy()) return;
+        const ledger = (g as any).narrativeLedger;
+        if (ledger) { ledger.failed = {}; ledger.err = null; }
+        await syncNarrative(); refreshPrompt(); notify();
+    },
     'aic-preview': () => { A.preview = !A.preview; notify(); },
     'aic-edit': (el) => { A.edit = A.edit === el.dataset.id ? '' : el.dataset.id!; notify(); },
     'aic-reset': (el) => { const pc = promptCfg(); const id = el.dataset.id!; if (id === 'rules') pc.rules = ''; else delete pc.text[id]; saveSettings(); refreshPrompt(); notify(); },
 });
 Object.assign(INPUT, {
+    'aic-narrative': (el) => {
+        const g = game(); if (!g) return;
+        cfg(g).narrativeStates = el.checked;
+        if (el.checked) ensureNarrativeLedger();
+        saveGame(); refreshPrompt(); notify();
+    },
     'aic-block': (el) => {
         const pc = promptCfg(); const id = el.dataset.id!;
         pc.off = el.checked ? pc.off.filter(x => x !== id) : [...new Set([...pc.off, id])];

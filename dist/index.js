@@ -10,6 +10,8 @@ import { patchLastLine } from './ui/scene.js';
 import { installSfx } from './ui/sfx.js';
 import { refreshPrompt, clearPrompt } from './sim/prompt.js';
 import { applyGameLore } from './sim/lore.js';
+import { installNarrativeRuntime, syncNarrative, ensureNarrativeLedger } from './sim/narrative-runtime.js';
+import { setNarrativeSpeaker } from './sim/prompt.js';
 // A reply that came back empty (the prompt did not fit the model's context, or the reply ran out of tokens while the
 // model was still thinking) is removed, so it does not pile up in the story, and Mundi says why.
 let emptyWarned = 0;
@@ -78,10 +80,28 @@ function addSettingsBlock() {
 function follow() {
     const redraw = () => { if (state.open)
         notify(); };
+    // The group speaker has been selected before ST builds this generation's prompt.
+    on('GENERATION_AFTER_COMMANDS', async (type, opts, dryRun) => {
+        if (dryRun || type === 'quiet')
+            return;
+        if (type === 'impersonate') {
+            setNarrativeSpeaker('');
+            refreshPrompt();
+            return;
+        }
+        ensureNarrativeLedger();
+        await syncNarrative({ extract: false });
+        const c = ctx();
+        const id = opts?.force_chid ?? c.characterId;
+        const avatar = id !== undefined && id !== null ? c.characters?.[id]?.avatar : '';
+        setNarrativeSpeaker(avatar && game()?.cast[avatar] ? avatar : '');
+        refreshPrompt();
+    });
     on('GENERATION_STARTED', (_type, _opts, dryRun) => { if (dryRun)
         return; state.generating = true; redraw(); });
     const done = () => {
         state.generating = false;
+        setNarrativeSpeaker('');
         if (state.impersonating) { // the AI wrote the player's line into SillyTavern's box: bring it to Mundi's composer
             state.impersonating = false;
             const field = document.getElementById('send_textarea');
@@ -159,6 +179,7 @@ async function init() {
     addLauncher();
     addSettingsBlock();
     follow();
+    installNarrativeRuntime();
     if (game())
         refreshPrompt();
     else

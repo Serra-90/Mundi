@@ -101,6 +101,7 @@ export interface Save {
 // The open chat's save, or null when the open chat is not a Mundi game.
 // Per-save world settings (Globe → World → Advanced). Missing values mean the world's defaults.
 export interface WorldCfg { /** Home: minutes pass with each message (default on) */ perMessage?: boolean; /** Home: the housemates leave the house (work, errands, nights out; default on) */ npcOut?: boolean; travel?: number; decay?: number; bondCap?: number; seasonDays?: number; lore?: string[]; clock?: 'action' | 'live'; /** open relationships: no jealousy, date several people freely */ poly?: boolean; /** you cannot leave a room while a conversation or an event is going on */ stayInScene?: boolean; /** checks in the chat (persuade, lie, threaten…): on unless false */ socialChecks?: boolean }
+export interface WorldCfg { /** Autonomous internal states, extracted from new replies. On unless false. */ narrativeStates?: boolean }
 export const cfg = (g: Save): WorldCfg => (((g as any).cfg ??= {}) as WorldCfg);
 // How time passes: "action" (default) only what you do moves the clock (eating, sleeping, working, travelling);
 // "live" the clock also runs by itself in real time (World → Rules).

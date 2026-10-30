@@ -4,6 +4,17 @@
 Interfaccia in italiano, bisogni personalizzabili, narrazione automatica di spostamenti e azioni, personaggi fissi e regola "resta finché non vi salutate"; in arrivo un'unica modalità Mondo con edifici a stanze.
 Distribuita con la stessa licenza dell'originale (AGPL-3.0).
 
+## Stati interni autonomi
+
+Newworld include una memoria narrativa persistente per conoscenze individuali, bugie, accordi, relazioni
+direzionali, agende, emozioni e vestiario. Non richiede il preset Frankenstein né macro o regex del preset.
+Si controlla da **Mondo → AI context → Stati interni autonomi**, con diagnostica e ripetizione delle estrazioni
+fallite. Usa una chiamata AI aggiuntiva per ogni risposta narrativa elaborata; si può disattivare per salvataggio.
+
+Dettagli e limiti: [architettura e uso](docs/narrative-states.md), [obiettivi e criteri](docs/internal-states-plan.md).
+Verifica da sorgenti: `tsc -p tsconfig.json`, poi
+`node --test tests/narrative.mjs tests/narrative-runtime.mjs tests/narrative-director.mjs`.
+
 ---
 
 # Mundi

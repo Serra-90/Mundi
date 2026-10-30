@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+### Autonomous internal states · 2026-10-30
+
+- **Preset-independent narrative memory**: new replies are analysed into validated, structured events saved
+  with the game. No Frankenstein preset, macros, regex scripts or generated HTML state block is required.
+- **Individual knowledge and lies**: facts are separate from their subjects and witnesses; learning records
+  its source. Private context follows the selected group speaker, and a lie does not tell its recipient that
+  it is false. Unknown speakers receive conservative shared context.
+- **Directional relationships and agreements**: trust, affection, resentment and fear are tracked separately
+  in each direction, alongside exclusive, open or conditional agreements. Learning a recorded breach can
+  cause resentment; the native friendship/romance bars keep their existing updates.
+- **Agendas, open matters, moods and clothing**: timed plans become ready without inventing their completion;
+  promises and deadlines remain open until explicitly resolved; VAD moods cool with game time; individual
+  clothing items retain their location and condition. A lightweight director surfaces relevant pending matters.
+- **Replay-safe narrative updates**: swipes, edits and deletions rebuild the new subsystem from the selected
+  messages. Upstream edits invalidate dependent updates; hidden visits retain their records; stale asynchronous
+  results are discarded after chat switches or resets. Story generation takes priority between extraction calls.
+- **Controls and diagnostics**: World → AI context includes a per-save switch, extraction status, manual retry
+  and a read-only inspector. The feature defaults to on and starts from activation rather than processing an
+  old chat in bulk. Each processed narrative reply uses an additional AI call.
+- **Verification**: TypeScript build and 46 automated tests covering validation, knowledge boundaries, replay,
+  race handling, group queues, agendas, clothing and deterministic direction. Compiled distribution included.
+- **Current boundaries**: replay covers the new narrative subsystem, not native stats or transactions. Agendas
+  do not move NPCs or execute purchases automatically; narrative secrets do not yet propagate automatically
+  through native gossip. Native diary, lorebooks and chat retain their original information flow. Live testing
+  with a SillyTavern session and a real model remains necessary. See `docs/narrative-states.md`.
+
 - **Actions done only with someone**: an action can be `together` (World creator: "Only with someone"). It is
   offered only when someone you know is here, the one person there is already chosen, and it is always a proposal:
   they may say no, and the dice decide.
