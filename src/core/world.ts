@@ -98,6 +98,8 @@ export interface ActionDef {
     roll?: { dc: number; traits?: string[]; success: RollOutcome; fail: RollOutcome };
     /** Only shown when the player owns this shop item (a coffee machine, a loom…), or one of them. */
     needsItem?: string | string[];
+    /** Only with someone: offered only when someone you know is here, and it is always a proposal to them (consent). */
+    together?: boolean;
     /** Shop item(s) spent by this action: one owned copy is removed (the first found in `consume`). */
     consume?: string | string[];
     /** Not offered in places with any of these tags (a run is not for the gym). */

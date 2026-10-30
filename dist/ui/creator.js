@@ -189,6 +189,7 @@ function tabActions(w) {
             ${where === 'tags' ? chips(tags, `${p}.tags`) : where === 'place' ? sel('Place', `${p}.place`, placeOpts(w)) : ''}
             ${where === 'tags' ? `<h4>But not in places tagged</h4>${chips(tags, `${p}.notTags`)}` : ''}
             ${chk('An outing (off-screen)', `${p}.outing`, 'You leave for a while (work, errands, a night out) and come back: offered even when needs are off. Made for Homes.')}
+            ${chk('Only with someone', `${p}.together`, 'Offered only when someone you know is here, and always a proposal to them: they may say no (the dice decide).')}
             ${sel('Only if the player owns', `${p}.needsItem`, [['', 'Nothing (always offered)'], ...(w.catalogs.shop ?? []).map(it => [it.id, `${it.icon ?? ''} ${it.name}`])])}
             <h4>Effects</h4><div class="mu-cw-effects">${w.statuses.map(s => num(`${s.icon} ${s.name}`, `${p}.effects.${s.id}`, -1000)).join('')}</div>`;
     }, 'action');

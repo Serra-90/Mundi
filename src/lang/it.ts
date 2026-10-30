@@ -3875,6 +3875,10 @@ const DICT: Record<string, string> = {
  "The AI plays them while they are there. Hours 7-14 or 18-2; days 1 (Monday) to 7, as 1-5 or 6,7; both optional.": "L'IA le interpreta mentre sono lì. Orari 7-14 o 18-2; giorni da 1 (lunedì) a 7, come 1-5 o 6,7; entrambi facoltativi.",
  "Who is around, in the background": "Chi c'è intorno, sullo sfondo",
  "At any time": "In qualsiasi momento",
- "{0} now has a card of their own.": "Ora {0} ha una scheda sua."
+ "{0} now has a card of their own.": "Ora {0} ha una scheda sua.",
+ "With whom?": "Con chi?",
+ "This one is done with someone: choose who.": "Questa si fa con qualcuno: scegli con chi.",
+ "Only with someone": "Solo con qualcuno",
+ "Offered only when someone you know is here, and always a proposal to them: they may say no (the dice decide).": "Compare solo quando c'è qualcuno che conosci, ed è sempre una proposta: può dire di no (decidono i dadi)."
 };
 export default DICT;

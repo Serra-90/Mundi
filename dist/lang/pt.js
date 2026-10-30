@@ -3791,6 +3791,10 @@ const DICT = {
     "The AI plays them while they are there. Hours 7-14 or 18-2; days 1 (Monday) to 7, as 1-5 or 6,7; both optional.": "A IA as interpreta enquanto estão lá. Horário 7-14 ou 18-2; dias de 1 (segunda) a 7, como 1-5 ou 6,7; ambos opcionais.",
     "Who is around, in the background": "Quem está por perto, ao fundo",
     "At any time": "A qualquer hora",
-    "{0} now has a card of their own.": "Agora {0} tem um cartão próprio."
+    "{0} now has a card of their own.": "Agora {0} tem um cartão próprio.",
+    "With whom?": "Com quem?",
+    "This one is done with someone: choose who.": "Esta se faz com alguém: escolha com quem.",
+    "Only with someone": "Só com alguém",
+    "Offered only when someone you know is here, and always a proposal to them: they may say no (the dice decide).": "Aparece só quando há alguém que você conhece por perto, e é sempre uma proposta: pode dizer não (os dados decidem)."
 };
 export default DICT;

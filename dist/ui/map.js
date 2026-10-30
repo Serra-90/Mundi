@@ -523,16 +523,16 @@ export function actDlgHtml() {
     return `<div class="mu-recap-veil" data-act="ad-bg"><section class="mu-recap mh-glass mu-ca-modal mu-ad-modal" role="dialog" aria-label="${esc(a.name)}">
         <header><small>${esc(a.icon ?? '')} <span data-notr>${esc(a.name)}</span></small><h3 data-notr>${esc(a.label)}</h3></header>
         <div class="mu-ca-body">
-            ${here.length ? `<small class="mu-muted">With whom? (optional)</small>
+            ${here.length ? `<small class="mu-muted">${a.together ? 'With whom?' : 'With whom? (optional)'}</small>
             <div class="mu-ad-who">${here.map(r => `<button class="mu-chip ${AD.who.includes(r.avatar) ? 'is-on' : ''}" data-act="ad-who" data-who="${esc(r.avatar)}"><img src="${esc(thumb(r.avatar))}" alt=""><span data-notr>${esc(r.name)}</span></button>`).join('')}</div>` : ''}
             <small class="mu-muted">How? (optional)</small>
             <input type="text" placeholder="${esc(tr('Slowly, in silence, singing…'))}" maxlength="160" value="${esc(AD.how)}" data-input="ad-how" data-focus="ad-how">
             <small class="mu-muted">For how long?</small>
             <div class="mh-ca-lens">${presets.map(m => `<button class="${AD.mins === m ? 'is-on' : ''}" data-act="ad-mins" data-v="${m}"><b>${durText(m)}</b></button>`).join('')}
                 <label class="mu-ad-mins"><input type="number" min="1" max="720" step="5" value="${AD.mins}" data-input="ad-mins"> <span>min</span></label></div>
-            <small class="mu-muted">${AD.who.length && consentOn(g) ? 'With someone, it is a proposal: they may say no (the AI judges it, the dice decide).' : 'The narrator tells it in the chat.'}</small>
+            <small class="mu-muted">${a.together && !AD.who.length ? 'This one is done with someone: choose who.' : AD.who.length && consentOn(g) ? 'With someone, it is a proposal: they may say no (the AI judges it, the dice decide).' : 'The narrator tells it in the chat.'}</small>
         </div>
-        <footer class="mh-ca-row"><button class="mu-ghost" data-act="ad-close">Cancel</button><button class="mu-primary" data-act="ad-go">${icon('check')}<span>${AD.who.length && consentOn(g) ? 'Propose it' : 'Do it'}</span></button></footer>
+        <footer class="mh-ca-row"><button class="mu-ghost" data-act="ad-close">Cancel</button><button class="mu-primary" data-act="ad-go" ${a.together && !AD.who.length ? 'aria-disabled="true"' : ''}>${icon('check')}<span>${AD.who.length && consentOn(g) ? 'Propose it' : 'Do it'}</span></button></footer>
     </section></div>`;
 }
 async function runAction(g, w, a, mins, who, how) {
@@ -822,7 +822,9 @@ Object.assign(ACT, {
             toast('Wait until they finish speaking.', 'info');
             return;
         }
-        Object.assign(AD, { id: a.id, who: [], how: '', mins: a.minutes });
+        // done with someone: the one person you know here is already chosen
+        const known = a.together ? presentAt(g, w, g.player.loc).filter(r => r.met) : [];
+        Object.assign(AD, { id: a.id, who: known.length === 1 ? [known[0].avatar] : [], how: '', mins: a.minutes });
         notify();
         setTimeout(() => document.querySelector('#mundi-root [data-focus="ad-how"]')?.focus(), 30);
     },
@@ -839,6 +841,10 @@ Object.assign(ACT, {
         const mins = Math.max(1, Math.min(720, Math.round(AD.mins || a?.minutes || 1)));
         const who = AD.who.slice();
         const how = AD.how.trim().replace(/[.]+$/, '');
+        if (a?.together && !who.length) {
+            toast('This one is done with someone: choose who.', 'info');
+            return;
+        }
         AD.id = '';
         notify();
         if (!a || isDoing())

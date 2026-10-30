@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **Actions done only with someone**: an action can be `together` (World creator: "Only with someone"). It is
+  offered only when someone you know is here, the one person there is already chosen, and it is always a proposal:
+  they may say no, and the dice decide.
+
 - **One action, home and away**: an action can be `home` and carry `tags` at the same time now — it shows at your
   place and everywhere the tag fits (a shower at home or in any bathroom, cooking in your kitchen or any other).
   Worlds can merge their doubled "at home / here" actions into one.
