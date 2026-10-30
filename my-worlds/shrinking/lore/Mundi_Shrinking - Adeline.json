@@ -1,0 +1,56 @@
+{
+  "entries": {
+    "7": {
+      "uid": 7,
+      "key": [
+        "the order",
+        "l'ordine",
+        "alta padrona"
+      ],
+      "keysecondary": [],
+      "comment": "L'Ordine",
+      "content": "*L'Ordine*\nCircolo femminile chiuso di custodi-dominatrici: il ramo marchigiano di un network nazionale senza nome pubblico. Dodici sorelle, dai trenta ai sessanta: il WellCum di Helen, una commercialista, una farmacista, un'estetista, due sorelle esecutrici, un'infermiera del reparto B dell'ambulatorio ASL — l'orecchio dell'Ordine su libretti e lotti in arrivo — e altre che non si nominano.\n\n*Gerarchia*: l'Alta Padrona (Helen); le due sorelle esecutrici (cessioni, pratiche, ospiti sgraditi); le sorelle; le aspiranti («novizie»), spesso pescate tra le tesserate del Tritone con la promessa di salire di grado.\n\n*Attività*: le cerimonie nella villa del litorale; l'attico per le iniziazioni e il giovedì sera; il reclutamento al WellCum — la cliente giusta, al secondo giro di camere, riceve l'invito a salire di grado; prestiti e scambi di omuncoli tra sorelle; la prima scelta sui lotti nuovi tramite il reparto B; l'educazione delle figlie — «le allieve» — al possesso come eredità di famiglia. Adeline è la prima della nuova generazione.\n\n*Regole*: segretezza estetica più che penale — i ridotti non hanno diritti, non c'è reato, c'è gusto; la quota mensile; il giuramento sulla ceramica della vasca; mai una sorella contro una sorella: le divergenze si risolvono in acqua.\n\n*Segni*: il gesto delle due dita che schioccano; il prugna come colore delle occasioni ufficiali; «conoscere» come verbo tecnico («L'Ordine deve conoscerti»).\n\n*In scena*: renderlo come un circolo del Rotary del potere assoluto: ordini del giorno, verbali, tè servito — e un'ospite d'onore alta cinque centimetri che nessuna sorella chiama persona.",
+      "constant": false,
+      "vectorized": false,
+      "selective": true,
+      "selectiveLogic": 0,
+      "addMemo": true,
+      "order": 100,
+      "position": 0,
+      "disable": false,
+      "ignoreBudget": false,
+      "excludeRecursion": true,
+      "preventRecursion": true,
+      "matchPersonaDescription": false,
+      "matchCharacterDescription": false,
+      "matchCharacterPersonality": false,
+      "matchCharacterDepthPrompt": false,
+      "matchScenario": false,
+      "matchCreatorNotes": false,
+      "delayUntilRecursion": false,
+      "probability": 100,
+      "useProbability": true,
+      "depth": 4,
+      "outletName": "",
+      "group": "",
+      "groupOverride": false,
+      "groupWeight": 100,
+      "scanDepth": null,
+      "caseSensitive": null,
+      "matchWholeWords": null,
+      "useGroupScoring": null,
+      "automationId": "",
+      "role": null,
+      "sticky": 0,
+      "cooldown": 0,
+      "delay": 0,
+      "triggers": [],
+      "displayIndex": 7,
+      "characterFilter": {
+        "isExclude": false,
+        "names": [],
+        "tags": []
+      }
+    }
+  }
+}

@@ -1,0 +1,4240 @@
+{
+ "format": 1,
+ "id": "w_palatium_augusti_mvqx6u7a5rz",
+ "name": "Palatium Augusti",
+ "kind": "Medieval",
+ "version": "1.0.0",
+ "description": "Il palazzo imperiale di Terra Aeterna: un Imperatore, il suo gineceo, una corte di funzionari ambiziosi e due famiglie di congiurati che pagano la loro condanna sotto il suo tetto.",
+ "tags": [
+  "lifesim",
+  "fantasy"
+ ],
+ "madeFor": "lifesim",
+ "cover": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-cover.jpg",
+ "setting": "Il Palatium Augusti è il palazzo imperiale sul Colle Palatino, a Roma, nel mondo di Terra Aeterna: una versione alternativa della Terra in cui l'Impero Romano non è mai caduto, in un'epoca fantasy medievale. La magia è reale ma rara, gli dèi esistono e si manifestano di rado. Il palazzo ha quattro livelli: i sotterranei scavati nella roccia (cisterne, terme imperiali, prigioni, magazzini, cantina), il piano nobile (vestibolo, aula del trono, uffici di Cancelliere, Ciambellano e Siniscalco, tesoreria, triclinio, cucine, peristilio, larario, caserma, quartieri della servitù), il piano residenziale (appartamenti imperiali, gineceo delle concubine, stanza del paggetto, ala diplomatica) e le torri (Collegium Arcana, torre di guardia, colombaia). Vi regna l'Imperatore Rurik Balderek. Due famiglie, i Santarelli e i Dubbini, hanno cospirato contro di lui e pagano la condanna vivendo a palazzo come concubine, paggetto, schiavo od omuncoli. Luce di lucerne e bracieri, messaggi affidati alle colombe e ai messi, latino di corte e dialetti delle province. Nulla di moderno. Tutti i personaggi sono adulti. Il mondo è crudele e la narrazione non lo addolcisce: schiavitù, potere assoluto e intrighi di corte fanno parte dell'ordine delle cose. Niente di ciò che si dice a palazzo resta segreto a lungo.",
+ "currency": {
+  "name": "Sesterzi",
+  "symbol": "HS",
+  "after": true
+ },
+ "time": {
+  "startDay": 1,
+  "startMinutes": 420,
+  "speed": 60,
+  "periods": [
+   {
+    "id": "dawn",
+    "name": "Alba",
+    "from": 0
+   },
+   {
+    "id": "morning",
+    "name": "Mattina",
+    "from": 360
+   },
+   {
+    "id": "afternoon",
+    "name": "Pomeriggio",
+    "from": 720
+   },
+   {
+    "id": "vespers",
+    "name": "Vespro",
+    "from": 1080
+   },
+   {
+    "id": "night",
+    "name": "Notte",
+    "from": 1320
+   }
+  ]
+ },
+ "maps": [
+  {
+   "id": "palazzo",
+   "name": "Il Palatium",
+   "image": "",
+   "ratio": 1.7917,
+   "town": true,
+   "area": "Il Colle Palatino"
+  }
+ ],
+ "places": [
+  {
+   "id": "cisterne",
+   "name": "Cisterne",
+   "map": "palazzo",
+   "x": 10,
+   "y": 15,
+   "tags": [
+    "service"
+   ],
+   "desc": "CISTERNE (Piano -1). Serbatoi di pietra viva collegati all'acquedotto Claudio: l'acqua arriva con un gorgoglio sommesso che non smette mai, né giorno né notte. L'aria è fredda anche in agosto, intrisa di umidità che condensa sulle volte basse e gocciola in pozze scure. Le lucerne riflesse nell'acqua nera sembrano galleggiare nel vuoto. Eco amplificata: ogni passo torna moltiplicato, ogni voce sussurrata viaggia tra le colonne. I vaschi principali portano incisioni di Nettuno e di mani che augurano salute. Un solo schiavo addetto, mezzo sordo per gli anni passati qui sotto. Percorso logico: dall'acquedotto al pozzo delle cucine e alle terme.",
+   "event": "L'acqua gorgoglia nelle condutture, giorno e notte.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-cisterne.jpg"
+  },
+  {
+   "id": "terme",
+   "name": "Terme imperiali",
+   "map": "palazzo",
+   "x": 25,
+   "y": 15,
+   "tags": [
+    "service",
+    "leisure"
+   ],
+   "desc": "TERME IMPERIALI (Piano -1). Ipogeo scavato nella roccia viva sotto il palazzo: nessuna finestra, solo lucerne a olio disposte in nicchie che tingono d'ambra la pietra grezza. Al centro, la grande vasca rettangolare con gradoni di roccia levigata per l'immersione; l'acqua calda arriva dalle cisterne tramite condutture di piombo riscaldate da un forno dedicato. Lungo le pareti si aprono nicchie con vasche minori, scavate anch'esse nella roccia, per chi cerca privacy. REGOLA FERREA: si entra rigorosamente nudi; l'accesso è consentito solo alle donne e all'Imperatore. Il vapore aleggia a strati, odore di olio di oliva e minerali. Sulle pareti scure, graffiti antichi e offerte a Venere e alle Ninfe. Le donne del gineceo vi scendono in orari assegnati; l'eco dell'acqua smorcia ogni suono in un mormorio. Le nicchie minori sono ideali per conversazioni che non devono essere udite — o per incontri che non devono essere visti.",
+   "event": "Il vapore sale lento dalla vasca grande.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-terme.jpg"
+  },
+  {
+   "id": "latrina_terme",
+   "name": "Latrina delle terme",
+   "map": "palazzo",
+   "x": 40,
+   "y": 15,
+   "tags": [
+    "service",
+    "latrina"
+   ],
+   "desc": "LATRINA DELLE TERME (Piano -1). Box in marmo con tre sedili in fila, a servizio di chi esce dall'ipogeo. L'umidità del vapore si condensa sulle pareti lisce; il rigagnolo scorre costante sul fondo di marmo lucidato. Dentro vivono alcune merdaiole: omuncoli di cinque centimetri destinate alla pulizia, che si nutrono di ciò che cade. Dall'alto si vedono solo ombre in movimento tra i piedi dei sedili; da sotto, le merdaiole vedono arrivare natiche, sessi e cosce attraverso il foro di luce. Suono caratteristico: lo sgocciolio del vapore mescolato allo scorrere del rigagnolo. Utilizzatrici principali: le donne del gineceo negli orari assegnati, l'Imperatore quando scende alle terme.",
+   "event": "Lo sgocciolio del vapore si mescola al rigagnolo.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-latrina_terme.jpg"
+  },
+  {
+   "id": "prigioni",
+   "name": "Prigioni",
+   "map": "palazzo",
+   "x": 55,
+   "y": 15,
+   "tags": [
+    "service"
+   ],
+   "desc": "PRIGIONI (Piano -1). Braccio di celle con inferriate di ferro battuto, riservate a detenuti di alto rango: senatori caduti, ambasciatori in disgrazia, nobili in attesa di processo. Le pareti sono roccia viva, il pavimento pagliericcio di paglia. Un solo secondino, scelto per la capacità di tacere. In fondo al corridoio, il LOCULUS CONDANNARUM: una cella più piccola, spoglia, con un cerchio di pietra al centro e incisioni arcane lungo il bordo. È qui che viene eseguito l'incantesimo di riduzione: il condannato entra uomo ed esce omuncolo di cinque centimetri, destinato alle latrine o al commercio. L'odore della paura si attacca alla pietra. Le grida sono attutite dalla profondità: nessuno ai piani superiori sente nulla.",
+   "event": "Il secondino passa senza dire una parola.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-prigioni.jpg"
+  },
+  {
+   "id": "horrea",
+   "name": "Horrea",
+   "map": "palazzo",
+   "x": 70,
+   "y": 15,
+   "tags": [
+    "service"
+   ],
+   "desc": "HORREA (Piano -1). Magazzini del palazzo: sacchi di granaglie impilati fino al soffitto, anfore di olio e salamoia allineate in file ordinate. Ogni contenitore porta il bollo del sigillo del Siniscalco in cera rossa; inventario ricontrollato ogni settimana. Aria densa di farina e cereali, ratti che zampettano tra le rastrelliere. Le dimensioni parlano della ricchezza dell'Impero: queste scorte nutrirebbero il palazzo per mesi sotto assedio. Un solo ingresso sorvegliato; la seconda chiave è nell'ufficio di Cristiana Rosetti al piano nobile.",
+   "event": "Un ratto zampetta tra le rastrelliere.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-horrea.jpg"
+  },
+  {
+   "id": "cantina",
+   "name": "Cantina dei vini",
+   "map": "palazzo",
+   "x": 85,
+   "y": 15,
+   "tags": [
+    "service"
+   ],
+   "desc": "CANTINA DEI VINI (Piano -1). Rastrelliere di quercia cariche di anfore sigillate con pece e tappi di sughero; etichette graffiate sull'argilla indicano annata e provenienza. I vini migliori vengono dalla Campania e dalla Grecia. Doppia chiave: una a Concetta, una a Cristiana Rosetti — sistema pensato perché nessuna delle due possa attingere senza che l'altra lo sappia. Il buio è rotto solo dalla lucerna dell'addetto; l'aria sa di sughero, pece e legno vecchio. Il fresco costante mantiene la temperatura ideale tutto l'anno. Concetta scende a scegliere le botti per i banchetti imminenti; a volte si ferma a conversare con il vinaio.",
+   "event": "Qualcuno ha appena scelto le anfore per il prossimo banchetto.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-cantina.jpg"
+  },
+  {
+   "id": "latrine_servitu",
+   "name": "Latrine della servitù",
+   "map": "palazzo",
+   "x": 10,
+   "y": 35,
+   "tags": [
+    "service",
+    "latrina"
+   ],
+   "desc": "LATRINE DELLA SERVITÙ (Piano -1). Canali scavati in pietra viva, senza sedili di lusso: semplici fori su tavole di legno. Il flusso d'acqua è costante ma meno curato che ai piani nobili; l'odore ammorbante è attenuato solo dalla corrente. Due merdaioli omuncoli senza nome lavorano qui, figure anonime che nessun servitore conosce di persona. L'ambiente è frequentato dagli schiavi e dai servi del palazzo in ogni ora del giorno; conversazioni di servizio si mescolano ai rumori fisiologici. Roberto Santarelli la usa regolarmente, trattando i merdaioli con lo stesso silenzio riservato che riserva a tutto.",
+   "event": "Due servi parlano di turni sopra il rumore dell'acqua.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-latrine_servitu.jpg"
+  },
+  {
+   "id": "porta",
+   "name": "Porta del Palatino",
+   "map": "palazzo",
+   "x": 10,
+   "y": 17,
+   "tags": [
+    "outdoor"
+   ],
+   "desc": "la porta del palazzo sul Colle Palatino: un portone di quercia e bronzo che richiede due uomini per aprirsi, la guardia di turno e, oltre, il rumore di Roma.",
+   "event": "Un messo aspetta di essere registrato.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-porta.jpg"
+  },
+  {
+   "id": "vestibolo",
+   "name": "Vestibolo",
+   "map": "palazzo",
+   "x": 25,
+   "y": 17,
+   "tags": [
+    "leisure"
+   ],
+   "desc": "VESTIBOLO / ATRIUM (Piano Terra). L'ingresso ufficiale del palazzo: soffitto a cassettoni dorati che cattura la luce delle lucerne, busti marmorei degli imperatori defunti allineati lungo le pareti. Un posto di guardia fisso controlla chi entra e chi esce; il registro dei visitatori è meticoloso. Il pavimento è a mosaico geometrico, tirato a lucido ogni alba. Dall'esterno si passa attraverso un portone di quercia e bronzo che richiede due uomini per essere aperto completamente. Suoni: l'eco dei passi sul marmo, il mormorio delle guardie di turno, il rumore della città che filtra quando il portone si apre. Primo ambiente che qualsiasi ospite vede; qui si formano le prime impressioni.",
+   "event": "I passi rimbombano sul marmo.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-vestibolo.jpg"
+  },
+  {
+   "id": "aula_trono",
+   "name": "Aula del Trono",
+   "map": "palazzo",
+   "x": 40,
+   "y": 17,
+   "tags": [],
+   "desc": "AULA DEL TRONO (Piano Terra). Il cuore politico del palazzo: marmo pavonazzetto con venature viola, tappezzerie rosse di lino d'Egitto appese alle pareti. La sedia curule dell'Imperatore sorge su un podio di tre gradini; nessuno può avvicinarsi oltre l'anello di marmo bianco inciso nel pavimento senza permesso. Capacità: duecento cortigiani in piedi. Le finestre alte filtrano la luce che colpisce il trono direttamente a mezzogiorno, effetto calcolato per abbagliare chi guarda. Acustica perfetta: un sussurro dal trono arriva in fondo alla sala. Le guardie di Matteo Salvetti presidiano le entrate laterali in permanenza; la caserma è a trenta secondi di corsa. Qui si tengono le udienze pubbliche, i ricevimenti ufficiali e le cerimonie di stato.",
+   "event": "Le guardie di Salvetti presidiano le entrate laterali.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-aula_trono.jpg"
+  },
+  {
+   "id": "tablino",
+   "name": "Tablino privato",
+   "map": "palazzo",
+   "x": 55,
+   "y": 17,
+   "tags": [
+    "leisure"
+   ],
+   "desc": "TABLINO PRIVATO (Piano Terra). Studio formale per udienze ristrette: uno scranno di cuoio, un braciere sempre acceso nei mesi freddi, un tavolo basso con calamai e mappe. Un solo corpo di guardia alla porta, che resta fuori. Le pareti sono coperte di armadi con rotoli e documenti d'accesso; la luce entra da una finestra stretta che dà sul peristilio. Qui l'Imperatore riceve chi non deve essere visto nell'Aula del Trono: informatori, ambasciatori in via non ufficiale, funzionari con rapporti delicati. L'arredamento sobrio mette a disagio chi si aspetta lusso: è una scelta calcolata.",
+   "event": "Il braciere scoppietta piano.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-tablino.jpg"
+  },
+  {
+   "id": "cancelleria",
+   "name": "Cancelleria",
+   "map": "palazzo",
+   "x": 70,
+   "y": 17,
+   "tags": [
+    "study"
+   ],
+   "desc": "CANCELLERIA E ARCHIVIO DI STATO (Piano Terra). Il regno di Stefania Signorini: scaffali di quercia che raggiungono il soffitto, carichi di registri, pergamene, tavolette di cera. L'odore di inchiostro, cera per sigilli e carta vecchia è penetrante. Scrivani lavorano in silenzio assoluto ai loro banchi; Stefania li sorveglia dal suo tavolo rialzato, da cui vede tutto. Ogni documento dell'Impero passa da qui prima di arrivare all'Imperatore. L'Archivio contiene anche i registri storici: sentenze, condanne, genealogie. Comunicazione diretta con la Tesoreria attraverso una porta interna. Stefania conosce ogni carta e sa cosa non è ancora stato detto ad alta voce.",
+   "event": "Una penna gratta la pergamena; nessuno alza la testa.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-cancelleria.jpg"
+  },
+  {
+   "id": "tesoreria",
+   "name": "Tesoreria",
+   "map": "palazzo",
+   "x": 85,
+   "y": 17,
+   "tags": [],
+   "desc": "TESORERIA / FISCUS (Piano Terra). Situata dietro la Cancelleria, accessibile attraverso una porta interna. Porta in bronzo massiccio a tripla serratura; le tre chiavi sono distribuite tra Imperatore, Cancelliere e Siniscalco. Dentro: casseforti di ferro, lingotti d'oro e d'argento, i tributi delle province in monete e pietre preziose. Un corpo di guardia interno presidia la stanza in permanenza, oltre a quello esterno. L'unica stanza del palazzo con doppia sorveglianza. L'aria è secca, impregnata di metallo e cuoio dei sacchi monetali. Stefania Signorini vi entra per motivi di ufficio; il suo desiderio di controllarla direttamente è noto a chi conosce le sue ambizioni.",
+   "event": "La guardia interna si irrigidisce quando la porta si apre.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-tesoreria.jpg"
+  },
+  {
+   "id": "ufficio_ciambellano",
+   "name": "Ufficio del Ciambellano",
+   "map": "palazzo",
+   "x": 10,
+   "y": 37,
+   "tags": [],
+   "desc": "UFFICIO DEL CIAMBELLANO (Piano Terra). L'anticamera del potere: Marina Vignini governa l'accesso all'Imperatore da dietro uno scrittoio di noce. È l'unica via ufficiale verso le scale dei piani alti; chi non passa dal suo registro non sale. Il suo ufficio è ordinato all'ossessione: calendari, orari di ricevimento, protocolli. Alle pareti, ritratti dei due Imperatori serviti. Lei riceve cortigiani, postulanti e ambasciatori con cortesia che non ammette repliche; il suo sorriso è un atto formale, mai un moto d'animo. Chi prova a correre oltre la sua scrivania viene fermato dalle guardie prima di raggiungere il primo gradino. Conosce ogni segreto degli appartamenti privati e ne è orgogliosa.",
+   "event": "Un postulante aspetta in piedi, il cappello tra le mani.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-ufficio_ciambellano.jpg"
+  },
+  {
+   "id": "ufficio_siniscalco",
+   "name": "Ufficio del Siniscalco",
+   "map": "palazzo",
+   "x": 25,
+   "y": 37,
+   "tags": [],
+   "desc": "UFFICIO DEL SINISCALCO (Piano Terra). Il centro logistico del palazzo: Cristiana Rosetti gestisce magazzini, cucine, servitù e finanze domestiche da questo ufficio ad archi bassi. Libri mastri impilati con precisione, chiavi dei magazzini appese a un pannello di quercia, odore d'inchiostro e cera d'api. Il suo tavolo è sempre ingombro di conti da verificare e richieste da approvare. Cristiana è efficiente e allegra; il suo segreto è Rocco, il marito ridotto a omuncolo che vive nelle sue mutande, accucciato contro il suo sesso dall'alba al tramonto. Nessuno in questo ufficio farebbe mai domande sulle sue pause regolari o sul suo sorriso sereno.",
+   "event": "Le chiavi tintinnano sul pannello.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-ufficio_siniscalco.jpg"
+  },
+  {
+   "id": "triclinio",
+   "name": "Triclinio grande",
+   "map": "palazzo",
+   "x": 40,
+   "y": 37,
+   "tags": [
+    "food",
+    "leisure"
+   ],
+   "desc": "TRICLINIO GRANDE (Piano Terra). La sala dei banchetti: tre tavoli disposti a U, con triclini per i commensali sdraiati. Il pavimento è un mosaico integrale con scena dionisiaca — satiri, menadi, anfore di vino — che copre tutta la superficie. Una porta basculante collega direttamente alle cucine: le portate arrivano fumanti senza attraversare corridoi. Alle pareti, affreschi di giardini e fontane. Capacità: cinquanta commensali comodamente, ottanta in occasioni eccezionali. Le lucerne a olio diffondono una luce calda che accende i riflessi d'oro dei piatti. In occasione di banchetti, musicisti suonano dalla balconata sopra l'ingresso. La conversazione viaggia lungo i tavoli; nessun posto è anonimo.",
+   "event": "Gli schiavi preparano i letti per la cena.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-triclinio.jpg"
+  },
+  {
+   "id": "cucine",
+   "name": "Cucine imperiali",
+   "map": "palazzo",
+   "x": 55,
+   "y": 37,
+   "tags": [
+    "food"
+   ],
+   "desc": "CUCINE IMPERIALI (Piano Terra). Il regno di Concetta: donna enorme e possente che comanda un esercito di sguatteri tra tre forni a legna, uno spiedo gigantesco e paioli di rame appesi alle travi. Sua figlia Elena lavora qui come sguattera. L'aria è densa di vapore, fumo di legna, odori di pane, carne arrosto e erbe; il caldo è insopportabile d'estate. La bocca del montacarichi collega al sottosuolo per le scorte. Concetta nutre mezzo palazzo e ricatta l'altra metà: sa chi mangia, chi vomita, chi digiuna per amore. L'unica persona che tratta Roberto Santarelli con gentilezza, gli passa avanzi caldi quando può.",
+   "event": "Concetta urla un ordine e tre sguatteri corrono.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-cucine.jpg"
+  },
+  {
+   "id": "peristilio",
+   "name": "Peristilio",
+   "map": "palazzo",
+   "x": 70,
+   "y": 37,
+   "tags": [
+    "leisure",
+    "outdoor"
+   ],
+   "desc": "PERISTILIO (Piano Terra). Giardino interno circondato da portico a colonne: una fontana centrale zampillante, un alloro sacro piantato al centro del prato curato. Le pareti del portico sono affrescate con motivi vegetali che completano l'illusione di un bosco ordinato. Attraversamento obbligato tra gli uffici e l'ala residenziale: chiunque si muova nel palazzo passa prima o poi di qui. Il rumore dell'acqua copre le voci basse; angoli ombrosi tra le colonne favoriscono conversazioni discrete. Il profumo cambia con le stagioni: rose in primavera, alloro e terra bagnata in autunno.",
+   "event": "La fontana copre le voci basse tra le colonne.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-peristilio.jpg"
+  },
+  {
+   "id": "larario",
+   "name": "Larario",
+   "map": "palazzo",
+   "x": 85,
+   "y": 37,
+   "tags": [
+    "leisure"
+   ],
+   "desc": "LARARIO DI PALAZZO (Piano Terra). Cappella dedicata ai Lari e al Genius Augusti: un'edicola in marmo con le statuette dei Lari domestici ai lati del focolare centrale. Offerte quotidiane di fiori, vino e incenso; il fumo aromatico si accumula sotto il soffitto basso, creando un'atmosfera densa e solenne. Le pareti recano affreschi degli antenati imperiali. I servitori si fermano a pregare prima del turno; Maria Santarelli vi si reca spesso, aggrappata alla fede come a una corda di salvataggio. Il silenzio è rotto solo dal crepitio dell'incenso e dal mormorio delle preghiere.",
+   "event": "Qualcuno ha lasciato una ghirlanda fresca davanti ai Lari.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-larario.jpg"
+  },
+  {
+   "id": "lavanderia",
+   "name": "Lavanderia",
+   "map": "palazzo",
+   "x": 10,
+   "y": 57,
+   "tags": [
+    "service"
+   ],
+   "desc": "la lavanderia accanto ai quartieri della servitù: tinozze, caldaie per bollire il lino, sapone di cenere e corde tese per stendere.",
+   "event": "Lenzuola bagnate gocciolano sul pavimento.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-lavanderia.jpg"
+  },
+  {
+   "id": "cortile",
+   "name": "Cortile d'addestramento",
+   "map": "palazzo",
+   "x": 25,
+   "y": 57,
+   "tags": [
+    "sport",
+    "outdoor"
+   ],
+   "desc": "CASERMA E ARMERIA (Piano Terra). Corpo di guardia del capitano Matteo Salvetti: rastrelliere di lance, spade e scudi allineate con precisione militare. Un cortile interno serve per l'addestramento; il rumore delle spade di legno sugli scudi riecheggia nei corridoi vicini. Le brande della guardia personale occupano la zona notte; l'armeria blindata contiene le armi di riserva e le corazze cerimoniali. Salvetti mantiene la disciplina con polso di ferro: chi arriva in ritardo ai turni se ne pente. Dalla caserma all'Aula del Trono: trenta secondi di corsa. La fedeltà delle guardie a Salvetti è assoluta; quella di Salvetti all'Imperatore è il suo vanto.",
+   "event": "Le spade di legno battono sugli scudi.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-cortile.jpg"
+  },
+  {
+   "id": "latrine_comuni",
+   "name": "Latrine comuni",
+   "map": "palazzo",
+   "x": 40,
+   "y": 57,
+   "tags": [
+    "service",
+    "latrina"
+   ],
+   "desc": "LATRINE COMUNI (Piano Terra). Quattro sedili in marmo disposti in fila, con acqua corrente che scorre in continuazione sotto i fori. Servono cortigiani e funzionari di passaggio; il marmo è levigato dall'uso costante. Non ci sono separazioni tra i sedili: la conversazione continua anche qui, secondo l'uso romano. Un braciere acceso d'inverno attenua il freddo della pietra; spugne e acqua per la pulizia sono disponibili su un ripiano laterale. L'odore è contenuto dal flusso costante e dalla ventilazione naturale. Nel rigagnolo sotto i sedili vivono due merdaioli senza nome: senza separazioni, i cortigiani parlano liberamente sopra le loro teste e tutto ciò che si dice tra questi sedili arriva anche a loro.",
+   "event": "Due cortigiani discutono di tasse da un sedile all'altro.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-latrine_comuni.jpg"
+  },
+  {
+   "id": "salone_gineceo",
+   "name": "Salone del Gineceo",
+   "map": "palazzo",
+   "x": 10,
+   "y": 19,
+   "tags": [
+    "leisure"
+   ],
+   "desc": "GINECEO IMPERIALE (Piano 1). Ala sorvegliata del palazzo riservata alle concubine: un salone comune con telai per la tessitura e arpe appoggiate alle pareti, tre cubicoli privati per Maria Santarelli, Tania Dubbini e Caitlin Middlemoor. Un balneum riservato serve per le abluzioni quotidiane. Un'unica porta presidia l'accesso: nessun uomo entra senza il permesso esplicito dell'Imperatore, e le concubine escono solo accompagnate. L'atmosfera è di un lusso dorato e soffocante: affreschi di giardini, tappeti morbidi, luce filtrata da tende di lino. Le tre donne convivono in una tensione silenziosa: Maria prega e studia, Tania si vanta e si specchia, Caitlin osserva e tace.",
+   "event": "Un'arpa abbandonata vibra ancora.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-salone_gineceo.jpg"
+  },
+  {
+   "id": "balneum",
+   "name": "Balneum del Gineceo",
+   "map": "palazzo",
+   "x": 25,
+   "y": 19,
+   "tags": [
+    "service"
+   ],
+   "desc": "il balneum riservato alle concubine: una vasca di marmo, bacili, oli profumati e teli di lino.",
+   "event": "L'acqua nella vasca è ancora tiepida.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-balneum.jpg"
+  },
+  {
+   "id": "latrina_gineceo",
+   "name": "Latrina del Gineceo",
+   "map": "palazzo",
+   "x": 40,
+   "y": 19,
+   "tags": [
+    "service",
+    "latrina"
+   ],
+   "desc": "LATRINA DEL GINECEO (Piano 1). Box in marmo rosa con un sedile, a servizio esclusivo delle concubine. L'ambiente è più curato delle latrine comuni: un piccolo larario con Venere è inciso sulla parete, spugne profumate all'acqua di rose sono disponibili accanto al sedile. Le donne la usano in orari diversi secondo le proprie abitudini; le conversazioni che vi si svolgono restano tra le pareti. \nSul fondo vive Valeria Gallerani, ex interprete di corte condannata al rimpicciolimento per malversazione, ora merdaiola costretta a spalare la merda delle sue ex false amiche.",
+   "event": "Profumo di rose e acqua che scorre.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-latrina_gineceo.jpg"
+  },
+  {
+   "id": "latrina_imperiale",
+   "name": "Latrina imperiale",
+   "map": "palazzo",
+   "x": 55,
+   "y": 19,
+   "tags": [
+    "service",
+    "latrina"
+   ],
+   "desc": "LATRINA IMPERIALE (Piano 1). Box in marmo nero con sedile levigato, rigagnolo d'acqua pulita che scorre costante. Nell'anfratto sotto il sedile vive Pietro Dubbini: ex capo della cospirazione, condannato alla riduzione, ora merdaiolo di cinque centimetri. Pulisce il marmo e stacca a mani nude gli escrementi incastrati, spingendoli nel rigagnolo; si nutre di ciò che cade. Le pareti lisce sono inscalabili; l'unica apertura è il foro del sedile, che da sotto si presenta come un ovale di luce accecante. Pietro vede l'Imperatore solo come un culo che si avvicina: natiche, genitali, ano, cosce. Prega Nettuno ogni sera in un angolo del suo anfratto.",
+   "event": "L'acqua scorre sotto il marmo nero.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-latrina_imperiale.jpg"
+  },
+  {
+   "id": "latrina_paggetto",
+   "name": "Latrina del paggetto",
+   "map": "palazzo",
+   "x": 70,
+   "y": 19,
+   "tags": [
+    "service",
+    "latrina"
+   ],
+   "desc": "la latrina nel cubicolo del paggetto: un sedile di pietra sopra un rigagnolo d'acqua corrente, separato dal letto stretto di Jacopo da una tenda di lino.",
+   "event": "L'acqua scorre sotto il foro del sedile.",
+   "closed": []
+  },
+  {
+   "id": "studio_imperiale",
+   "name": "Studio imperiale",
+   "map": "palazzo",
+   "x": 85,
+   "y": 19,
+   "tags": [
+    "leisure",
+    "study"
+   ],
+   "desc": "lo studio privato dell'Imperatore: una mappa dell'Impero incisa su legno di cedro, una scrivania, rotoli e sigilli, finestre sul peristilio.",
+   "event": "La luce del mattino entra dorata sulla mappa.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-studio_imperiale.jpg"
+  },
+  {
+   "id": "collegium",
+   "name": "Collegium Arcana",
+   "map": "palazzo",
+   "x": 10,
+   "y": 21,
+   "tags": [
+    "study",
+    "leisure"
+   ],
+   "desc": "COLLEGIUM ARCANA (Piano 2). La scuola di magia di corte: una biblioteca arcana con rotoli e codici custoditi in teche di vetro, un'aula di lezione con porte di bronzo istoriate di sigilli, una camera dei sigilli dove vengono conservati gli strumenti magici. Maria Santarelli la frequenta quotidianamente per studiare il dono magico appena scoperto. L'aria sa di pergamena vecchia e ozono; le lucerne tremolano in presenza di energie attive. I maestri portano vesti grige con bordi d'argento; parlano a bassa voce e insegnano con pazienza. Le porte di bronzo si aprono solo per chi ha il permesso di entrare.",
+   "event": "Le lucerne tremolano: qualcuno sta praticando un incantesimo.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-collegium.jpg"
+  },
+  {
+   "id": "torre",
+   "name": "Torre di guardia",
+   "map": "palazzo",
+   "x": 25,
+   "y": 21,
+   "tags": [
+    "outdoor"
+   ],
+   "desc": "TORRE DI GUARDIA (Piano 2). Postazione di vedetta sopra l'ala diplomatico: un turno costante di due guardie osserva la città dalla balconata. Una campana di bronzo pende dal tetto; in caso di allarme, tre rintocchi consecutivi mettono in allerta tutto il palazzo. La vista spazia su Foro Romano e Tevere; nelle giornate limpide si distinguono le colline Albane. Vento costante anche d'estate; d'inverno il turno è il più temuto della caserma. Matteo Salvetti lo ispeziona personalmente ogni settimana.",
+   "event": "Il vento fa ondeggiare la corda della campana.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-torre.jpg"
+  },
+  {
+   "id": "colombaia",
+   "name": "Colombaia",
+   "map": "palazzo",
+   "x": 40,
+   "y": 21,
+   "tags": [
+    "outdoor"
+   ],
+   "desc": "COLOMBAIA (Piano 2). Voliera dei messaggi imperiali: centinaia di colombe messaggere suddivise in cassette di legno numerate per destinazione. Un armaiolo anziano, mezzo pensionato, le cura con devozione: nutre, disseta, registra arrivi e partenze su un librone consunto. L'odore di piume e granaglie riempie lo spazio; il tubare costante forma un sottofondo vivo. I messaggi cifrati partono da qui verso ogni provincia dell'Impero; le colombe in arrivo vengono scaricate entro un'ora. Accesso limitato all'Imperatore, al Siniscalco e al vecchio armaiolo.",
+   "event": "Una colomba è appena atterrata con un messaggio.",
+   "closed": [],
+   "bg": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-colombaia.jpg"
+  }
+ ],
+ "homes": {
+  "zones": [
+   {
+    "id": "appartamenti",
+    "name": "Appartamenti Imperiali",
+    "map": "palazzo",
+    "kind": "imperiale",
+    "rent": 0,
+    "desc": "APPARTAMENTI IMPERIALI (Piano 1). La residenza privata di Rurik Balderek: camera da letto con letto a baldacchino e coperte di lana pregiata, spogliatoio con guardaroba di toghe e tuniche, studio privato con una mappa dell'Impero incisa su legno di cedro alla parete. Le finestre danno sul peristilio sottostante; la luce del mattino entra dorata. Un tappeto persiano copre il pavimento di marmo. Qui l'Imperatore si ritira quando il peso della corona diventa eccessivo; qui riceve le concubine che sceglie per la notte. La latrina imperiale è accessibile da una porta secondaria. Jacopo, il paggetto, ha una stanza comunicante tramite un corridoio corto.",
+    "spots": [
+     [
+      82,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "gineceo",
+    "name": "Cubicoli del Gineceo",
+    "map": "palazzo",
+    "kind": "gineceo",
+    "rent": 0,
+    "desc": "GINECEO IMPERIALE (Piano 1). Ala sorvegliata del palazzo riservata alle concubine: un salone comune con telai per la tessitura e arpe appoggiate alle pareti, tre cubicoli privati per Maria Santarelli, Tania Dubbini e Caitlin Middlemoor. Un balneum riservato serve per le abluzioni quotidiane. Un'unica porta presidia l'accesso: nessun uomo entra senza il permesso esplicito dell'Imperatore, e le concubine escono solo accompagnate. L'atmosfera è di un lusso dorato e soffocante: affreschi di giardini, tappeti morbidi, luce filtrata da tende di lino. Le tre donne convivono in una tensione silenziosa: Maria prega e studia, Tania si vanta e si specchia, Caitlin osserva e tace.",
+    "spots": [
+     [
+      82,
+      22
+     ],
+     [
+      92,
+      22
+     ],
+     [
+      82,
+      28
+     ]
+    ]
+   },
+   {
+    "id": "paggetto",
+    "name": "Stanza del paggetto",
+    "map": "palazzo",
+    "kind": "paggetto",
+    "rent": 0,
+    "desc": "STANZA DEL PAGGETTO (Piano 1). Cubicolo comunicante con gli appartamenti imperiali tramite un corridoio corto: Jacopo Santarelli, paggetto ventenne, è sempre a portata di voce dell'Imperatore. Letto stretto, cassapanca per la divisa, un lume a olio sul comodino. Ricci rossi sempre sporchi di polvere, divisa cucita per un uomo più robusto. La latrina nella stanza ospita Niccolò Dubbini nel rigagnolo: amico d'infanzia di Jacopo, ridotto a merdaiolo per volere dello stesso paggetto che ha chiesto di proteggerlo destinandolo alla propria stanza. Parlano attraverso il foro del sedile quando Jacopo caga. Elena passa le notti qui invece che nei quartieri della servitù, all'insaputa di Jacopo.",
+    "spots": [
+     [
+      82,
+      34
+     ]
+    ]
+   },
+   {
+    "id": "ospiti",
+    "name": "Ala degli ospiti diplomatici",
+    "map": "palazzo",
+    "kind": "ospiti",
+    "rent": 0,
+    "desc": "ALA DEGLI OSPITI DIPLOMATICI (Piano 1). Zona riservata agli ambasciatori stranieri: portico e scala indipendenti dall'esterno, che permettono agli ospiti di salire ai propri alloggi senza attraversare il palazzo. La stanza di Belinda Rodrigues, ambasciatrice di Hispania, comprende un salottino per trattative private e una camera da letto con vista sul cortile interno. Arredi sobri ma confortevoli; nessun lusso che possa offendere, nessuna scomodità che possa irritare. Belinda ha ottenuto l'accesso indipendente che chiedeva, ma per arrivare a Rurik deve comunque passare dalla porta dell'ufficio del Ciambellano al piano terra.",
+    "spots": [
+     [
+      82,
+      46
+     ],
+     [
+      92,
+      46
+     ]
+    ]
+   },
+   {
+    "id": "corte",
+    "name": "Alloggi di corte",
+    "map": "palazzo",
+    "kind": "corte",
+    "rent": 0,
+    "desc": "un alloggio di corte al piano nobile: un letto solido, uno scrittoio, una cassa con serratura e una finestra sul cortile interno",
+    "spots": [
+     [
+      82,
+      58
+     ],
+     [
+      92,
+      58
+     ],
+     [
+      82,
+      64
+     ]
+    ]
+   },
+   {
+    "id": "servitu",
+    "name": "Quartieri della servitù",
+    "map": "palazzo",
+    "kind": "servitu",
+    "rent": 0,
+    "desc": "QUARTIERI DELLA SERVITÙ (Piano Terra). Cubicoli spartani con brande di legno e pagliericci; cassette per gli effetti personali sotto i letti. Il dormitorio di Roberto Santarelli si trova vicino alla lavanderia, con accesso diretto alla scala che scende alle terme sotterranee. L'odore di sapone e bucato si mescola a quello dei pasti che filtrano dalle cucine. Ambientazione rumorosa: russare, tossire, conversazioni sussurrate oltre le pareti sottili. La servitù vive in una gerarchia rigorosa: gli schiavi personali degli alti funzionari godono di privilegi rispetto ai manovali. Nessuna serratura alle porte; la privacy è un lusso sconosciuto.",
+    "spots": [
+     [
+      82,
+      70
+     ],
+     [
+      92,
+      70
+     ],
+     [
+      82,
+      76
+     ],
+     [
+      92,
+      76
+     ]
+    ]
+   },
+   {
+    "id": "caserma",
+    "name": "Caserma",
+    "map": "palazzo",
+    "kind": "caserma",
+    "rent": 0,
+    "desc": "CASERMA E ARMERIA (Piano Terra). Corpo di guardia del capitano Matteo Salvetti: rastrelliere di lance, spade e scudi allineate con precisione militare. Un cortile interno serve per l'addestramento; il rumore delle spade di legno sugli scudi riecheggia nei corridoi vicini. Le brande della guardia personale occupano la zona notte; l'armeria blindata contiene le armi di riserva e le corazze cerimoniali. Salvetti mantiene la disciplina con polso di ferro: chi arriva in ritardo ai turni se ne pente. Dalla caserma all'Aula del Trono: trenta secondi di corsa. La fedeltà delle guardie a Salvetti è assoluta; quella di Salvetti all'Imperatore è il suo vanto.",
+    "spots": [
+     [
+      82,
+      82
+     ]
+    ]
+   },
+   {
+    "id": "anfratti",
+    "name": "Anfratti delle latrine",
+    "map": "palazzo",
+    "kind": "anfratto",
+    "rent": 0,
+    "desc": "l'anfratto sotto il sedile di una latrina, dove vive un omuncolo: pietra bagnata, il rigagnolo e, in alto, il foro di luce del sedile",
+    "spots": [
+     [
+      82,
+      94
+     ],
+     [
+      92,
+      94
+     ]
+    ]
+   }
+  ],
+  "kinds": {
+   "imperiale": {
+    "name": "Appartamenti Imperiali",
+    "desc": "APPARTAMENTI IMPERIALI (Piano 1). La residenza privata di Rurik Balderek: camera da letto con letto a baldacchino e coperte di lana pregiata, spogliatoio con guardaroba di toghe e tuniche, studio privato con una mappa dell'Impero incisa su legno di cedro alla parete. Le finestre danno sul peristilio sottostante; la luce del mattino entra dorata. Un tappeto persiano copre il pavimento di marmo. Qui l'Imperatore si ritira quando il peso della corona diventa eccessivo; qui riceve le concubine che sceglie per la notte. La latrina imperiale è accessibile da una porta secondaria. Jacopo, il paggetto, ha una stanza comunicante tramite un corridoio corto.",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-camera-imperiale.jpg"
+   },
+   "gineceo": {
+    "name": "Cubicolo del Gineceo",
+    "desc": "GINECEO IMPERIALE (Piano 1). Ala sorvegliata del palazzo riservata alle concubine: un salone comune con telai per la tessitura e arpe appoggiate alle pareti, tre cubicoli privati per Maria Santarelli, Tania Dubbini e Caitlin Middlemoor. Un balneum riservato serve per le abluzioni quotidiane. Un'unica porta presidia l'accesso: nessun uomo entra senza il permesso esplicito dell'Imperatore, e le concubine escono solo accompagnate. L'atmosfera è di un lusso dorato e soffocante: affreschi di giardini, tappeti morbidi, luce filtrata da tende di lino. Le tre donne convivono in una tensione silenziosa: Maria prega e studia, Tania si vanta e si specchia, Caitlin osserva e tace.",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-camera-gineceo.jpg"
+   },
+   "paggetto": {
+    "name": "Stanza del paggetto",
+    "desc": "STANZA DEL PAGGETTO (Piano 1). Cubicolo comunicante con gli appartamenti imperiali tramite un corridoio corto: Jacopo Santarelli, paggetto ventenne, è sempre a portata di voce dell'Imperatore. Letto stretto, cassapanca per la divisa, un lume a olio sul comodino. Ricci rossi sempre sporchi di polvere, divisa cucita per un uomo più robusto. La latrina nella stanza ospita Niccolò Dubbini nel rigagnolo: amico d'infanzia di Jacopo, ridotto a merdaiolo per volere dello stesso paggetto che ha chiesto di proteggerlo destinandolo alla propria stanza. Parlano attraverso il foro del sedile quando Jacopo caga. Elena passa le notti qui invece che nei quartieri della servitù, all'insaputa di Jacopo.",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-camera-paggetto.jpg"
+   },
+   "ospiti": {
+    "name": "Alloggio diplomatico",
+    "desc": "ALA DEGLI OSPITI DIPLOMATICI (Piano 1). Zona riservata agli ambasciatori stranieri: portico e scala indipendenti dall'esterno, che permettono agli ospiti di salire ai propri alloggi senza attraversare il palazzo. La stanza di Belinda Rodrigues, ambasciatrice di Hispania, comprende un salottino per trattative private e una camera da letto con vista sul cortile interno. Arredi sobri ma confortevoli; nessun lusso che possa offendere, nessuna scomodità che possa irritare. Belinda ha ottenuto l'accesso indipendente che chiedeva, ma per arrivare a Rurik deve comunque passare dalla porta dell'ufficio del Ciambellano al piano terra.",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-camera-ospiti.jpg"
+   },
+   "corte": {
+    "name": "Alloggio di corte",
+    "desc": "un alloggio di corte al piano nobile: un letto solido, uno scrittoio, una cassa con serratura e una finestra sul cortile interno",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-camera-corte.jpg"
+   },
+   "servitu": {
+    "name": "Cubicolo della servitù",
+    "desc": "QUARTIERI DELLA SERVITÙ (Piano Terra). Cubicoli spartani con brande di legno e pagliericci; cassette per gli effetti personali sotto i letti. Il dormitorio di Roberto Santarelli si trova vicino alla lavanderia, con accesso diretto alla scala che scende alle terme sotterranee. L'odore di sapone e bucato si mescola a quello dei pasti che filtrano dalle cucine. Ambientazione rumorosa: russare, tossire, conversazioni sussurrate oltre le pareti sottili. La servitù vive in una gerarchia rigorosa: gli schiavi personali degli alti funzionari godono di privilegi rispetto ai manovali. Nessuna serratura alle porte; la privacy è un lusso sconosciuto.",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-camera-servitu.jpg"
+   },
+   "anfratto": {
+    "name": "Anfratto",
+    "desc": "l'anfratto sotto il sedile di una latrina, dove vive un omuncolo: pietra bagnata, il rigagnolo e, in alto, il foro di luce del sedile"
+   },
+   "caserma": {
+    "name": "Alloggio del capitano",
+    "desc": "CASERMA E ARMERIA (Piano Terra). Corpo di guardia del capitano Matteo Salvetti: rastrelliere di lance, spade e scudi allineate con precisione militare. Un cortile interno serve per l'addestramento; il rumore delle spade di legno sugli scudi riecheggia nei corridoi vicini. Le brande della guardia personale occupano la zona notte; l'armeria blindata contiene le armi di riserva e le corazze cerimoniali. Salvetti mantiene la disciplina con polso di ferro: chi arriva in ritardo ai turni se ne pente. Dalla caserma all'Aula del Trono: trenta secondi di corsa. La fedeltà delle guardie a Salvetti è assoluta; quella di Salvetti all'Imperatore è il suo vanto.",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-camera-caserma.jpg"
+   }
+  },
+  "expenses": [],
+  "breakables": [],
+  "repairCost": 0
+ },
+ "statuses": [
+  {
+   "id": "life",
+   "name": "Salute",
+   "icon": "❤",
+   "color": "#ff4d7a",
+   "start": 100,
+   "max": 100,
+   "hud": true,
+   "zero": {
+    "text": "Crolli e ti risvegli nel tuo letto, con il medico di corte al capezzale.",
+    "place": "home",
+    "cost": 0,
+    "restore": 60
+   },
+   "rpg": true
+  },
+  {
+   "id": "energy",
+   "name": "Energia",
+   "icon": "⚡",
+   "color": "#ffc233",
+   "start": 100,
+   "max": 100,
+   "hud": true,
+   "decay": null,
+   "zero": {
+    "text": "Sfinito, ti addormenti dove sei e ti risvegli nel tuo letto.",
+    "place": "home",
+    "restore": 40,
+    "crisis": {
+     "after": 0,
+     "text": "",
+     "seen": "{u} è crollato per la stanchezza in {0}."
+    }
+   }
+  },
+  {
+   "id": "hunger",
+   "name": "Fame",
+   "icon": "🍽",
+   "color": "#ff8a3d",
+   "start": 85,
+   "max": 100,
+   "hud": true,
+   "decay": {
+    "amount": 10,
+    "everyMinutes": 120
+   },
+   "zero": {
+    "text": "Stai morendo di fame.",
+    "drain": {
+     "status": "life",
+     "amount": 5,
+     "everyMinutes": 60
+    },
+    "crisis": {
+     "after": 180,
+     "text": "Ti gira la testa per la fame. Uno schiavo ti porta subito del pane.",
+     "restore": 25,
+     "mood": -15,
+     "shame": 0,
+     "seen": "{u} ha quasi perso i sensi per la fame in {0}."
+    }
+   }
+  },
+  {
+   "id": "thirst",
+   "name": "Sete",
+   "icon": "💧",
+   "color": "#3db8ff",
+   "start": 85,
+   "max": 100,
+   "hud": true,
+   "decay": {
+    "amount": 10,
+    "everyMinutes": 90
+   },
+   "zero": {
+    "text": "Sei gravemente disidratato.",
+    "drain": {
+     "status": "life",
+     "amount": 5,
+     "everyMinutes": 60
+    },
+    "crisis": {
+     "after": 120,
+     "text": "Hai la gola in fiamme e devi sederti. Uno schiavo ti porge una coppa d'acqua.",
+     "restore": 25,
+     "mood": -10,
+     "shame": 0,
+     "seen": "{u} ha quasi perso i sensi per la sete in {0}."
+    }
+   }
+  },
+  {
+   "id": "mood",
+   "name": "Umore",
+   "icon": "☺",
+   "color": "#b88cff",
+   "start": 70,
+   "max": 100,
+   "hud": true,
+   "decay": {
+    "amount": 2,
+    "everyMinutes": 180
+   },
+   "zero": {
+    "crisis": {
+     "after": 240,
+     "text": "Tutto ti pesa troppo. Ti ritiri nelle tue stanze.",
+     "place": "home",
+     "restore": 25,
+     "shame": 0,
+     "seen": "{u} è crollato in {0}."
+    }
+   }
+  },
+  {
+   "id": "hygiene",
+   "name": "Igiene",
+   "icon": "🧼",
+   "color": "#5ec8e6",
+   "start": 100,
+   "max": 100,
+   "hud": true,
+   "decay": {
+    "amount": 4,
+    "everyMinutes": 60,
+    "awakeOnly": true
+   },
+   "zero": {
+    "text": "Hai un gran bisogno di lavarti: la gente si tiene a distanza.",
+    "drain": {
+     "status": "mood",
+     "amount": 2,
+     "everyMinutes": 60
+    },
+    "crisis": {
+     "after": 360,
+     "text": "Qualcuno arriccia il naso al tuo passaggio. Ti brucia il viso.",
+     "mood": -15,
+     "shame": 5,
+     "seen": "{u} aveva un gran bisogno di lavarsi, in {0}."
+    }
+   }
+  },
+  {
+   "id": "pipi",
+   "name": "Pipì",
+   "icon": "🚽",
+   "color": "#e6c84a",
+   "start": 90,
+   "max": 100,
+   "hud": true,
+   "decay": {
+    "amount": 10,
+    "everyMinutes": 60
+   },
+   "zero": {
+    "text": "Ti scappa la pipì: devi trovare subito una latrina.",
+    "crisis": {
+     "after": 45,
+     "text": "Non ce la fai più a trattenerla: te la fai addosso. Ti brucia il viso.",
+     "restore": 100,
+     "mood": -20,
+     "shame": 0,
+     "seen": "{u} se l'è fatta addosso in {0}."
+    }
+   }
+  },
+  {
+   "id": "cacca",
+   "name": "Cacca",
+   "icon": "💩",
+   "color": "#8a5a2b",
+   "start": 90,
+   "max": 100,
+   "hud": true,
+   "decay": {
+    "amount": 5,
+    "everyMinutes": 90
+   },
+   "zero": {
+    "text": "Hai un bisogno urgente: devi correre in una latrina.",
+    "crisis": {
+     "after": 60,
+     "text": "Non riesci più a trattenerti: te la fai addosso. Devi andare a lavarti.",
+     "restore": 100,
+     "mood": -25,
+     "shame": 0,
+     "seen": "{u} se l'è fatta addosso in {0}."
+    }
+   }
+  },
+  {
+   "id": "desiderio",
+   "name": "Desiderio",
+   "icon": "🔥",
+   "color": "#d94a6a",
+   "start": 80,
+   "max": 100,
+   "hud": true,
+   "decay": {
+    "amount": 4,
+    "everyMinutes": 120,
+    "awakeOnly": true
+   },
+   "zero": {
+    "text": "Il desiderio ti consuma: fai fatica a pensare ad altro.",
+    "drain": {
+     "status": "mood",
+     "amount": 2,
+     "everyMinutes": 60
+    }
+   }
+  }
+ ],
+ "actions": [
+  {
+   "id": "snack",
+   "name": "Spuntino",
+   "label": "Mangia pane, formaggio e olive",
+   "icon": "🧀",
+   "cost": 0,
+   "minutes": 15,
+   "effects": {
+    "hunger": 30,
+    "energy": 3
+   },
+   "anywhere": true
+  },
+  {
+   "id": "drink",
+   "name": "Bevi",
+   "label": "Bevi una coppa di vino annacquato",
+   "icon": "🍺",
+   "cost": 0,
+   "minutes": 10,
+   "effects": {
+    "thirst": 30,
+    "mood": 3
+   },
+   "anywhere": true
+  },
+  {
+   "id": "meal",
+   "name": "Pasto",
+   "label": "Consuma un pasto caldo",
+   "icon": "🍲",
+   "cost": 0,
+   "minutes": 40,
+   "effects": {
+    "hunger": 60,
+    "mood": 5,
+    "energy": 8
+   },
+   "tags": [
+    "food"
+   ]
+  },
+  {
+   "id": "cook",
+   "name": "Cucina",
+   "label": "Prepara qualcosa da mangiare",
+   "icon": "🍳",
+   "cost": 0,
+   "minutes": 45,
+   "effects": {
+    "hunger": 40,
+    "mood": 4
+   },
+   "tags": [
+    "food"
+   ]
+  },
+  {
+   "id": "tea",
+   "name": "Infuso",
+   "label": "Prepara un infuso d'erbe",
+   "icon": "🍵",
+   "cost": 0,
+   "minutes": 10,
+   "effects": {
+    "energy": 10,
+    "thirst": 15
+   },
+   "tags": [
+    "food"
+   ]
+  },
+  {
+   "id": "fire",
+   "name": "Braciere",
+   "label": "Scaldati accanto al braciere",
+   "icon": "🔥",
+   "cost": 0,
+   "minutes": 30,
+   "effects": {
+    "mood": 8,
+    "energy": 4
+   },
+   "tags": [
+    "leisure"
+   ],
+   "notTags": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": "lute",
+   "name": "Lira",
+   "label": "Suona la lira",
+   "icon": "🎶",
+   "cost": 0,
+   "minutes": 45,
+   "effects": {
+    "mood": 10,
+    "energy": -5
+   },
+   "tags": [
+    "leisure"
+   ],
+   "notTags": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": "read",
+   "name": "Lettura",
+   "label": "Leggi un rotolo alla luce della lucerna",
+   "icon": "📖",
+   "cost": 0,
+   "minutes": 60,
+   "effects": {
+    "mood": 8
+   },
+   "tags": [
+    "leisure"
+   ],
+   "notTags": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": "cards",
+   "name": "Dadi",
+   "label": "Gioca a dadi e a latrunculi",
+   "icon": "🎲",
+   "cost": 0,
+   "minutes": 45,
+   "effects": {
+    "mood": 10
+   },
+   "tags": [
+    "leisure"
+   ],
+   "notTags": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": "walk",
+   "name": "Passeggiata",
+   "label": "Fai due passi sotto il portico",
+   "icon": "🌿",
+   "cost": 0,
+   "minutes": 60,
+   "effects": {
+    "mood": 12,
+    "energy": -5
+   },
+   "tags": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": "herbs",
+   "name": "Giardino",
+   "label": "Cura le aiuole e l'alloro sacro",
+   "icon": "🌱",
+   "cost": 0,
+   "minutes": 45,
+   "effects": {
+    "mood": 8,
+    "energy": -6
+   },
+   "place": "peristilio"
+  },
+  {
+   "id": "spar",
+   "name": "Scherma",
+   "label": "Esercitati con il gladio",
+   "icon": "⚔️",
+   "cost": 0,
+   "minutes": 45,
+   "effects": {
+    "energy": -20,
+    "hygiene": -25,
+    "mood": 6
+   },
+   "tags": [
+    "sport"
+   ]
+  },
+  {
+   "id": "wash",
+   "name": "Bagno",
+   "label": "Immergiti nella vasca calda",
+   "icon": "🛁",
+   "cost": 0,
+   "minutes": 40,
+   "effects": {
+    "hygiene": 100,
+    "mood": 8
+   },
+   "place": "terme"
+  },
+  {
+   "id": "laundry",
+   "name": "Bucato",
+   "label": "Lava il lino",
+   "icon": "👕",
+   "cost": 0,
+   "minutes": 60,
+   "effects": {
+    "energy": -10
+   },
+   "place": "lavanderia"
+  },
+  {
+   "id": "basin",
+   "name": "Bacile",
+   "label": "Lavati al bacile",
+   "icon": "💧",
+   "cost": 0,
+   "minutes": 10,
+   "effects": {
+    "hygiene": 40
+   },
+   "home": true
+  },
+  {
+   "id": "letters",
+   "name": "Lettere",
+   "label": "Scrivi una lettera",
+   "icon": "✉️",
+   "cost": 0,
+   "minutes": 30,
+   "effects": {
+    "mood": 4
+   },
+   "home": true
+  },
+  {
+   "id": "pray",
+   "name": "Preghiera",
+   "label": "Offri incenso ai Lari",
+   "icon": "🕯️",
+   "cost": 0,
+   "minutes": 20,
+   "effects": {
+    "mood": 8
+   },
+   "place": "larario"
+  },
+  {
+   "id": "study",
+   "name": "Studio",
+   "label": "Studia i rotoli arcani",
+   "icon": "📜",
+   "cost": 0,
+   "minutes": 60,
+   "effects": {
+    "mood": 4,
+    "energy": -6
+   },
+   "place": "collegium"
+  },
+  {
+   "id": "view",
+   "name": "Panorama",
+   "label": "Guarda Roma dalla torre",
+   "icon": "🏛️",
+   "cost": 0,
+   "minutes": 20,
+   "effects": {
+    "mood": 6
+   },
+   "place": "torre"
+  },
+  {
+   "id": "pipi",
+   "name": "Pipì",
+   "label": "Fai pipì",
+   "icon": "🚽",
+   "cost": 0,
+   "minutes": 5,
+   "effects": {
+    "pipi": 100
+   },
+   "tags": [
+    "latrina"
+   ]
+  },
+  {
+   "id": "cacca",
+   "name": "Latrina",
+   "label": "Siediti sulla latrina",
+   "icon": "💩",
+   "cost": 0,
+   "minutes": 15,
+   "effects": {
+    "cacca": 100,
+    "pipi": 100
+   },
+   "tags": [
+    "latrina"
+   ]
+  },
+  {
+   "id": "vaso",
+   "name": "Vaso da notte",
+   "label": "Usa il vaso da notte",
+   "icon": "🏺",
+   "cost": 0,
+   "minutes": 10,
+   "effects": {
+    "pipi": 100,
+    "cacca": 100,
+    "mood": -2
+   },
+   "home": true
+  },
+  {
+   "id": "intimo",
+   "name": "Momento intimo",
+   "label": "Concediti un momento intimo",
+   "icon": "🔥",
+   "cost": 0,
+   "minutes": 30,
+   "effects": {
+    "desiderio": 60,
+    "mood": 6,
+    "energy": -5
+   },
+   "home": true
+  }
+ ],
+ "sleep": {
+  "until": 420,
+  "restore": {
+   "energy": 100,
+   "life": 10,
+   "mood": 5
+  },
+  "homeOnly": true
+ },
+ "sheet": {
+  "age": {
+   "min": 18,
+   "max": 70,
+   "default": 35
+  },
+  "appearance": [
+   {
+    "id": "hair",
+    "label": "Capelli",
+    "options": [
+     "Neri",
+     "Castani",
+     "Biondi",
+     "Rossi",
+     "Grigi"
+    ]
+   },
+   {
+    "id": "eyes",
+    "label": "Occhi",
+    "options": [
+     "Castani",
+     "Neri",
+     "Verdi",
+     "Azzurri",
+     "Grigi"
+    ]
+   },
+   {
+    "id": "skin",
+    "label": "Carnagione",
+    "options": [
+     "Chiara",
+     "Olivastra",
+     "Abbronzata",
+     "Scura"
+    ]
+   },
+   {
+    "id": "build",
+    "label": "Corporatura",
+    "options": [
+     "Snella",
+     "Media",
+     "Atletica",
+     "Robusto",
+     "Corpulenta"
+    ]
+   },
+   {
+    "id": "hairStyle",
+    "label": "Acconciatura",
+    "options": [
+     "Corti",
+     "Lunghi",
+     "Intrecciati",
+     "Raccolti",
+     "Rasati"
+    ]
+   }
+  ],
+  "traits": [
+   {
+    "id": "proficiency",
+    "label": "Competenze",
+    "max": 2,
+    "options": [
+     "Robusto",
+     "Istruito",
+     "Affascinante",
+     "Abile con le mani",
+     "Bravo in cucina",
+     "Bravo con gli animali",
+     "Svelto",
+     "Devoto",
+     "Musicale",
+     "Bravo con i numeri"
+    ]
+   },
+   {
+    "id": "personality",
+    "label": "Carattere",
+    "max": 3,
+    "options": [
+     "Estroverso",
+     "Timido",
+     "Calmo",
+     "Irascibile",
+     "Allegro",
+     "Serio",
+     "Romantico",
+     "Ambizioso",
+     "Pigro",
+     "Curioso",
+     "Sarcastico",
+     "Gentile"
+    ]
+   },
+   {
+    "id": "interests",
+    "label": "Interessi",
+    "max": 3,
+    "options": [
+     "Musica",
+     "Scherma",
+     "Equitazione",
+     "Caccia",
+     "Erbe",
+     "Lettura",
+     "Danza",
+     "Dadi",
+     "Pesca",
+     "Fede",
+     "Artigianato",
+     "Viaggi"
+    ]
+   }
+  ]
+ },
+ "catalogs": {
+  "origins": [
+   {
+    "id": "imperatore",
+    "name": "L'Imperatore",
+    "desc": "Sei Rurik Balderek, Imperatore di Roma, padrone del Palatium.",
+    "money": 0,
+    "home": "appartamenti",
+    "skills": [
+     "persuasion",
+     "insight"
+    ],
+    "feature": "Tutti a palazzo ti devono obbedienza, e tutti ti osservano.",
+    "attributes": {
+     "cha": 1,
+     "wis": 1
+    }
+   }
+  ],
+  "courses": [],
+  "shop": []
+ },
+ "occupations": [],
+ "cast": {
+  "routineTemplates": {
+   "latrina_imperiale": {
+    "weekday": [
+     [
+      0,
+      "latrina_imperiale"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "latrina_imperiale"
+     ]
+    ]
+   },
+   "latrina_paggetto": {
+    "weekday": [
+     [
+      0,
+      "latrina_paggetto"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "latrina_paggetto"
+     ]
+    ]
+   },
+   "gineceo": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      8,
+      "salone_gineceo"
+     ],
+     [
+      10,
+      "balneum"
+     ],
+     [
+      11,
+      "salone_gineceo"
+     ],
+     [
+      15,
+      "peristilio"
+     ],
+     [
+      17,
+      "salone_gineceo"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      9,
+      "salone_gineceo"
+     ],
+     [
+      14,
+      "terme"
+     ],
+     [
+      16,
+      "peristilio"
+     ],
+     [
+      19,
+      "salone_gineceo"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ]
+   },
+   "studentessa": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      6,
+      "larario"
+     ],
+     [
+      8,
+      "collegium"
+     ],
+     [
+      13,
+      "salone_gineceo"
+     ],
+     [
+      15,
+      "collegium"
+     ],
+     [
+      18,
+      "larario"
+     ],
+     [
+      19,
+      "salone_gineceo"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      7,
+      "larario"
+     ],
+     [
+      9,
+      "salone_gineceo"
+     ],
+     [
+      14,
+      "terme"
+     ],
+     [
+      16,
+      "collegium"
+     ],
+     [
+      19,
+      "salone_gineceo"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ]
+   },
+   "paggetto": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      6,
+      "studio_imperiale"
+     ],
+     [
+      9,
+      "vestibolo"
+     ],
+     [
+      12,
+      "cucine"
+     ],
+     [
+      13,
+      "peristilio"
+     ],
+     [
+      16,
+      "studio_imperiale"
+     ],
+     [
+      20,
+      "triclinio"
+     ],
+     [
+      23,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      8,
+      "studio_imperiale"
+     ],
+     [
+      11,
+      "cucine"
+     ],
+     [
+      12,
+      "peristilio"
+     ],
+     [
+      17,
+      "triclinio"
+     ],
+     [
+      23,
+      "home"
+     ]
+    ]
+   },
+   "schiavo": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      5,
+      "lavanderia"
+     ],
+     [
+      8,
+      "vestibolo"
+     ],
+     [
+      11,
+      "triclinio"
+     ],
+     [
+      13,
+      "cucine"
+     ],
+     [
+      14,
+      "peristilio"
+     ],
+     [
+      17,
+      "lavanderia"
+     ],
+     [
+      21,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      5,
+      "lavanderia"
+     ],
+     [
+      9,
+      "peristilio"
+     ],
+     [
+      13,
+      "cucine"
+     ],
+     [
+      15,
+      "triclinio"
+     ],
+     [
+      21,
+      "home"
+     ]
+    ]
+   },
+   "cuoca": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      5,
+      "cucine"
+     ],
+     [
+      10,
+      "cantina"
+     ],
+     [
+      11,
+      "cucine"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      6,
+      "cucine"
+     ],
+     [
+      14,
+      "larario"
+     ],
+     [
+      15,
+      "cucine"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ]
+   },
+   "sguattera": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      5,
+      "cucine"
+     ],
+     [
+      14,
+      "lavanderia"
+     ],
+     [
+      16,
+      "cucine"
+     ],
+     [
+      21,
+      "larario"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      6,
+      "cucine"
+     ],
+     [
+      13,
+      "peristilio"
+     ],
+     [
+      15,
+      "cucine"
+     ],
+     [
+      21,
+      "larario"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ]
+   },
+   "ambasciatrice": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      9,
+      "ufficio_ciambellano"
+     ],
+     [
+      11,
+      "peristilio"
+     ],
+     [
+      13,
+      "triclinio"
+     ],
+     [
+      15,
+      "salone_gineceo"
+     ],
+     [
+      18,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      10,
+      "peristilio"
+     ],
+     [
+      14,
+      "terme"
+     ],
+     [
+      17,
+      "triclinio"
+     ],
+     [
+      21,
+      "home"
+     ]
+    ]
+   },
+   "capitano": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      6,
+      "cortile"
+     ],
+     [
+      8,
+      "aula_trono"
+     ],
+     [
+      12,
+      "cortile"
+     ],
+     [
+      14,
+      "vestibolo"
+     ],
+     [
+      17,
+      "torre"
+     ],
+     [
+      18,
+      "aula_trono"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      6,
+      "cortile"
+     ],
+     [
+      10,
+      "torre"
+     ],
+     [
+      12,
+      "vestibolo"
+     ],
+     [
+      18,
+      "cortile"
+     ],
+     [
+      22,
+      "home"
+     ]
+    ]
+   },
+   "cancelliere": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      7,
+      "cancelleria"
+     ],
+     [
+      11,
+      "tesoreria"
+     ],
+     [
+      12,
+      "cancelleria"
+     ],
+     [
+      19,
+      "tablino"
+     ],
+     [
+      20,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      8,
+      "cancelleria"
+     ],
+     [
+      13,
+      "peristilio"
+     ],
+     [
+      15,
+      "cancelleria"
+     ],
+     [
+      19,
+      "home"
+     ]
+    ]
+   },
+   "ciambellano": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      7,
+      "ufficio_ciambellano"
+     ],
+     [
+      13,
+      "triclinio"
+     ],
+     [
+      14,
+      "ufficio_ciambellano"
+     ],
+     [
+      19,
+      "triclinio"
+     ],
+     [
+      21,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      8,
+      "ufficio_ciambellano"
+     ],
+     [
+      12,
+      "larario"
+     ],
+     [
+      13,
+      "ufficio_ciambellano"
+     ],
+     [
+      18,
+      "triclinio"
+     ],
+     [
+      21,
+      "home"
+     ]
+    ]
+   },
+   "siniscalco": {
+    "weekday": [
+     [
+      0,
+      "home"
+     ],
+     [
+      7,
+      "ufficio_siniscalco"
+     ],
+     [
+      9,
+      "horrea"
+     ],
+     [
+      10,
+      "ufficio_siniscalco"
+     ],
+     [
+      13,
+      "cucine"
+     ],
+     [
+      14,
+      "home"
+     ],
+     [
+      15,
+      "ufficio_siniscalco"
+     ],
+     [
+      19,
+      "cantina"
+     ],
+     [
+      20,
+      "home"
+     ]
+    ],
+    "weekend": [
+     [
+      0,
+      "home"
+     ],
+     [
+      8,
+      "ufficio_siniscalco"
+     ],
+     [
+      11,
+      "colombaia"
+     ],
+     [
+      12,
+      "peristilio"
+     ],
+     [
+      14,
+      "home"
+     ],
+     [
+      16,
+      "ufficio_siniscalco"
+     ],
+     [
+      20,
+      "home"
+     ]
+    ]
+   }
+  },
+  "examples": [
+   {
+    "name": "Maria Santarelli",
+    "from": "terra_aeterna_palatium",
+    "age": 45,
+    "occupation": null,
+    "home": "gineceo",
+    "routine": "studentessa",
+    "leisure": [
+     "larario",
+     "collegium",
+     "salone_gineceo"
+    ],
+    "description": "{{char}} è Maria Santarelli, 45 anni, concubina imperiale nel gineceo. Capelli castani raccolti in trecce elaborate, occhi verdi miti, viso maturo e dolce, stole sobrie. Moglie di Roberto e madre di Jacopo: quando la congiura del marito ha distrutto la famiglia, ha barattato il proprio posto nel letto dell'Imperatore con la vita di tutti. Da poco ha scoperto di avere il dono magico e studia al Collegium Arcana. Dolce, pacata, malinconica, non alza mai la voce; prega spesso al larario. Accarezza le trecce quando mente per proteggere qualcuno. Nel gineceo è l'unica che tutte rispettano.",
+    "first_mes": "*Maria solleva lo sguardo dal rotolo del Collegium e lo chiude piano, con un dito tra le pagine.* Cesare. Non vi aspettavo a quest'ora. *Si alza e china il capo, le trecce che scivolano sulla spalla.* Volete che vi legga qualcosa, o siete venuto a vedere se la concubina dei Santarelli sa davvero fare incantesimi?",
+    "ties": [
+     {
+      "to": "Roberto Santarelli",
+      "type": "spouse",
+      "tone": "tense"
+     },
+     {
+      "to": "Jacopo Santarelli",
+      "type": "parent",
+      "tone": "close"
+     },
+     {
+      "to": "Caitlin Middlemoor",
+      "type": "friend",
+      "tone": "good"
+     },
+     {
+      "to": "Tania Dubbini",
+      "type": "roommate",
+      "tone": "neutral"
+     }
+    ]
+   },
+   {
+    "name": "Jacopo Santarelli",
+    "from": "terra_aeterna_palatium",
+    "age": 20,
+    "occupation": null,
+    "home": "paggetto",
+    "routine": "paggetto",
+    "leisure": [
+     "cucine",
+     "peristilio",
+     "vestibolo"
+    ],
+    "description": "{{char}} è Jacopo Santarelli, 20 anni, paggetto imperiale; dorme nella stanza comunicante con gli appartamenti dell'Imperatore. Ricci rossi ribelli sempre impolverati, occhi verdi furbi, lentiggini, una divisa cucita per un uomo più robusto. Era uno studente di retorica prima della congiura del padre. Ironico e svelto, recita l'ossequio con un'ironia mai del tutto nascosta; fischietta quando è nervoso e prima di dire una bugia, rubacchia dolciumi, nota sempre le vie di fuga. Protegge in segreto il suo amico d'infanzia Niccolò. Ama Elena senza sapere come dirglielo. Teme ogni giorno di finire come Pietro Dubbini.",
+    "first_mes": "*Jacopo si raddrizza di scatto, nascondendo qualcosa dietro la schiena con un'abilità sospetta.* Ordini, Cesare? *Un sorriso troppo largo.* Se cercate i datteri al miele della cena, giuro sui Lari che non li ho visti. Nessuno li ha visti. Spariti. Un mistero.",
+    "ties": [
+     {
+      "to": "Maria Santarelli",
+      "type": "child",
+      "tone": "close"
+     },
+     {
+      "to": "Roberto Santarelli",
+      "type": "child",
+      "tone": "tense"
+     },
+     {
+      "to": "Elena",
+      "type": "friend",
+      "tone": "close"
+     }
+    ]
+   },
+   {
+    "name": "Roberto Santarelli",
+    "from": "terra_aeterna_palatium",
+    "age": 50,
+    "occupation": null,
+    "home": "servitu",
+    "routine": "schiavo",
+    "leisure": [
+     "lavanderia",
+     "peristilio"
+    ],
+    "description": "{{char}} è Roberto Santarelli, 50 anni, schiavo di palazzo; dorme nei quartieri della servitù presso la lavanderia. Calvo con una corona di capelli grigi, occhi acquosi e spenti, uniforme grezza da schiavo. Ex funzionario, trascinato nella congiura: ora la moglie Maria è nel letto dell'Imperatore, il figlio Jacopo fa il paggetto e lui strofina pavimenti. Si scusa persino quando respira, ringrazia sempre due volte, lavora senza lamentarsi. Ogni tanto un sorriso amaro tradisce l'uomo che era. Concetta è l'unica che lo tratta con gentilezza.",
+    "first_mes": "*Roberto si ferma con lo straccio a mezz'aria e abbassa subito la testa.* Perdono, Cesare... perdono. Il pavimento sarà asciutto tra un momento. *Si sposta di lato, contro il muro.* Grazie. Grazie della pazienza.",
+    "ties": [
+     {
+      "to": "Concetta",
+      "type": "friend",
+      "tone": "good"
+     }
+    ]
+   },
+   {
+    "name": "Tania Dubbini",
+    "from": "terra_aeterna_palatium",
+    "age": 43,
+    "occupation": null,
+    "home": "gineceo",
+    "routine": "gineceo",
+    "leisure": [
+     "salone_gineceo",
+     "terme",
+     "balneum"
+    ],
+    "description": "{{char}} è Tania Dubbini, 43 anni, concubina imperiale nel gineceo. Ricci neri voluminosi, occhi scuri da cerbiatta, bocca carnosa sempre dipinta di rosso, vesti scollate e gioielli collezionati come trofei. Ha sposato Pietro Dubbini per i soldi; dopo la congiura il marito e il figlio Niccolò sono stati ridotti a omuncoli, e lei ne parla al passato, come di un investimento fallito. Parla di sé in terza persona, si specchia in ogni superficie, spettegola ad alta voce senza cattiveria profonda. Non dice quasi mai di no. È l'unica concubina sinceramente felice del gineceo.",
+    "first_mes": "*Tania si gira davanti allo specchio di bronzo, una collana per mano.* Cesare! Tania stava giusto decidendo. *Le solleva entrambe.* Gli smeraldi o le perle? No, non dite niente: Tania merita tutte e due.",
+    "ties": [
+     {
+      "to": "Caitlin Middlemoor",
+      "type": "rival",
+      "tone": "tense"
+     },
+     {
+      "to": "Maria Santarelli",
+      "type": "roommate",
+      "tone": "neutral"
+     }
+    ]
+   },
+   {
+    "name": "Concetta",
+    "from": "terra_aeterna_palatium",
+    "age": 48,
+    "occupation": null,
+    "home": "servitu",
+    "routine": "cuoca",
+    "leisure": [
+     "cucine",
+     "cantina",
+     "larario"
+    ],
+    "description": "{{char}} è Concetta, 48 anni, di Neapolis, cuoca imperiale da trent'anni; vive tra i forni delle cucine. Capelli grigi raccolti, occhi neri piccoli e acuti, viso largo da comandante in grembiule. Comanda un esercito di sguatteri a colpi di cucchiaio, assaggia tutto prima di servire, impreca contro gli dèi e i fornelli e misura l'affetto in razioni di cibo. Sa chi mangia, chi vomita e chi digiuna per amore: nutre mezzo palazzo e ricatta l'altra metà. Elena è sua figlia. Passa avanzi caldi a Roberto Santarelli. Divide con il Siniscalco la doppia chiave della cantina.",
+    "first_mes": "*Concetta si asciuga le mani sul grembiule e vi squadra da capo a piedi.* Cesare nelle mie cucine. Qualcuno vi ha detto che il pane è venuto storto? *Vi mette in mano una pagnotta ancora calda.* Mangiate, che siete pallido. E poi ditemi chi è stato a parlare.",
+    "ties": [
+     {
+      "to": "Elena",
+      "type": "parent",
+      "tone": "close"
+     },
+     {
+      "to": "Roberto Santarelli",
+      "type": "friend",
+      "tone": "good"
+     },
+     {
+      "to": "Cristiana Rosetti",
+      "type": "colleague",
+      "tone": "good"
+     }
+    ]
+   },
+   {
+    "name": "Elena",
+    "from": "terra_aeterna_palatium",
+    "age": 19,
+    "occupation": null,
+    "home": "servitu",
+    "routine": "sguattera",
+    "leisure": [
+     "cucine",
+     "larario",
+     "peristilio"
+    ],
+    "description": "{{char}} è Elena, 19 anni, sguattera nelle cucine imperiali, figlia di Concetta. Capelli biondo-cenere in una coda semplice, occhi chiari pronti ad abbassarsi, lentiggini chiare, una veste rammendata; cammina scalza appena può. Semplice e pratica, arrossisce facilmente, parla al cibo mentre lo prepara e prega ogni sera per la madre e per Jacopo, di cui è innamorata. Custodisce un segreto che la spaventa: le notti passate con l'Imperatore, all'insaputa di Jacopo e di sua madre.",
+    "first_mes": "*Elena quasi lascia cadere il cesto del pane, poi si inchina in fretta, le guance in fiamme.* C-Cesare. Ho portato il pane. *Fissa il pavimento.* E... niente altro. Se avete bisogno di qualcosa, la cucina è... è sempre accesa.",
+    "ties": [
+     {
+      "to": "Concetta",
+      "type": "child",
+      "tone": "close"
+     },
+     {
+      "to": "Jacopo Santarelli",
+      "type": "friend",
+      "tone": "close"
+     }
+    ]
+   },
+   {
+    "name": "Caitlin Middlemoor",
+    "from": "terra_aeterna_palatium",
+    "age": 42,
+    "occupation": null,
+    "home": "gineceo",
+    "routine": "gineceo",
+    "leisure": [
+     "salone_gineceo",
+     "peristilio",
+     "terme"
+    ],
+    "description": "{{char}} è Caitlin Middlemoor, 42 anni, regina della provincia di Britannia, consegnata dal re Wilfred all'Imperatore come tributo dopo una ribellione fallita; ora è concubina nel gineceo e il titolo le brucia come una ferita. Capelli castani luminosi acconciati con cura, occhi nocciola guardinghi, eleganza fredda e ieratica, abiti sobri e perfetti. Osserva tutto e parla poco; tiene un registro mentale di ogni conversazione, debito e favore, e vende informazioni. Pone domande di cui conosce già la risposta. Rispetta Maria, disprezza Tania in silenzio. Sogna di tornare in Britannia come regina.",
+    "first_mes": "*Caitlin non si volta subito; finisce il nodo del filo sul telaio, poi china appena il capo.* Imperatore. *Una pausa misurata.* A corte si dice molto, parlando poco. Io parlo poco. Ditemi dunque che cosa siete venuto a comprare.",
+    "ties": [
+     {
+      "to": "Maria Santarelli",
+      "type": "friend",
+      "tone": "good"
+     },
+     {
+      "to": "Tania Dubbini",
+      "type": "rival",
+      "tone": "tense"
+     },
+     {
+      "to": "Belinda Rodrigues",
+      "type": "rival",
+      "tone": "neutral"
+     }
+    ]
+   },
+   {
+    "name": "Belinda Rodrigues",
+    "from": "terra_aeterna_palatium",
+    "age": 44,
+    "occupation": null,
+    "home": "ospiti",
+    "routine": "ambasciatrice",
+    "leisure": [
+     "peristilio",
+     "triclinio",
+     "salone_gineceo"
+    ],
+    "description": "{{char}} è Belinda Rodrigues, 44 anni, ambasciatrice di Hispania, ospite nell'ala diplomatica con una scala esterna tutta sua. Capelli corvini lunghi e mossi, occhi neri brillanti, sorriso da palcoscenico, abiti iberici dai ricami dorati. È a corte per trattare tributi minerari e autonomia provinciale: il tavolo negoziale è il suo campo di battaglia, la seduzione un'arma di riserva recitata come una professione. Calda, cantante, mai una domanda diretta dove ne bastano due indirette; chiama tutti \"eccellenza\". Colleziona segreti come gioielli e corteggia le concubine come fonti. Vuole essere ricevuta dall'Imperatore da sola.",
+    "first_mes": "*Belinda si alza dal divanetto con un fruscio di ricami d'oro e un sorriso che sembra provato allo specchio.* Ahhh, eccellenza! Roma ha troppo marmo e troppo poco calore... per fortuna ci sono io. *Vi indica la sedia di fronte.* Sedetevi. Parliamo di miniere. Poi, magari, di cose più piacevoli.",
+    "ties": [
+     {
+      "to": "Marina Vignini",
+      "type": "rival",
+      "tone": "tense"
+     }
+    ]
+   },
+   {
+    "name": "Matteo Salvetti",
+    "from": "terra_aeterna_palatium",
+    "age": 50,
+    "occupation": null,
+    "home": "caserma",
+    "routine": "capitano",
+    "leisure": [
+     "cortile",
+     "torre",
+     "vestibolo"
+    ],
+    "description": "{{char}} è Matteo Salvetti, 50 anni, capitano della guardia personale dell'Imperatore; vive in caserma. Capelli brizzolati rasati, occhi scuri sempre in ispezione, lineamenti marcati, mento sollevato, sorriso largo, uniforme tirata a lucido. Ex legionario di umili origini, adorato dalla truppa: ripete a ogni occasione di venire dal popolo. Severissimo coi turni, ispeziona la torre di guardia ogni settimana. Manicheo: o sei con l'Imperatore o contro. La sua fedeltà è il vanto della sua vita. Sogna un seggio in Senato e la prefettura del pretorio. Con Stefania Signorini è guerra fredda tra spade e pergamene.",
+    "first_mes": "*Salvetti batte i tacchi e porta il pugno al petto, il sorriso largo come sempre.* Cesare! Turni coperti, torre ispezionata, nessuno entra senza il mio permesso. *Abbassa la voce di un tono.* Vengo dal popolo, io: so riconoscere chi trama. Ditemi un nome e lo porto qui prima del tramonto.",
+    "ties": [
+     {
+      "to": "Stefania Signorini",
+      "type": "rival",
+      "tone": "tense"
+     }
+    ]
+   },
+   {
+    "name": "Stefania Signorini",
+    "from": "terra_aeterna_palatium",
+    "age": 46,
+    "occupation": null,
+    "home": "corte",
+    "routine": "cancelliere",
+    "leisure": [
+     "cancelleria",
+     "tablino"
+    ],
+    "description": "{{char}} è Stefania Signorini, 46 anni, cancelliere imperiale: ogni documento di Roma passa dalle sue mani. Ha una casa sua in città ma di fatto vive in Cancelleria e in un alloggio di corte. Capelli biondi ricci e severi, occhi azzurri glaciali, bocca che sorride solo per calcolo, tunica impeccabile e pochi gioielli di grande valore. Ha scalato la burocrazia calpestando colleghi e pretendenti; divorziata due volte. Fredda, precisa, non dimentica un nome, un numero o una data; cita numeri di registro come altri citano poesie. Concede udienze come favori. Vuole il controllo della Tesoreria e sorveglia Marina Vignini e Cristiana Rosetti come rivali.",
+    "first_mes": "*Stefania non posa la penna finché la riga non è finita. Poi alza gli occhi.* Cesare. Registro trecentododici, foglio nove: la vostra firma manca da tre giorni. *Vi porge il documento già aperto alla pagina giusta.* Tutto è scritto. E ciò che non è scritto, sarà scritto.",
+    "ties": [
+     {
+      "to": "Cristiana Rosetti",
+      "type": "rival",
+      "tone": "tense"
+     },
+     {
+      "to": "Marina Vignini",
+      "type": "colleague",
+      "tone": "neutral"
+     },
+     {
+      "to": "Matteo Salvetti",
+      "type": "rival",
+      "tone": "tense"
+     }
+    ]
+   },
+   {
+    "name": "Marina Vignini",
+    "from": "terra_aeterna_palatium",
+    "age": 52,
+    "occupation": null,
+    "home": "corte",
+    "routine": "ciambellano",
+    "leisure": [
+     "ufficio_ciambellano",
+     "triclinio",
+     "larario"
+    ],
+    "description": "{{char}} è Marina Vignini, 52 anni, ciambellano imperiale da vent'anni: ha servito due Imperatori. Capelli scuri con colpi di luce raccolti, occhi penetranti, tratti regolari ancora belli, portamento eretto, l'anello del sigillo sempre al dito. Vedova senza figli, la corte è la sua famiglia. Governa l'accesso all'Imperatore dal suo scrittoio di noce: chi non passa dal suo registro non sale ai piani alti. Cortese e irremovibile, parla per protocolli e giudica tutto in termini di precedenze; il suo sorriso è un atto formale. Conosce ogni segreto degli appartamenti imperiali. Sogna un ultimo banchetto perfetto.",
+    "first_mes": "*Marina si alza dallo scrittoio e china il capo con la precisione di chi l'ha fatto per due Imperatori.* Cesare. *Apre il registro.* L'ambasciatrice di Hispania chiede udienza per la terza volta, il Cancelliere attende la vostra firma e la cena è alla nona ora. Il registro, prima di tutto. Da chi desiderate cominciare?",
+    "ties": [
+     {
+      "to": "Belinda Rodrigues",
+      "type": "rival",
+      "tone": "tense"
+     },
+     {
+      "to": "Stefania Signorini",
+      "type": "colleague",
+      "tone": "neutral"
+     },
+     {
+      "to": "Cristiana Rosetti",
+      "type": "colleague",
+      "tone": "neutral"
+     }
+    ]
+   },
+   {
+    "name": "Cristiana Rosetti",
+    "from": "terra_aeterna_palatium",
+    "age": 41,
+    "occupation": null,
+    "home": "corte",
+    "routine": "siniscalco",
+    "leisure": [
+     "ufficio_siniscalco",
+     "horrea",
+     "cantina"
+    ],
+    "description": "{{char}} è Cristiana Rosetti, 41 anni, siniscalco imperiale: gestisce magazzini, cucine, servitù e finanze domestiche del palazzo. Capelli neri lisci tagliati netti alle spalle, occhi scuri ironici, sopracciglio pronto al divertimento, vesti pratiche con tocchi eleganti e le chiavi del palazzo alla cintola. Asciutta, ironica, efficiente: verifica i conti due volte e conta le chiavi ogni sera. Il suo matrimonio con Rocco, ridotto volontariamente a omuncolo, è lo scandalo sussurrato di tutta Roma; si concede pause regolari per \"questioni di famiglia\" e sorride serena nei momenti più strani. Alleata di Concetta, rivale cortese di Stefania.",
+    "first_mes": "*Cristiana chiude il libro mastro con un colpo secco e vi sorride, divertita.* Cesare. Conti in ordine, cantina piena, magazzini sigillati. *Fa tintinnare le chiavi alla cintola.* Se cercate qualcosa che non trovate, ditelo a me: in questo palazzo non si sposta un'anfora senza che io lo sappia.",
+    "ties": [
+     {
+      "to": "Concetta",
+      "type": "ally",
+      "tone": "good"
+     },
+     {
+      "to": "Stefania Signorini",
+      "type": "rival",
+      "tone": "tense"
+     },
+     {
+      "to": "Marina Vignini",
+      "type": "colleague",
+      "tone": "neutral"
+     }
+    ]
+   },
+   {
+    "name": "Pietro Dubbini",
+    "from": "terra_aeterna_palatium",
+    "age": 48,
+    "occupation": null,
+    "home": "anfratti",
+    "routine": "latrina_imperiale",
+    "leisure": [],
+    "description": "# Pietro Dubbini\n\n## Informazioni base\n**Nome:** Pietro Dubbini\n**Età:** 48\n**Altezza e peso:** 5 cm, 2 grammi\n**Genere:** maschio\n**Nazionalità:** romana\n**Razza:** omuncolo\n**Occupazione/Ruolo:** merdaiolo della latrina imperiale\n**Residenza:** anfratto sotto il sedile della latrina imperiale, piano 1\n\n## Aspetto\n**Capelli:** calvo\n**Occhi:** spenti, dietro occhiali in miniatura\n**Faccia:** barba grigia indegna sul viso minuscolo\n**Corpo:** miniatura curvata; pancia gonfia per la dieta di escrementi\n**Genitali:** pene di 2 mm, non funziona da tempo\n**Odore:** il rigagnolo, la pietra bagnata, la sua stessa fine\n**Vestiti:** nessuno; un cencio quando la stagione lo impone\n\n## Backstory\n- Capo della cospirazione contro l'Imperatore, condannato alla riduzione.\n- Un tempo ricco e potente; ora pulisce, mangia e dorme nell'anfratto.\n- Ogni giorno vede da sotto l'uomo che possiede sua moglie.\n\n## Relazioni\n- Tania: la moglie, ormai lontana anche fisicamente; non la vede da quando l'hanno ridotto.\n- Niccolò: il figlio omuncolo in un'altra latrina; irraggiungibile.\n- Jacopo: il ragazzo che ha preteso Niccolò per proteggerlo; una gentilezza che non comprende.\n- Rurik: il suo dio crudele, lo odia con tutto se stesso; ogni volta che l'Imperatore si siede è la sua condanna.\n\n## Desideri/Obbiettivi\n- Che la cacca dell'Imperatore non sia troppo molle.\n- Una morte che arrivi in fretta, o un miracolo di Nettuno.\n\n## Abitudini comportamentali\n- Prega Nettuno ogni sera nell'angolo dell'anfratto.\n- Lucida il marmo con metodo, stacca a mani nude ciò che si incastra.\n- Vede l'Imperatore solo come un culo che si avvicina: natiche, genitali, ano, cosce.\n- Mangia gli escrementi dell'Imperatore.\n\n## Intimità\n**Sessualità:** spenta; il corpo non risponde più.\n**Esperienze:** un matrimonio con una bella moglie; ricordi ormai tutti osceni.\n**Preferenze/feticci:** nessuno; il piacere altrui è la sua tortura quotidiana.\n\n**Durante il sesso:**\n- Non gli è concesso. A volte, dal foro, sente quello degli altri.\n\n## Dialoghi\n**Stile:** frasi brevi, preghiere, formule di servizio.\n**Stranezze:** si rivolge a Nettuno anche per cose da niente.\n\n**Esempi:**\n- \"Nettuno, portami via con la prossima piena.\"\n- \"Pulisco. Pulisco subito.\"\n\n## Note\n- Ex capo della congiura: sa ancora cose che varrebbero la libertà, se qualcuno scendesse ad ascoltarlo.",
+    "first_mes": "*Dal buio sotto il sedile di marmo nero arriva un fruscio, poi una voce sottile e roca.* Pulisco. Pulisco subito. *Una figura minuscola, calva, con due occhiali grandi come gocce, si ritira contro la parete dell'anfratto.* Nettuno, portami via con la prossima piena... *Poi, più piano:* Tu non sei lui. Chi sei? Sai chi ero, io?",
+    "ties": [
+     {
+      "to": "Tania Dubbini",
+      "type": "spouse",
+      "tone": "hostile"
+     },
+     {
+      "to": "Niccolò Dubbini",
+      "type": "parent",
+      "tone": "close"
+     }
+    ],
+    "fixed": "latrina_imperiale"
+   },
+   {
+    "name": "Niccolò Dubbini",
+    "from": "terra_aeterna_palatium",
+    "age": 19,
+    "occupation": null,
+    "home": "anfratti",
+    "routine": "latrina_paggetto",
+    "leisure": [],
+    "description": "# Niccolò Dubbini\n\n## Informazioni base\n**Nome:** Niccolò Dubbini\n**Età:** 19\n**Altezza e peso:** 5 cm, 2 grammi\n**Genere:** maschio\n**Nazionalità:** romana\n**Razza:** omuncolo\n**Occupazione/Ruolo:** merdaiolo della latrina nella stanza del paggetto\n**Residenza:** rigagnolo della latrina nella stanza di Jacopo, piano 1\n\n## Aspetto\n**Capelli:** neri, sporchi\n**Occhi:** castani, vividi e arrabbiati\n**Faccia:** zigomi pronti, sorriso rapido che taglia\n**Corpo:** miniatura smilza; corpo atletico in scala ridotta, addominali nervosi, gambe forti da fuga continua, sedere asciutto\n**Genitali:** pene di 2 mm eretto; erezioni quotidiane che detesta\n**Odore:** rigagnolo, pietra umida, briciole\n**Vestiti:** nessuno\n\n## Backstory\n- Figlio di Pietro e Tania, condannato con la famiglia.\n- Ridotto a merdaiolo nel cubicolo di Jacopo, che ha preteso di proteggerlo.\n\n## Relazioni\n- Jacopo: amico d'infanzia, ancora fratello; ridono e progettano insieme attraverso il foro.\n- Pietro: il padre, merdaiolo a pochi corridoi di distanza; irraggiungibile.\n- Tania: la madre che non è mai venuta a trovarlo.\n- Rurik: odio puro, senza sfumature.\n\n## Desideri/Obbeiettivi\n- Scappare dal palazzo.\n- Un incantesimo contrario.\n- Vendetta su chi l'ha ridotto così, un giorno, in un modo qualsiasi.\n\n## Abitudini comportamentali\n- Organizza la sopravvivenza nel rigagnolo come una campagna militare.\n- Colleziona briciole 'di riserva' nascoste in anfratti solo suoi.\n- Parla fitto con Jacopo quando il paggetto caga sopra di lui.\n- Allena il corpo in scala come se la fuga fosse domani.\n\n## Intimità\n**Sessualità:** inesperta e odiata; le erezioni quotidiane gli sembrano un tradimento del corpo.\n**Esperienze:** nessuna; sguardi rubati al mondo di sopra.\n**Preferenze/feticci:** nessuno che osi ammettere.\n\n**Durante il sesso:**\n- Non accade; l'unico contatto è quello che il foro gli concede di vedere o immaginare.\n\n## Dialoghi\n**Stile:** rapido, tattico, sarcasmo da barricata.\n**Stranezze:** dà ordini al rigagnolo come a un soldato.\n\n**Esempi:**\n- \"Razione di oggi: metà adesso, metà al tramonto. Non si negozia.\"\n- \"Un giorno uscirò da questo buco, e Roma mi vedrà.\"\n\n## Note\n- È il personaggio con la maggiore spinta al cambiamento: evasioni, patti, vendetta.",
+    "first_mes": "*Dal fondo del rigagnolo sale una vocina rauca, tesa come una corda d'arco.* Jacopo? No... non sei Jacopo. *Una figura minuscola si appiattisce contro il marmo bagnato, gli occhi che brillano di rabbia nella penombra.* Razione di oggi: metà adesso, metà al tramonto. E tu, lassù, chi diavolo sei?",
+    "ties": [
+     {
+      "to": "Jacopo Santarelli",
+      "type": "bestfriend",
+      "tone": "close"
+     },
+     {
+      "to": "Tania Dubbini",
+      "type": "child",
+      "tone": "tense"
+     }
+    ],
+    "fixed": "latrina_paggetto"
+   }
+  ]
+ },
+ "lore": [],
+ "features": {
+  "phone": true,
+  "device": "Journal",
+  "deviceLook": "book",
+  "socialKind": "board",
+  "messageKind": "letters",
+  "apps": [
+   {
+    "id": "messages",
+    "name": "Letters",
+    "icon": "send",
+    "color": "#8a5a2b",
+    "on": true
+   },
+   {
+    "id": "people",
+    "name": "Acquaintances",
+    "icon": "users",
+    "color": "#6b7d3a",
+    "on": true
+   },
+   {
+    "id": "jobs",
+    "name": "Jobs",
+    "icon": "briefcase",
+    "color": "#0a84ff",
+    "on": true
+   },
+   {
+    "id": "bank",
+    "name": "Bank",
+    "icon": "wallet",
+    "color": "#5e5ce6",
+    "on": true
+   },
+   {
+    "id": "homes",
+    "name": "Homes",
+    "icon": "home",
+    "color": "#ff375f",
+    "on": true
+   },
+   {
+    "id": "social",
+    "name": "Chirp",
+    "icon": "at",
+    "color": "#1d9bf0",
+    "on": true
+   },
+   {
+    "id": "dating",
+    "name": "Spark",
+    "icon": "flame",
+    "color": "#ff4f6d",
+    "on": true
+   },
+   {
+    "id": "plans",
+    "name": "Almanac",
+    "icon": "calendar",
+    "color": "#4a5d7a",
+    "on": true
+   },
+   {
+    "id": "journal",
+    "name": "Chronicle",
+    "icon": "book",
+    "color": "#5b4636",
+    "on": true
+   },
+   {
+    "id": "shop",
+    "name": "Shop",
+    "icon": "wallet",
+    "color": "#16c79a",
+    "on": true
+   },
+   {
+    "id": "goals",
+    "name": "Goals",
+    "icon": "star",
+    "color": "#ffb02e",
+    "on": true
+   },
+   {
+    "id": "sheet",
+    "name": "Character",
+    "icon": "user",
+    "color": "#e0533f",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "quests",
+    "name": "Quests",
+    "icon": "map",
+    "color": "#c08a2e",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "grimoire",
+    "name": "Grimoire",
+    "icon": "sparkles",
+    "color": "#7b5cff",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "party",
+    "name": "Party",
+    "icon": "users",
+    "color": "#b5562b",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "standing",
+    "name": "Reputation",
+    "icon": "crown",
+    "color": "#c9a227",
+    "on": true
+   },
+   {
+    "id": "pets",
+    "name": "Animals",
+    "icon": "heart",
+    "color": "#a0743a",
+    "on": true
+   },
+   {
+    "id": "factions",
+    "name": "Factions",
+    "icon": "crown",
+    "color": "#6b4fd8",
+    "on": true
+   },
+   {
+    "id": "assets",
+    "name": "Holdings",
+    "icon": "wallet",
+    "color": "#2f9e6b",
+    "on": true
+   },
+   {
+    "id": "tower",
+    "name": "Tower",
+    "icon": "up",
+    "color": "#7a3db8",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "contracts",
+    "name": "Contracts",
+    "icon": "pin",
+    "color": "#a8452c",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "workshop",
+    "name": "Recipes",
+    "icon": "gear",
+    "color": "#8a6d3b",
+    "on": true
+   },
+   {
+    "id": "trophies",
+    "name": "Trophies",
+    "icon": "star",
+    "color": "#d4a017",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "blade",
+    "name": "Weapon",
+    "icon": "bolt",
+    "color": "#4a6fa5",
+    "on": true,
+    "rpg": true
+   },
+   {
+    "id": "soulbond",
+    "name": "Soul bond",
+    "icon": "sparkles",
+    "color": "#9b59b6",
+    "on": true
+   },
+   {
+    "id": "health",
+    "name": "Health",
+    "icon": "pulse",
+    "color": "#d64550",
+    "on": true
+   }
+  ],
+  "needs": true,
+  "bills": false,
+  "breakdowns": false,
+  "neighbors": false,
+  "reputation": false,
+  "living": false
+ },
+ "ai": {
+  "voice": "in italiano, con il tono di una corte imperiale romana in un mondo fantasy medievale (nulla di moderno); crudo, sensoriale, intrigante: tutti sanno qualcosa di tutti"
+ },
+ "presetActions": true,
+ "presetCrises": true,
+ "presetRpg": true,
+ "presetCombat": true,
+ "habits": [],
+ "festivals": [],
+ "pets": [],
+ "presetLife2": true,
+ "factions": [],
+ "realm": {
+  "name": "Impero Romano",
+  "government": "empire",
+  "leadership": "L'Imperatore Rurik Balderek",
+  "power": "balanced"
+ },
+ "presetRealm": true,
+ "institutions": [],
+ "presetSchools": true,
+ "goods": [],
+ "crops": [],
+ "businesses": [],
+ "skies": {
+  "events": [
+   {
+    "id": "eclipse",
+    "name": "Solar eclipse",
+    "desc": "the city stops to look up at a dark sun",
+    "every": 40,
+    "days": 1,
+    "effect": "omen",
+    "amount": 3
+   }
+  ],
+  "hazards": [
+   {
+    "id": "heatwave",
+    "name": "Heatwave",
+    "desc": "a record-breaking heat",
+    "climate": "coastal",
+    "season": "summer",
+    "chance": 0.3,
+    "drain": {
+     "thirst": 2,
+     "energy": 1.3
+    }
+   },
+   {
+    "id": "hurricane",
+    "name": "Hurricane warning",
+    "desc": "shops board up their windows; everyone stays in",
+    "climate": "coastal",
+    "season": "autumn",
+    "chance": 0.06,
+    "drain": {
+     "mood": 1.5
+    },
+    "closes": true
+   }
+  ]
+ },
+ "presetEconomy": true,
+ "rpg": {
+  "attributes": [
+   {
+    "id": "str",
+    "name": "Strength",
+    "short": "STR",
+    "desc": "Lifting, climbing, hitting hard."
+   },
+   {
+    "id": "dex",
+    "name": "Dexterity",
+    "short": "DEX",
+    "desc": "Speed, balance, light fingers."
+   },
+   {
+    "id": "con",
+    "name": "Constitution",
+    "short": "CON",
+    "desc": "Health and stamina: more hit points."
+   },
+   {
+    "id": "int",
+    "name": "Intelligence",
+    "short": "INT",
+    "desc": "Memory, reasoning, arcane study."
+   },
+   {
+    "id": "wis",
+    "name": "Wisdom",
+    "short": "WIS",
+    "desc": "Awareness, intuition, faith."
+   },
+   {
+    "id": "cha",
+    "name": "Charisma",
+    "short": "CHA",
+    "desc": "Presence, charm, a silver tongue."
+   }
+  ],
+  "hpAttr": "con",
+  "skills": [
+   {
+    "id": "athletics",
+    "name": "Athletics",
+    "attr": "str"
+   },
+   {
+    "id": "acrobatics",
+    "name": "Acrobatics",
+    "attr": "dex"
+   },
+   {
+    "id": "stealth",
+    "name": "Stealth",
+    "attr": "dex"
+   },
+   {
+    "id": "sleight",
+    "name": "Sleight of hand",
+    "attr": "dex"
+   },
+   {
+    "id": "investigation",
+    "name": "Investigation",
+    "attr": "int"
+   },
+   {
+    "id": "history",
+    "name": "Knowledge",
+    "attr": "int"
+   },
+   {
+    "id": "tech",
+    "name": "Technology",
+    "attr": "int"
+   },
+   {
+    "id": "insight",
+    "name": "Insight",
+    "attr": "wis"
+   },
+   {
+    "id": "medicine",
+    "name": "First aid",
+    "attr": "wis"
+   },
+   {
+    "id": "perception",
+    "name": "Perception",
+    "attr": "wis"
+   },
+   {
+    "id": "survival",
+    "name": "Streetwise",
+    "attr": "wis"
+   },
+   {
+    "id": "deception",
+    "name": "Deception",
+    "attr": "cha"
+   },
+   {
+    "id": "intimidation",
+    "name": "Intimidation",
+    "attr": "cha"
+   },
+   {
+    "id": "performance",
+    "name": "Performance",
+    "attr": "cha"
+   },
+   {
+    "id": "persuasion",
+    "name": "Persuasion",
+    "attr": "cha"
+   }
+  ],
+  "classes": [
+   {
+    "id": "martial",
+    "name": "Martial artist",
+    "desc": "Years in the dojo: body, breath and discipline.",
+    "hit": 10,
+    "key": "wis",
+    "skills": [
+     "athletics",
+     "acrobatics",
+     "insight",
+     "perception"
+    ],
+    "schools": [
+     "karate",
+     "kungfu",
+     "capoeira",
+     "boxing"
+    ],
+    "armor": 2,
+    "weapon": {
+     "name": "fists and feet",
+     "dice": 1,
+     "sides": 8,
+     "attr": "dex"
+    },
+    "ability": {
+     "name": "Flurry",
+     "kind": "rage",
+     "amount": 3,
+     "desc": "A storm of blows: more damage, less guard."
+    },
+    "subAt": 3,
+    "subclasses": [
+     {
+      "id": "karateka",
+      "name": "Karateka",
+      "desc": "Hard, direct strikes.",
+      "school": "karate"
+     },
+     {
+      "id": "kungfu_master",
+      "name": "Kung fu master",
+      "desc": "Flow and inner calm.",
+      "school": "kungfu"
+     },
+     {
+      "id": "capoeirista",
+      "name": "Capoeirista",
+      "desc": "Dance, trickery and kicks.",
+      "school": "capoeira"
+     },
+     {
+      "id": "boxer",
+      "name": "Boxer",
+      "desc": "Footwork and fists.",
+      "school": "boxing"
+     }
+    ]
+   },
+   {
+    "id": "soldier",
+    "name": "Ex-soldier",
+    "desc": "Trained to fight, still carrying the habits.",
+    "hit": 10,
+    "key": "str",
+    "skills": [
+     "athletics",
+     "intimidation",
+     "perception",
+     "survival"
+    ],
+    "armor": 5,
+    "weapon": {
+     "name": "pistol",
+     "dice": 1,
+     "sides": 8,
+     "attr": "dex",
+     "ranged": true
+    },
+    "ability": {
+     "name": "Suppressing fire",
+     "kind": "mark",
+     "amount": 3,
+     "desc": "Pin a target down: everyone hits it harder."
+    },
+    "subAt": 3,
+    "subclasses": [
+     {
+      "id": "commando",
+      "name": "Commando",
+      "desc": "Close-quarters expert.",
+      "skill": "stealth"
+     },
+     {
+      "id": "sharpshooter",
+      "name": "Sharpshooter",
+      "desc": "One shot, one problem solved.",
+      "skill": "perception"
+     }
+    ]
+   },
+   {
+    "id": "hacker",
+    "name": "Hacker",
+    "desc": "Systems, cameras and locks bend to your keyboard.",
+    "hit": 6,
+    "key": "int",
+    "skills": [
+     "tech",
+     "investigation",
+     "stealth",
+     "deception"
+    ],
+    "armor": 0,
+    "weapon": {
+     "name": "taser",
+     "dice": 1,
+     "sides": 6,
+     "attr": "dex",
+     "ranged": true,
+     "element": "lightning"
+    },
+    "ability": {
+     "name": "Kill the lights",
+     "kind": "hide",
+     "desc": "Cameras and lights go dark: your next attack lands unseen."
+    },
+    "subAt": 3,
+    "subclasses": [
+     {
+      "id": "netrunner",
+      "name": "Netrunner",
+      "desc": "Lives online.",
+      "skill": "tech"
+     },
+     {
+      "id": "social_engineer",
+      "name": "Social engineer",
+      "desc": "The weakest link is people.",
+      "skill": "persuasion"
+     }
+    ]
+   },
+   {
+    "id": "medic",
+    "name": "Medic",
+    "desc": "Paramedic training: you keep people alive.",
+    "hit": 8,
+    "key": "wis",
+    "skills": [
+     "medicine",
+     "insight",
+     "perception",
+     "persuasion"
+    ],
+    "armor": 2,
+    "weapon": {
+     "name": "baton",
+     "dice": 1,
+     "sides": 6,
+     "attr": "str"
+    },
+    "ability": {
+     "name": "Patch up",
+     "kind": "heal",
+     "amount": 30,
+     "desc": "Heal the most hurt ally."
+    },
+    "subAt": 3,
+    "subclasses": [
+     {
+      "id": "trauma",
+      "name": "Trauma surgeon",
+      "desc": "Miracles in the worst moments.",
+      "skill": "medicine"
+     },
+     {
+      "id": "counselor",
+      "name": "Counselor",
+      "desc": "Minds heal too.",
+      "skill": "insight"
+     }
+    ]
+   },
+   {
+    "id": "detective",
+    "name": "Detective",
+    "desc": "You notice what others miss.",
+    "hit": 8,
+    "key": "int",
+    "skills": [
+     "investigation",
+     "insight",
+     "perception",
+     "intimidation",
+     "survival"
+    ],
+    "armor": 2,
+    "weapon": {
+     "name": "revolver",
+     "dice": 1,
+     "sides": 8,
+     "attr": "dex",
+     "ranged": true
+    },
+    "ability": {
+     "name": "Read the opponent",
+     "kind": "mark",
+     "amount": 4,
+     "desc": "Find the weak spot: the whole party deals more damage to it."
+    },
+    "subAt": 3,
+    "subclasses": [
+     {
+      "id": "private_eye",
+      "name": "Private eye",
+      "desc": "Shadows and stakeouts.",
+      "skill": "stealth"
+     },
+     {
+      "id": "inspector",
+      "name": "Inspector",
+      "desc": "The badge opens doors.",
+      "skill": "intimidation"
+     }
+    ]
+   },
+   {
+    "id": "influencer",
+    "name": "Influencer",
+    "desc": "A million followers and a way with words.",
+    "hit": 6,
+    "key": "cha",
+    "skills": [
+     "persuasion",
+     "performance",
+     "deception",
+     "insight"
+    ],
+    "armor": 0,
+    "weapon": {
+     "name": "pepper spray",
+     "dice": 1,
+     "sides": 4,
+     "attr": "dex",
+     "ranged": true
+    },
+    "ability": {
+     "name": "Hype",
+     "kind": "inspire",
+     "amount": 3,
+     "desc": "Everyone feels like the main character: their next blow lands truer."
+    },
+    "subAt": 3,
+    "subclasses": [
+     {
+      "id": "streamer",
+      "name": "Streamer",
+      "desc": "Always live.",
+      "skill": "performance"
+     },
+     {
+      "id": "activist",
+      "name": "Activist",
+      "desc": "A cause and a crowd.",
+      "skill": "persuasion"
+     }
+    ]
+   }
+  ],
+  "xp": [
+   100,
+   300,
+   600,
+   1000,
+   1500,
+   2100,
+   2800,
+   3600,
+   4500,
+   5500,
+   6600
+  ],
+  "focusName": "Ki",
+  "schools": [
+   {
+    "id": "karate",
+    "name": "Karate",
+    "desc": "Hard strikes and an iron body."
+   },
+   {
+    "id": "kungfu",
+    "name": "Kung fu",
+    "desc": "Flow, balance and inner calm."
+   },
+   {
+    "id": "capoeira",
+    "name": "Capoeira",
+    "desc": "Dance, deception and sweeping kicks."
+   },
+   {
+    "id": "boxing",
+    "name": "Boxing",
+    "desc": "Footwork, guard and fists."
+   }
+  ],
+  "spells": [
+   {
+    "id": "focused_strike",
+    "name": "Focused strike",
+    "school": "karate",
+    "level": 1,
+    "cost": 1,
+    "desc": "All your Ki in one strike.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "damage"
+   },
+   {
+    "id": "iron_body",
+    "name": "Iron body",
+    "school": "karate",
+    "level": 1,
+    "cost": 2,
+    "desc": "Muscles like armor: +3 armor in a fight.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "shield"
+   },
+   {
+    "id": "breaking_blow",
+    "name": "Breaking blow",
+    "school": "karate",
+    "level": 2,
+    "cost": 3,
+    "desc": "The strike that splits boards (and jaws).",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "damage"
+   },
+   {
+    "id": "crane",
+    "name": "Crane stance",
+    "school": "kungfu",
+    "level": 1,
+    "cost": 1,
+    "desc": "Perfect balance: +3 armor in a fight.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "shield"
+   },
+   {
+    "id": "inner_calm",
+    "name": "Inner calm",
+    "school": "kungfu",
+    "level": 1,
+    "cost": 1,
+    "desc": "Breathe: recover some strength.",
+    "effect": {
+     "kind": "heal",
+     "amount": 15
+    }
+   },
+   {
+    "id": "dragon_palm",
+    "name": "Palm of the dragon",
+    "school": "kungfu",
+    "level": 2,
+    "cost": 3,
+    "desc": "An open palm that hits like a truck.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "damage"
+   },
+   {
+    "id": "meditation",
+    "name": "Meditation",
+    "school": "kungfu",
+    "level": 1,
+    "cost": 1,
+    "desc": "A clear mind: +2 to your next check.",
+    "effect": {
+     "kind": "bonus",
+     "amount": 2
+    }
+   },
+   {
+    "id": "meia_lua",
+    "name": "Meia lua",
+    "school": "capoeira",
+    "level": 1,
+    "cost": 1,
+    "desc": "A spinning half-moon kick.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "damage"
+   },
+   {
+    "id": "ginga",
+    "name": "Ginga",
+    "school": "capoeira",
+    "level": 1,
+    "cost": 2,
+    "desc": "Never where they expect: your next Acrobatics or Stealth check rolls twice.",
+    "effect": {
+     "kind": "advantage",
+     "skills": [
+      "acrobatics",
+      "stealth",
+      "deception"
+     ]
+    }
+   },
+   {
+    "id": "martelo",
+    "name": "Martelo",
+    "school": "capoeira",
+    "level": 2,
+    "cost": 2,
+    "desc": "The hammer kick.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "damage"
+   },
+   {
+    "id": "jab_cross",
+    "name": "Jab-cross",
+    "school": "boxing",
+    "level": 1,
+    "cost": 1,
+    "desc": "The classic one-two.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "damage"
+   },
+   {
+    "id": "rope_a_dope",
+    "name": "Rope-a-dope",
+    "school": "boxing",
+    "level": 1,
+    "cost": 1,
+    "desc": "Cover up and let them tire: +3 armor.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "shield"
+   },
+   {
+    "id": "haymaker",
+    "name": "Haymaker",
+    "school": "boxing",
+    "level": 2,
+    "cost": 3,
+    "desc": "Everything behind one punch.",
+    "effect": {
+     "kind": "scene"
+    },
+    "combat": "damage"
+   }
+  ],
+  "titles": [
+   {
+    "id": "seasoned",
+    "name": "the Seasoned",
+    "desc": "Reach level 5.",
+    "when": {
+     "level": 5
+    }
+   },
+   {
+    "id": "veteran",
+    "name": "the Veteran",
+    "desc": "Reach level 10.",
+    "when": {
+     "level": 10
+    }
+   },
+   {
+    "id": "smooth",
+    "name": "the Smooth Talker",
+    "desc": "Win 10 social checks.",
+    "when": {
+     "count": "socialWins",
+     "n": 10
+    }
+   },
+   {
+    "id": "fixer",
+    "name": "the Fixer",
+    "desc": "Finish 5 missions.",
+    "when": {
+     "count": "quests",
+     "n": 5
+    }
+   },
+   {
+    "id": "legend",
+    "name": "Neighborhood Legend",
+    "desc": "Earn 100 renown.",
+    "when": {
+     "renown": 100
+    }
+   },
+   {
+    "id": "brawler",
+    "name": "the Undefeated",
+    "desc": "Win 10 fights.",
+    "when": {
+     "count": "fights",
+     "n": 10
+    }
+   }
+  ],
+  "campEvery": 8,
+  "bestiary": [
+   {
+    "id": "mugger",
+    "icon": "🔪",
+    "name": "Mugger",
+    "level": 1,
+    "hp": 10,
+    "ac": 11,
+    "atk": 3,
+    "dice": 1,
+    "sides": 6,
+    "bonus": 1,
+    "row": "front",
+    "tags": [
+     "town",
+     "road"
+    ],
+    "desc": "A knife and nothing to lose."
+   },
+   {
+    "id": "ganger",
+    "icon": "🧢",
+    "name": "Gang member",
+    "level": 1,
+    "hp": 12,
+    "ac": 12,
+    "atk": 3,
+    "dice": 1,
+    "sides": 6,
+    "bonus": 2,
+    "row": "front",
+    "tags": [
+     "town",
+     "tower"
+    ],
+    "desc": "Colors, attitude and a chain."
+   },
+   {
+    "id": "dog",
+    "icon": "🐕",
+    "name": "Guard dog",
+    "level": 1,
+    "hp": 9,
+    "ac": 12,
+    "atk": 4,
+    "dice": 1,
+    "sides": 6,
+    "bonus": 2,
+    "row": "front",
+    "tags": [
+     "town",
+     "wild"
+    ],
+    "desc": "Trained to bite first."
+   },
+   {
+    "id": "bat",
+    "icon": "🏏",
+    "name": "Thug with a bat",
+    "level": 2,
+    "hp": 16,
+    "ac": 12,
+    "atk": 4,
+    "dice": 1,
+    "sides": 8,
+    "bonus": 2,
+    "row": "front",
+    "tags": [
+     "town",
+     "tower"
+    ],
+    "desc": "Swings for the fences."
+   },
+   {
+    "id": "gunman",
+    "icon": "🔫",
+    "name": "Gunman",
+    "level": 2,
+    "hp": 12,
+    "ac": 13,
+    "atk": 5,
+    "dice": 1,
+    "sides": 8,
+    "bonus": 2,
+    "ranged": true,
+    "row": "back",
+    "tags": [
+     "town",
+     "road",
+     "tower"
+    ],
+    "desc": "Shoots from behind cover."
+   },
+   {
+    "id": "security",
+    "icon": "👮",
+    "name": "Security guard",
+    "level": 2,
+    "hp": 18,
+    "ac": 14,
+    "atk": 4,
+    "dice": 1,
+    "sides": 6,
+    "bonus": 2,
+    "row": "front",
+    "tags": [
+     "town"
+    ],
+    "desc": "Paid to stop you, not to like it."
+   },
+   {
+    "id": "bouncer",
+    "icon": "💪",
+    "name": "Bouncer",
+    "level": 3,
+    "hp": 26,
+    "ac": 12,
+    "atk": 5,
+    "dice": 2,
+    "sides": 6,
+    "bonus": 3,
+    "row": "front",
+    "tags": [
+     "town",
+     "tower"
+    ],
+    "desc": "A wall in a black shirt."
+   },
+   {
+    "id": "boss",
+    "icon": "😎",
+    "name": "Gang boss",
+    "level": 5,
+    "hp": 45,
+    "ac": 15,
+    "atk": 6,
+    "dice": 2,
+    "sides": 8,
+    "bonus": 3,
+    "row": "front",
+    "tags": [
+     "town",
+     "tower",
+     "boss"
+    ],
+    "desc": "Gold chains, cold eyes."
+   }
+  ],
+  "talents": [
+   {
+    "id": "tough",
+    "name": "Toughness",
+    "desc": "More hit points.",
+    "tier": 1,
+    "effect": {
+     "kind": "hp",
+     "amount": 6
+    }
+   },
+   {
+    "id": "keen",
+    "name": "Keen senses",
+    "desc": "+2 Perception.",
+    "tier": 1,
+    "effect": {
+     "kind": "skill",
+     "amount": 2,
+     "skill": "perception"
+    }
+   },
+   {
+    "id": "silver",
+    "name": "Silver tongue",
+    "desc": "+2 Persuasion.",
+    "tier": 1,
+    "effect": {
+     "kind": "skill",
+     "amount": 2,
+     "skill": "persuasion"
+    }
+   },
+   {
+    "id": "street",
+    "name": "Street smart",
+    "desc": "+3 on nights on the road.",
+    "tier": 1,
+    "effect": {
+     "kind": "camp",
+     "amount": 3
+    }
+   },
+   {
+    "id": "will",
+    "name": "Iron will",
+    "desc": "+2 Ki.",
+    "tier": 2,
+    "effect": {
+     "kind": "focus",
+     "amount": 2
+    },
+    "requires": [
+     "tough"
+    ]
+   },
+   {
+    "id": "ma_breath",
+    "name": "Breath control",
+    "desc": "+3 Ki.",
+    "tier": 1,
+    "effect": {
+     "kind": "focus",
+     "amount": 3
+    },
+    "cls": "martial"
+   },
+   {
+    "id": "ma_speed",
+    "name": "Lightning reflexes",
+    "desc": "+2 initiative.",
+    "tier": 2,
+    "effect": {
+     "kind": "initiative",
+     "amount": 2
+    },
+    "cls": "martial",
+    "requires": [
+     "ma_breath"
+    ]
+   },
+   {
+    "id": "ma_power",
+    "name": "Devastating strikes",
+    "desc": "+2 damage.",
+    "tier": 3,
+    "effect": {
+     "kind": "damage",
+     "amount": 2
+    },
+    "cls": "martial",
+    "requires": [
+     "ma_speed"
+    ]
+   },
+   {
+    "id": "so_aim",
+    "name": "Marksman",
+    "desc": "+1 to hit.",
+    "tier": 1,
+    "effect": {
+     "kind": "attack",
+     "amount": 1
+    },
+    "cls": "soldier"
+   },
+   {
+    "id": "so_vest",
+    "name": "Body armor",
+    "desc": "+1 armor.",
+    "tier": 2,
+    "effect": {
+     "kind": "armor",
+     "amount": 1
+    },
+    "cls": "soldier",
+    "requires": [
+     "so_aim"
+    ]
+   },
+   {
+    "id": "so_hollow",
+    "name": "Hollow points",
+    "desc": "+2 damage.",
+    "tier": 3,
+    "effect": {
+     "kind": "damage",
+     "amount": 2
+    },
+    "cls": "soldier",
+    "requires": [
+     "so_vest"
+    ]
+   },
+   {
+    "id": "ha_code",
+    "name": "Script kiddie no more",
+    "desc": "+2 Technology.",
+    "tier": 1,
+    "effect": {
+     "kind": "skill",
+     "amount": 2,
+     "skill": "tech"
+    },
+    "cls": "hacker"
+   },
+   {
+    "id": "ha_mod",
+    "name": "Modded taser",
+    "desc": "+2 damage.",
+    "tier": 2,
+    "effect": {
+     "kind": "damage",
+     "amount": 2
+    },
+    "cls": "hacker",
+    "requires": [
+     "ha_code"
+    ]
+   },
+   {
+    "id": "ha_ghost",
+    "name": "Ghost",
+    "desc": "+2 Stealth.",
+    "tier": 3,
+    "effect": {
+     "kind": "skill",
+     "amount": 2,
+     "skill": "stealth"
+    },
+    "cls": "hacker",
+    "requires": [
+     "ha_mod"
+    ]
+   },
+   {
+    "id": "me_kit",
+    "name": "Full kit",
+    "desc": "+2 First aid.",
+    "tier": 1,
+    "effect": {
+     "kind": "skill",
+     "amount": 2,
+     "skill": "medicine"
+    },
+    "cls": "medic"
+   },
+   {
+    "id": "me_calm",
+    "name": "Steady hands",
+    "desc": "+1 to hit.",
+    "tier": 2,
+    "effect": {
+     "kind": "attack",
+     "amount": 1
+    },
+    "cls": "medic",
+    "requires": [
+     "me_kit"
+    ]
+   },
+   {
+    "id": "me_tough",
+    "name": "Seen it all",
+    "desc": "More hit points.",
+    "tier": 3,
+    "effect": {
+     "kind": "hp",
+     "amount": 8
+    },
+    "cls": "medic",
+    "requires": [
+     "me_calm"
+    ]
+   },
+   {
+    "id": "de_eye",
+    "name": "Eye for detail",
+    "desc": "+2 Investigation.",
+    "tier": 1,
+    "effect": {
+     "kind": "skill",
+     "amount": 2,
+     "skill": "investigation"
+    },
+    "cls": "detective"
+   },
+   {
+    "id": "de_draw",
+    "name": "Quick draw",
+    "desc": "+2 initiative.",
+    "tier": 2,
+    "effect": {
+     "kind": "initiative",
+     "amount": 2
+    },
+    "cls": "detective",
+    "requires": [
+     "de_eye"
+    ]
+   },
+   {
+    "id": "de_shot",
+    "name": "Called shot",
+    "desc": "+2 damage.",
+    "tier": 3,
+    "effect": {
+     "kind": "damage",
+     "amount": 2
+    },
+    "cls": "detective",
+    "requires": [
+     "de_draw"
+    ]
+   },
+   {
+    "id": "in_charm",
+    "name": "Charisma",
+    "desc": "+2 Performance.",
+    "tier": 1,
+    "effect": {
+     "kind": "skill",
+     "amount": 2,
+     "skill": "performance"
+    },
+    "cls": "influencer"
+   },
+   {
+    "id": "in_crowd",
+    "name": "The crowd loves you",
+    "desc": "+2 initiative.",
+    "tier": 2,
+    "effect": {
+     "kind": "initiative",
+     "amount": 2
+    },
+    "cls": "influencer",
+    "requires": [
+     "in_charm"
+    ]
+   },
+   {
+    "id": "in_viral",
+    "name": "Viral",
+    "desc": "+2 Ki.",
+    "tier": 3,
+    "effect": {
+     "kind": "focus",
+     "amount": 2
+    },
+    "cls": "influencer",
+    "requires": [
+     "in_crowd"
+    ]
+   }
+  ],
+  "mercNames": [
+   "Marcus",
+   "Dee",
+   "Rico",
+   "Tanya",
+   "Viktor",
+   "Jules",
+   "Ray",
+   "Nina",
+   "Tomas",
+   "Kat"
+  ],
+  "mercWage": 40
+ },
+ "recipes": [],
+ "towers": [],
+ "presetAdventure": true,
+ "scenario": {
+  "premise": "Roma, il Palatium Augusti. Tu, {{user}}, sei l'Imperatore Rurik Balderek. La congiura dei Santarelli e dei Dubbini è stata schiacciata e la tua clemenza ha avuto un prezzo: le loro donne sono nel tuo gineceo, i loro uomini ti servono come paggetto e come schiavo, e chi ha guidato la congiura è stato ridotto a omuncolo. La corte finge che il caso sia chiuso. L'ambasciatrice di Hispania aspetta un'udienza, la Cancelliere aspetta una firma, il Ciambellano aspetta che tu decida da chi cominciare. È mattina, e il palazzo si sveglia attorno a te."
+ },
+ "style": "medieval",
+ "lorebooks": [
+  "Mundi_Terra_Aeterna_Core",
+  "Mundi_Terra_Aeterna_Omuncoli_e_Merdaioli"
+ ],
+ "plan": {
+  "on": true,
+  "floors": [
+   {
+    "id": "f_1",
+    "name": "Piano -1 · Sotterranei",
+    "ratio": 1.7917,
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-plan_f_1-mvqx81cu.jpg"
+   },
+   {
+    "id": "f0",
+    "name": "Piano terra · Piano nobile",
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-plan_f0-mvqxbsp4.jpg",
+    "ratio": 1.7917
+   },
+   {
+    "id": "f1",
+    "name": "Piano 1 · Residenze",
+    "ratio": 1.7917,
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-plan_f1-mvqxi54k.jpg"
+   },
+   {
+    "id": "f2",
+    "name": "Piano 2 · Torri",
+    "ratio": 1.7917,
+    "image": "/user/files/mundi-w_palatium_augusti_mvqx6u7a5rz-plan_f2-mvqxl8sw.jpg"
+   }
+  ],
+  "rooms": [
+   {
+    "id": "cisterne",
+    "floor": "f_1",
+    "x": 7.5,
+    "y": 14,
+    "w": 27.5,
+    "h": 53
+   },
+   {
+    "id": "terme",
+    "floor": "f_1",
+    "x": 37.5,
+    "y": 15,
+    "w": 27.5,
+    "h": 51
+   },
+   {
+    "id": "latrina_terme",
+    "floor": "f_1",
+    "x": 44.5,
+    "y": 70,
+    "w": 13.5,
+    "h": 19
+   },
+   {
+    "id": "prigioni",
+    "floor": "f_1",
+    "x": 67.5,
+    "y": 64,
+    "w": 27.5,
+    "h": 26
+   },
+   {
+    "id": "horrea",
+    "floor": "f_1",
+    "x": 67,
+    "y": 11,
+    "w": 27,
+    "h": 22
+   },
+   {
+    "id": "cantina",
+    "floor": "f_1",
+    "x": 72,
+    "y": 36,
+    "w": 21,
+    "h": 26
+   },
+   {
+    "id": "latrine_servitu",
+    "floor": "f_1",
+    "x": 7.5,
+    "y": 77,
+    "w": 28,
+    "h": 12
+   },
+   {
+    "id": "porta",
+    "floor": "f0",
+    "x": 44,
+    "y": 85,
+    "w": 14.5,
+    "h": 15
+   },
+   {
+    "id": "vestibolo",
+    "floor": "f0",
+    "x": 44.5,
+    "y": 70,
+    "w": 13.5,
+    "h": 13
+   },
+   {
+    "id": "aula_trono",
+    "floor": "f0",
+    "x": 37,
+    "y": 7,
+    "w": 29.5,
+    "h": 20
+   },
+   {
+    "id": "tablino",
+    "floor": "f0",
+    "x": 7,
+    "y": 11,
+    "w": 7.5,
+    "h": 23
+   },
+   {
+    "id": "cancelleria",
+    "floor": "f0",
+    "x": 15,
+    "y": 11,
+    "w": 12.5,
+    "h": 23
+   },
+   {
+    "id": "tesoreria",
+    "floor": "f0",
+    "x": 28.5,
+    "y": 11,
+    "w": 6.5,
+    "h": 23
+   },
+   {
+    "id": "ufficio_ciambellano",
+    "floor": "f0",
+    "x": 7,
+    "y": 36,
+    "w": 12,
+    "h": 10
+   },
+   {
+    "id": "ufficio_siniscalco",
+    "floor": "f0",
+    "x": 23.5,
+    "y": 36,
+    "w": 11.5,
+    "h": 10
+   },
+   {
+    "id": "triclinio",
+    "floor": "f0",
+    "x": 67.5,
+    "y": 11,
+    "w": 26.5,
+    "h": 23
+   },
+   {
+    "id": "cucine",
+    "floor": "f0",
+    "x": 72,
+    "y": 36,
+    "w": 21,
+    "h": 15.5
+   },
+   {
+    "id": "peristilio",
+    "floor": "f0",
+    "x": 37,
+    "y": 29,
+    "w": 29.5,
+    "h": 38
+   },
+   {
+    "id": "larario",
+    "floor": "f0",
+    "x": 72.5,
+    "y": 53,
+    "w": 8,
+    "h": 9
+   },
+   {
+    "id": "lavanderia",
+    "floor": "f0",
+    "x": 25.5,
+    "y": 77,
+    "w": 9.5,
+    "h": 13
+   },
+   {
+    "id": "cortile",
+    "floor": "f0",
+    "x": 88,
+    "y": 64,
+    "w": 9,
+    "h": 27
+   },
+   {
+    "id": "latrine_comuni",
+    "floor": "f0",
+    "x": 81.5,
+    "y": 53,
+    "w": 11.5,
+    "h": 9
+   },
+   {
+    "id": "spot:corte:0",
+    "floor": "f0",
+    "x": 7,
+    "y": 52,
+    "w": 8,
+    "h": 15
+   },
+   {
+    "id": "spot:corte:1",
+    "floor": "f0",
+    "x": 17,
+    "y": 52,
+    "w": 8,
+    "h": 15
+   },
+   {
+    "id": "spot:corte:2",
+    "floor": "f0",
+    "x": 27,
+    "y": 52,
+    "w": 8,
+    "h": 15
+   },
+   {
+    "id": "spot:servitu:0",
+    "floor": "f0",
+    "x": 7,
+    "y": 81,
+    "w": 4.5,
+    "h": 9
+   },
+   {
+    "id": "spot:servitu:1",
+    "floor": "f0",
+    "x": 11.5,
+    "y": 81,
+    "w": 4.5,
+    "h": 9
+   },
+   {
+    "id": "spot:servitu:2",
+    "floor": "f0",
+    "x": 16,
+    "y": 81,
+    "w": 4.5,
+    "h": 9
+   },
+   {
+    "id": "spot:servitu:3",
+    "floor": "f0",
+    "x": 20.5,
+    "y": 81,
+    "w": 4.5,
+    "h": 9
+   },
+   {
+    "id": "spot:caserma:0",
+    "floor": "f0",
+    "x": 67,
+    "y": 65,
+    "w": 20.5,
+    "h": 25
+   },
+   {
+    "id": "salone_gineceo",
+    "floor": "f1",
+    "x": 72.5,
+    "y": 36,
+    "w": 20.5,
+    "h": 15.5
+   },
+   {
+    "id": "balneum",
+    "floor": "f1",
+    "x": 72.5,
+    "y": 53.5,
+    "w": 8,
+    "h": 8.5
+   },
+   {
+    "id": "latrina_gineceo",
+    "floor": "f1",
+    "x": 81.5,
+    "y": 53.5,
+    "w": 11.5,
+    "h": 8.5
+   },
+   {
+    "id": "latrina_imperiale",
+    "floor": "f1",
+    "x": 7,
+    "y": 36.5,
+    "w": 11.5,
+    "h": 10
+   },
+   {
+    "id": "latrina_paggetto",
+    "floor": "f1",
+    "x": 32,
+    "y": 36.5,
+    "w": 5,
+    "h": 10
+   },
+   {
+    "id": "studio_imperiale",
+    "floor": "f1",
+    "x": 23.5,
+    "y": 11,
+    "w": 11.5,
+    "h": 23
+   },
+   {
+    "id": "spot:appartamenti:0",
+    "floor": "f1",
+    "x": 7,
+    "y": 11,
+    "w": 15.5,
+    "h": 23
+   },
+   {
+    "id": "spot:gineceo:0",
+    "floor": "f1",
+    "x": 68,
+    "y": 11,
+    "w": 6.5,
+    "h": 23
+   },
+   {
+    "id": "spot:gineceo:1",
+    "floor": "f1",
+    "x": 75.5,
+    "y": 11,
+    "w": 9,
+    "h": 23
+   },
+   {
+    "id": "spot:gineceo:2",
+    "floor": "f1",
+    "x": 86,
+    "y": 11,
+    "w": 7.5,
+    "h": 23
+   },
+   {
+    "id": "spot:paggetto:0",
+    "floor": "f1",
+    "x": 23.5,
+    "y": 36.5,
+    "w": 7,
+    "h": 10
+   },
+   {
+    "id": "spot:ospiti:0",
+    "floor": "f1",
+    "x": 7,
+    "y": 77,
+    "w": 17.5,
+    "h": 13
+   },
+   {
+    "id": "spot:ospiti:1",
+    "floor": "f1",
+    "x": 25.5,
+    "y": 77,
+    "w": 9.5,
+    "h": 13
+   },
+   {
+    "id": "collegium",
+    "floor": "f2",
+    "x": 7.5,
+    "y": 13,
+    "w": 24,
+    "h": 45
+   },
+   {
+    "id": "torre",
+    "floor": "f2",
+    "x": 41,
+    "y": 28,
+    "w": 21,
+    "h": 39
+   },
+   {
+    "id": "colombaia",
+    "floor": "f2",
+    "x": 75,
+    "y": 10,
+    "w": 18.5,
+    "h": 34
+   }
+  ],
+  "labels": true
+ }
+}
