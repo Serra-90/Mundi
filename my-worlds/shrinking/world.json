@@ -3,7 +3,7 @@
   "id": "w_shrinking_mvsh45difpr",
   "name": "Shrinking",
   "kind": "Moderno",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "style": "modern",
   "mode": "lifesim",
   "description": "Costa anconetana, ottobre 2026. Lo Shrinking riduce quasi tutti gli uomini a 5 cm e gli omuncoli sono merce. Tu sei uno dei pochi rimasti interi. Solo per adulti.",
@@ -7234,6 +7234,29 @@
       "effects": {
         "life": 40,
         "mood": -2
+      }
+    },
+    {
+      "id": "crush_seno",
+      "name": "Nel seno",
+      "label": "Soffocarlo nel seno",
+      "icon": "🫂",
+      "cost": 0,
+      "minutes": 15,
+      "anywhere": true,
+      "needsItem": [
+        "item_mvtcmqxkvvi",
+        "da_consumo",
+        "selvatico"
+      ],
+      "consume": [
+        "item_mvtcmqxkvvi",
+        "da_consumo",
+        "selvatico"
+      ],
+      "effects": {
+        "fulfillment": 35,
+        "mood": 20
       }
     }
   ],
